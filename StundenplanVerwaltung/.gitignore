@@ -1,0 +1,10 @@
+/test-classes
+bin
+.metadata
+war/WEB-INF/classes
+war/WEB-INF/deploy
+war/stundenplantool
+gwt-unitCache
+.gwt
+*.jar
+*.class
