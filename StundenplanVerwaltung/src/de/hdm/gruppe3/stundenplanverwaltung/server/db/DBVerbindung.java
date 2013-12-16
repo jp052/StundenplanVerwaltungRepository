@@ -39,7 +39,7 @@ public class DBVerbindung {
 	 * Software neu komilieren zu müssen.
 	 */
 
-	private static String url = "jdbc:mysql://127.0.0.1:3306/stundenplanverwaltung?user=root&password=root";
+	private static String url = "jdbc:mysql://127.0.0.1:3306/stundenplanverwaltung?user=root&password=";
 	
 	/**
 	 * Diese statische Methode kann aufgrufen werden durch 

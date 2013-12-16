@@ -22,13 +22,9 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Zeitslot;
 @RemoteServiceRelativePath("stundenplanVerwaltung")
 public interface StundenplanVerwaltungService extends RemoteService {
 	
-	public String test(String test);
-	
-	public void init() throws IllegalArgumentException;
-	
-	public Semesterverband anlegenSemesterverband(String semesterhalbjahr, int anzahlStudierende, int Jahrgang);
+	public Semesterverband anlegenSemesterverband(String semesterhalbjahr, int anzahlStudierende, int jahrgang);
 
-	public Semesterverband modifizierenSemesterverband (Semesterverband sv);
+	public Semesterverband modifizierenSemesterverband (String semesterhalbjahr, int anzahlStudierende, int jahrgang); //StundenplanVewaltung anpassen)
 
 	public Semesterverband getSemesterverbandByNummer (int nr);
 
@@ -36,17 +32,17 @@ public interface StundenplanVerwaltungService extends RemoteService {
 
 	public Semesterverband loeschenSemesterverband (Semesterverband sv);
 
-	public Zeitslot anlegenZeitslot (String Wochentag, Time Anfangszeit, Time Endzeit);
+	//public Zeitslot anlegenZeitslot (String wochentag, int anfangszeit);
 
-	public Zeitslot modifizierenZeitslot (Zeitslot z);
+	//public Zeitslot modifizierenZeitslot (Zeitslot z);
 
 	public Zeitslot loeschenZeitslot (Zeitslot z);
 
 	public Zeitslot getZeitslotByNummer (int nr);
 
-	public Raum anlegenRaum (String Bezeichnung, int kapazitaet);
+	public Raum anlegenRaum (String Bezeichnung, int Kapazitaet);//klein schreiben !
 
-	public Raum modifizierenRaum (Raum r);
+	//public Raum modifizierenRaum (Raum r);
 
 	public Raum loeschenRaum (Raum r);
 
@@ -54,7 +50,7 @@ public interface StundenplanVerwaltungService extends RemoteService {
 
 	public Lehrveranstaltung anlegenLehrveranstaltung (String Bezeichnung, int Semester, int Umfang);
 
-	public Lehrveranstaltung modifizierenLehrveranstaltung (Lehrveranstaltung lv);
+	//public Lehrveranstaltung modifizierenLehrveranstaltung (Lehrveranstaltung lv);
 
 	public Lehrveranstaltung loeschenLehrveranstaltung (Lehrveranstaltung lv);
 
@@ -64,23 +60,43 @@ public interface StundenplanVerwaltungService extends RemoteService {
 
 	public Dozent anlegenDozent (String Vorname, String Nachname);
 
-	public Dozent modifizierenDozent (Dozent d);
+	//public Dozent modifizierenDozent (Dozent d);
 
 	public Dozent loeschenDozent (Dozent d);
 
 	public Dozent getDozentByNummer (int nr);
 
-	public Dozent getDozentByName (String name);
+	//public Dozent getDozentByName (String name);
 
-	public LVDurchfuehrung anlegenDurchfuehrung (int svId, int raumId, int lvId, Vector<Integer> zIds);
+	public LVDurchfuehrung anlegenDurchfuehrung (int svId, int raumId, int lvId, int zIds);
 
-	public LVDurchfuehrung modifizierenDurchfuehrung (int svId, int raumId, int lvId, Vector<Integer> zIds);
+	public LVDurchfuehrung modifizierenDurchfuehrung (int svId, int raumId, int lvId, int zIds);
 
-	public void loeschenDurchfuehrung (LVDurchfuehrung d);
+	LVDurchfuehrung loeschenDurchfuehrung(LVDurchfuehrung d);
 
-	public LVDurchfuehrung getDurchfuehrungByNummer (int nr);
+	//public LVDurchfuehrung getDurchfuehrungByNummer (int nr);
 
-	public Raum getRaumByBezeichnung (String bez);
+	//public Raum getRaumByBezeichnung (String bez);
 
-	public Vector<Raum> getAllRaeume ();
+	Vector<Raum> getAllRaeume();
+
+	Lehrveranstaltung modifizierenLehrveranstaltung(String bezeichnung,
+			int semester, int umfang);
+
+	Dozent getDozentByName(Dozent name);
+
+	LVDurchfuehrung getDurchfuehrungByNummer(LVDurchfuehrung nr);
+
+	Dozent modifizierenDozent(String vorname, String nachname);
+
+	Raum getRaumByBezeichnung(Raum r);
+
+	Zeitslot anlegenZeitslot(String wochentag);
+
+	Zeitslot modifizierenZeitslot(String wochentag);
+
+	Raum modifizierenRaum(String bez, int kapa);
+
+	String test(String string);
+
 }
