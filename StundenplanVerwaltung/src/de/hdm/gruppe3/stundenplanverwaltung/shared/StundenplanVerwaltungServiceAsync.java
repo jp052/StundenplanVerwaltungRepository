@@ -84,8 +84,7 @@ public interface StundenplanVerwaltungServiceAsync {
 
 	void loeschenZeitslot(Zeitslot z, AsyncCallback<Zeitslot> callback);
 
-	void modifizierenDozent(String vorname, String nachname,
-			AsyncCallback<Dozent> callback);
+	void modifizierenDozent(Dozent d, AsyncCallback<Dozent> callback);
 
 	void modifizierenDurchfuehrung(int svId, int raumId, int lvId, int zIds,
 			AsyncCallback<LVDurchfuehrung> callback);
@@ -102,5 +101,7 @@ public interface StundenplanVerwaltungServiceAsync {
 	void modifizierenZeitslot(String wochentag, AsyncCallback<Zeitslot> callback);
 
 	void test(String string, AsyncCallback<String> asyncCallback);
+
+	void getAllDozenten(AsyncCallback<Vector<Dozent>> callback);
 
 }

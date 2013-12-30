@@ -224,11 +224,7 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements S
 		}
 
 	@Override
-	public Dozent modifizierenDozent (String vorname, String nachname){ //Diagramm anpassen
-		
-		Dozent d = new Dozent ();
-		d.setVorname (vorname);
-		d.setNachname (nachname);
+	public Dozent modifizierenDozent (Dozent d){ //Diagramm anpassen
 		return dMapper.modifizieren(d);
 		}
 
@@ -249,6 +245,8 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements S
 
 		return dMapper.findeName (name);
 		}
+	
+	
 
 
 	//Methoden LVDurchführung
@@ -336,5 +334,10 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements S
 	        return test + " db test failed";
 	      } 
 		return test + " db test failed";
+	}
+
+	@Override
+	public Vector<Dozent> getAllDozenten() {
+		return dMapper.findeAlle();
 	}
 }

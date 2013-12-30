@@ -3,7 +3,7 @@ bin
 .metadata
 war/WEB-INF/classes
 war/WEB-INF/deploy
-war/stundenplantool
+war/stundenplanverwaltung
 gwt-unitCache
 .gwt
 *.jar

@@ -50,7 +50,7 @@ public class DozentMapper {
 
      return dozentMapper;
    }
-   public Dozent anlegen(Dozent m ){
+   public Dozent anlegen(Dozent d ){
     Connection con = DBVerbindung.connection();
 
        try {
@@ -74,8 +74,8 @@ public class DozentMapper {
 //           stmt = con.createStatement();
 
            // Jetzt erst erfolgt die tatsächliche Einfügeoperation
-           stmt.executeUpdate("INSERT INTO dozent (PersonalNr, Vorname, Name) " + "VALUES ( "
-            + "NULL,'" + m.getVorname() + "','" + m.getNachname() +"')");
+           stmt.executeUpdate("INSERT INTO dozent (PersonalNr, Vorname, Nachname) " + "VALUES ( "
+            + "NULL,'" + d.getVorname() + "','" + d.getNachname() +"')");
          //}
        }
        catch (SQLException e2) {
@@ -91,7 +91,7 @@ public class DozentMapper {
         * explizite Rückgabe von a ist eher ein Stilmittel, um zu signalisieren,
         * dass sich das Objekt evtl. im Laufe der Methode verändert hat.
         */
-       return m;
+       return d;
    
   }
   
@@ -100,9 +100,9 @@ public class DozentMapper {
 
       try {
         Statement stmt = con.createStatement();
-
-        stmt.executeUpdate("UPDATE dozent " + "SET Name=\"" + dozent.getNachname() + "\" SET Vorname=\"" + dozent.getVorname());
-
+//        UPDATE  `stundenplanverwaltung`.`dozent` SET  `Vorname` =  'test2' WHERE  `dozent`.`PersonalNr` =2;
+        stmt.executeUpdate("UPDATE dozent " + "SET Nachname=\"" + dozent.getNachname() + "\", Vorname=\"" + dozent.getVorname() + "\" WHERE PersonalNr=" + dozent.getId());
+        int i = 0;
       }
       catch (SQLException e2) {
         e2.printStackTrace();
@@ -118,7 +118,7 @@ public class DozentMapper {
       try {
         Statement stmt = con.createStatement();
 
-        stmt.executeUpdate("DELETE FROM dozent " + "WHERE dozent=" + dozent.getId());
+        stmt.executeUpdate("DELETE FROM dozent " + "WHERE PersonalNr=" + dozent.getId());
 
       }
       catch (SQLException e2) {
@@ -163,7 +163,7 @@ public class DozentMapper {
   }
    
 
-  public Dozent findeId(int d){
+  public Dozent findeId(int dozentId){
       // DB-Verbindung holen
       Connection con = DBVerbindung.connection();
  
@@ -172,8 +172,8 @@ public class DozentMapper {
         Statement stmt = con.createStatement();
 
         // Statement ausfüllen und als Query an die DB schicken
-        ResultSet rs = stmt.executeQuery("SELECT PersonalNr, Name, Vorname FROM raum "
-            + "WHERE PersonalNr=" + d + " ORDER BY Name");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM dozent "
+            + "WHERE PersonalNr=" + dozentId);
 
         /*
          * Da dozent Primärschlüssel ist, kann dozentx. nur ein Tupel zurückgegeben
@@ -183,7 +183,7 @@ public class DozentMapper {
           // Ergebnis-Tupel in Objekt umwandeln
           Dozent dozent = new Dozent();
           dozent.setId(rs.getInt("PersonalNr"));
-          dozent.setNachname(rs.getString("Name"));
+          dozent.setNachname(rs.getString("Nachname"));
           dozent.setVorname(rs.getString("Vorname"));
 
           return dozent;
@@ -206,7 +206,7 @@ public class DozentMapper {
        try {
          Statement stmt = con.createStatement();
 
-         ResultSet rs = stmt.executeQuery("SELECT PersonalNr, name FROM dozent "
+         ResultSet rs = stmt.executeQuery("SELECT * FROM dozent "
              + " ORDER BY PersonalNr");
 
          // F¸r jeden Eintrag im Suchergebnis wird nun ein Account-Objekt erstellt.
@@ -214,7 +214,7 @@ public class DozentMapper {
            Dozent d = new Dozent();
            d.setId(rs.getInt("PersonalNr"));
            d.setVorname(rs.getString("Vorname"));
-           d.setNachname(rs.getString("Name"));
+           d.setNachname(rs.getString("Nachname"));
            
            // Hinzuf¸gen des neuen Objekts zum Ergebnisvektor
            result.addElement(d);

@@ -86,8 +86,10 @@ public interface StundenplanVerwaltungService extends RemoteService {
 	Dozent getDozentByName(Dozent name);
 
 	LVDurchfuehrung getDurchfuehrungByNummer(LVDurchfuehrung nr);
+	
+	Vector<Dozent> getAllDozenten();
 
-	Dozent modifizierenDozent(String vorname, String nachname);
+	Dozent modifizierenDozent(Dozent d);
 
 	Raum getRaumByBezeichnung(Raum r);
 
@@ -98,5 +100,7 @@ public interface StundenplanVerwaltungService extends RemoteService {
 	Raum modifizierenRaum(String bez, int kapa);
 
 	String test(String string);
+
+	
 
 }
