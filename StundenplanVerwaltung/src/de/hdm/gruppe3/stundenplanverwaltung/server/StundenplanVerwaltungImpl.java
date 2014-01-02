@@ -19,7 +19,7 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Semesterverband;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Zeitslot;
 
 /**
- * @author Yasemin Karakoc, Jan Plank
+ * @author Yasemin Karakoc, Jan Plank, Selim
  *
  */
 public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements StundenplanVerwaltungService{
@@ -140,11 +140,7 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements S
 		}
 
 	@Override
-	public Raum modifizierenRaum (String bez, int kapa){ //Diagramm anpassen
-
-		Raum r = new Raum ();
-		r.setBezeichnung (bez);
-		r.setKapazitaet (kapa);
+	public Raum modifizierenRaum (Raum r){ //Diagramm anpassen
 		return rMapper.modifizieren(r);
 		}
 

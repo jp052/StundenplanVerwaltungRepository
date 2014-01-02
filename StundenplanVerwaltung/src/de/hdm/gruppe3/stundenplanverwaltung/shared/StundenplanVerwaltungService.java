@@ -97,9 +97,9 @@ public interface StundenplanVerwaltungService extends RemoteService {
 
 	Zeitslot modifizierenZeitslot(String wochentag);
 
-	Raum modifizierenRaum(String bez, int kapa);
-
 	String test(String string);
+
+	Raum modifizierenRaum(Raum r);
 
 	
 

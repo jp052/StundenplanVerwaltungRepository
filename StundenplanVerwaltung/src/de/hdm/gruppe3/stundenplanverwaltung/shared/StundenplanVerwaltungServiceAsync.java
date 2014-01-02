@@ -92,7 +92,7 @@ public interface StundenplanVerwaltungServiceAsync {
 	void modifizierenLehrveranstaltung(String bezeichnung, int semester,
 			int umfang, AsyncCallback<Lehrveranstaltung> callback);
 
-	void modifizierenRaum(String bez, int kapa, AsyncCallback<Raum> callback);
+	void modifizierenRaum(Raum r, AsyncCallback<Raum> callback);
 
 	void modifizierenSemesterverband(String semesterhalbjahr,
 			int anzahlStudierende, int jahrgang,

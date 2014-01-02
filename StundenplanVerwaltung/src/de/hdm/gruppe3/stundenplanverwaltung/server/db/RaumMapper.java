@@ -101,7 +101,7 @@ public class RaumMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      stmt.executeUpdate("UPDATE raum " + "SET Bezeichnung=\"" + raum.getBezeichnung() + "\" SET Kapazitaet=\"" + raum.getKapazitaet() + "WHERE RaumNr=" + raum.getId());
+		      stmt.executeUpdate("UPDATE raum " + "SET Bezeichnung=\"" + raum.getBezeichnung() + "\" ,Kapazitaet=" + raum.getKapazitaet() + " WHERE RaumNr=" + raum.getId());
 
 		    }
 		    catch (SQLException e2) {

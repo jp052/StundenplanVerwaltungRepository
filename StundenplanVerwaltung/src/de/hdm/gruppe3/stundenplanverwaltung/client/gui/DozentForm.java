@@ -17,6 +17,10 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Dozent;
 
 
 
+/**
+ * @author Yasemin Karakoc, Jan Plank
+ *
+ */
 public class DozentForm extends VerticalPanel{
 	TextBox vornameTextBox = new TextBox();
 	TextBox nachnameTextBox = new TextBox();
