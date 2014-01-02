@@ -160,10 +160,10 @@ public class RaumForm extends VerticalPanel{
 	}
 	
 	public void anlegenSelectedRaum() {
-		String vorname = bezeichnungTextBox.getText();
-		int nachname = Integer.valueOf(kapazitaetTextBox.getText());
+		String bezeichnung = bezeichnungTextBox.getText();
+		int kapazitaet = Integer.valueOf(kapazitaetTextBox.getText());
 		//Ruft Serverseitige Methode auf
-		stundenplanVerwaltung.anlegenRaum(vorname, nachname,  new AsyncCallback<Raum>() {
+		stundenplanVerwaltung.anlegenRaum(bezeichnung, kapazitaet,  new AsyncCallback<Raum>() {
 
 			@Override
 			public void onFailure(Throwable caught) {

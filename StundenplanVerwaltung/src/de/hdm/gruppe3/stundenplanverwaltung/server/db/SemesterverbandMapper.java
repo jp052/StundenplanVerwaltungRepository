@@ -51,7 +51,7 @@ public class SemesterverbandMapper {
 
 	    return svMapper;
 	  }
-	  public Semesterverband anlegen(Semesterverband m ){
+	  public Semesterverband anlegen(Semesterverband sv ){
 			 Connection con = DBVerbindung.connection();
 
 			    try {
@@ -76,7 +76,7 @@ public class SemesterverbandMapper {
 
 			        // Jetzt erst erfolgt die tatsächliche Einfügeoperation
 			        stmt.executeUpdate("INSERT INTO Semesterverband (SVNr, AnzahlStudierende, SemesterHalbjahr, Jahrgang) " + "VALUES ( "
-			        	+ "NULL,'" + m.getAnzahlStudenten() + "','" + m.getSemester() +"','" +m.getJahrgang()+ "')");
+			        	+ "NULL,'" + sv.getAnzahlStudenten() + "','" + sv.getSemester() +"','" +sv.getJahrgang()+ "')");
 			      //}
 			    }
 			    catch (SQLException e2) {
@@ -92,7 +92,7 @@ public class SemesterverbandMapper {
 			     * explizite Rückgabe von a ist eher ein Stilmittel, um zu signalisieren,
 			     * dass sich das Objekt evtl. im Laufe der Methode verändert hat.
 			     */
-			    return m;
+			    return sv;
 			
 		}
 		
@@ -102,7 +102,7 @@ public class SemesterverbandMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      stmt.executeUpdate("UPDATE Semesterverband " + "SET AnzahlStudierende=\"" + sv.getAnzahlStudenten() + "\" SET SemesterHalbjahr=\"" + sv.getSemester() + "\" "+ "SET Jahrgang=\"" + sv.getJahrgang() + "WHERE SVNr=" + sv.getId());
+		      stmt.executeUpdate("UPDATE Semesterverband " + "SET AnzahlStudierende=" + sv.getAnzahlStudenten() + " , SemesterHalbjahr=" + sv.getSemester() + ", Jahrgang=" + sv.getJahrgang() + " WHERE SVNr=" + sv.getId());
 
 		    }
 		    catch (SQLException e2) {
@@ -149,7 +149,7 @@ public class SemesterverbandMapper {
 		    	Semesterverband sv = new Semesterverband();
 		        sv.setId(rs.getInt("SVNr"));
 		        sv.setAnzahlStudenten(rs.getInt("AnzahlStudierende"));
-				sv.setSemester(rs.getString("SemesterHalbjahr"));
+				sv.setSemester(rs.getInt("SemesterHalbjahr"));
 				sv.setJahrgang(rs.getInt("Jahrgang"));
 
 		        return sv;
@@ -180,7 +180,7 @@ public class SemesterverbandMapper {
 			        Semesterverband sv = new Semesterverband();
 					sv.setId(rs.getInt("SVNr"));
 					sv.setAnzahlStudenten(rs.getInt("AnzahlStudierende"));
-					sv.setSemester(rs.getString("SemesterHalbjahr"));
+					sv.setSemester(rs.getInt("SemesterHalbjahr"));
 					sv.setJahrgang(rs.getInt("Jahrgang"));
 
 			        // Hinzuf¸gen des neuen Objekts zum Ergebnisvektor

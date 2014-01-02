@@ -51,7 +51,7 @@ public class LehrveranstaltungMapper {
 
 	    return lvMapper;
 	  }
-	  public Lehrveranstaltung anlegen(Lehrveranstaltung m ){
+	  public Lehrveranstaltung anlegen(Lehrveranstaltung lv ){
 			 Connection con = DBVerbindung.connection();
 
 			    try {
@@ -76,7 +76,7 @@ public class LehrveranstaltungMapper {
 
 			        // Jetzt erst erfolgt die tatsächliche Einfügeoperation
 			        stmt.executeUpdate("INSERT INTO Lehrveranstaltung (EDVNr, Bezeichnung, Umfang, Semester) " + "VALUES ( "
-			        	+ "NULL,'" + m.getBezeichnung() + "','" + m.getUmfang() +"','" +m.getSemester()+"')");
+			        	+ "NULL,'" + lv.getBezeichnung() + "','" + lv.getUmfang() +"','" +lv.getSemester()+"')");
 			      //}
 			    }
 			    catch (SQLException e2) {
@@ -92,7 +92,7 @@ public class LehrveranstaltungMapper {
 			     * explizite Rückgabe von a ist eher ein Stilmittel, um zu signalisieren,
 			     * dass sich das Objekt evtl. im Laufe der Methode verändert hat.
 			     */
-			    return m;
+			    return lv;
 			
 		}
 		

@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.gruppe3.stundenplanverwaltung.client.gui.DozentForm;
 import de.hdm.gruppe3.stundenplanverwaltung.client.gui.RaumForm;
+import de.hdm.gruppe3.stundenplanverwaltung.client.gui.SemesterverbandForm;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungServiceAsync;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.*;
@@ -48,6 +49,24 @@ public class TestGUIForms {
 				rf.setSelected(result);
 				mainPanel.add(rf);
 			}
+		});
+		
+		stdplnVerwService.getSemesterverbandByNummer(1, new AsyncCallback<Semesterverband>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(Semesterverband result) {
+				SemesterverbandForm svf = new SemesterverbandForm();
+				svf.setSelected(result);
+				mainPanel.add(svf);
+				
+			}
+			
 		});
 		
 		 RootPanel.get("starter").add(mainPanel);

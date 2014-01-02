@@ -22,9 +22,10 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Zeitslot;
 @RemoteServiceRelativePath("stundenplanVerwaltung")
 public interface StundenplanVerwaltungService extends RemoteService {
 	
-	public Semesterverband anlegenSemesterverband(String semesterhalbjahr, int anzahlStudierende, int jahrgang);
+	public Semesterverband anlegenSemesterverband(int semesterhalbjahr,
+			int anzahlStudierende, int jahrgang);
 
-	public Semesterverband modifizierenSemesterverband (String semesterhalbjahr, int anzahlStudierende, int jahrgang); //StundenplanVewaltung anpassen)
+	Semesterverband modifizierenSemesterverband(Semesterverband semeserverband);
 
 	public Semesterverband getSemesterverbandByNummer (int nr);
 
@@ -100,6 +101,8 @@ public interface StundenplanVerwaltungService extends RemoteService {
 	String test(String string);
 
 	Raum modifizierenRaum(Raum r);
+
+
 
 	
 

@@ -61,22 +61,18 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements S
 
 	//Methoden Semesterverband
 	@Override
-	public Semesterverband anlegenSemesterverband(String semesterhalbjahr, int anzahlStudierende, int jahrgang) {
+	public Semesterverband anlegenSemesterverband(int semesterhalbjahr, int anzahlStudierende, int jahrgang) {
 
 		Semesterverband sv = new Semesterverband();
-		sv.setSemester (semesterhalbjahr);	
-		sv.setAnzahlStudenten (anzahlStudierende);
-		sv.setJahrgang (jahrgang);
+		sv.setSemester(semesterhalbjahr);	
+		sv.setAnzahlStudenten(anzahlStudierende);
+		sv.setJahrgang(jahrgang);
 		return svMapper.anlegen(sv);
 		}
 
 	@Override
-	public Semesterverband modifizierenSemesterverband (String semesterhalbjahr, int anzahlStudierende, int jahrgang){ //StundenplanVerwaltung anpassen !!!
+	public Semesterverband modifizierenSemesterverband (Semesterverband sv){ //StundenplanVerwaltung anpassen !!!
 		
-		Semesterverband sv = new Semesterverband ();
-		sv.setSemester (semesterhalbjahr);	
-		sv.setAnzahlStudenten (anzahlStudierende);
-		sv.setJahrgang (jahrgang); 
 		return svMapper.modifizieren(sv);
 		}
 

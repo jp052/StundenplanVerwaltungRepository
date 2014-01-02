@@ -12,12 +12,12 @@ public class Semesterverband extends BusinessObject {
 	// Instanzvariablen bzw. Membervariablen
 	private static final long serialVersionUID = 1L;
 
-	private String semester;
+	private int semester;
 	private int jahrgang;
 	private int anzahlStudenten;
 
 	// Konstruktor
-	public Semesterverband(String semester, int jahrgang, int anzahlStudenten,
+	public Semesterverband(int semester, int jahrgang, int anzahlStudenten,
 			Vector<LVDurchfuehrung> durchfuehungen) {
 		this.semester = semester;
 		this.jahrgang = jahrgang;
@@ -30,11 +30,11 @@ public class Semesterverband extends BusinessObject {
 	}
 
 	// Getter und Setter
-	public String getSemester() {
+	public int getSemester() {
 		return semester;
 	}
 
-	public void setSemester(String semester) {
+	public void setSemester(int semester) {
 		this.semester = semester;
 	}
 

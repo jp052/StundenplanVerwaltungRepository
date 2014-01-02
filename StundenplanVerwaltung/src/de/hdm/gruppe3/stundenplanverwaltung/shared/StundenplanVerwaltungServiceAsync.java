@@ -37,7 +37,7 @@ public interface StundenplanVerwaltungServiceAsync {
 	void anlegenRaum(String Bezeichnung, int Kapazitaet,
 			AsyncCallback<Raum> callback);
 
-	void anlegenSemesterverband(String semesterhalbjahr, int anzahlStudierende,
+	void anlegenSemesterverband(int semesterhalbjahr, int anzahlStudierende,
 			int jahrgang, AsyncCallback<Semesterverband> callback);
 
 	void anlegenZeitslot(String wochentag, AsyncCallback<Zeitslot> callback);
@@ -94,8 +94,7 @@ public interface StundenplanVerwaltungServiceAsync {
 
 	void modifizierenRaum(Raum r, AsyncCallback<Raum> callback);
 
-	void modifizierenSemesterverband(String semesterhalbjahr,
-			int anzahlStudierende, int jahrgang,
+	void modifizierenSemesterverband(Semesterverband semeserverband,
 			AsyncCallback<Semesterverband> callback);
 
 	void modifizierenZeitslot(String wochentag, AsyncCallback<Zeitslot> callback);
