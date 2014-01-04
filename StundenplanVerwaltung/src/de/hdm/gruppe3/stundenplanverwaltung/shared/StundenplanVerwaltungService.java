@@ -49,7 +49,8 @@ public interface StundenplanVerwaltungService extends RemoteService {
 
 	public Raum getRaumbyNummer (int nr);
 
-	public Lehrveranstaltung anlegenLehrveranstaltung (String Bezeichnung, int Semester, int Umfang);
+	Lehrveranstaltung anlegenLehrveranstaltung(String Bezeichnung,
+			int Semester, int Umfang, int dozentId);
 
 	//public Lehrveranstaltung modifizierenLehrveranstaltung (Lehrveranstaltung lv);
 
@@ -81,8 +82,7 @@ public interface StundenplanVerwaltungService extends RemoteService {
 
 	Vector<Raum> getAllRaeume();
 
-	Lehrveranstaltung modifizierenLehrveranstaltung(String bezeichnung,
-			int semester, int umfang);
+	Lehrveranstaltung modifizierenLehrveranstaltung(Lehrveranstaltung lv);
 
 	Dozent getDozentByName(Dozent name);
 

@@ -12,13 +12,13 @@ public class Lehrveranstaltung extends BusinessObject {
 	private static final long serialVersionUID = 1L;
 
 	private String bezeichnung;
-	private double umfang;
+	private int umfang;
 	private int semester;
 	private Dozent dozent;
 	private Vector<LVDurchfuehrung> durchfuehungen = new Vector<LVDurchfuehrung>();
 
 	// Konstruktor
-	public Lehrveranstaltung(String bezeichnung, double umfang, int semester,
+	public Lehrveranstaltung(String bezeichnung, int umfang, int semester,
 			Dozent dozent, Vector<LVDurchfuehrung> durchfuehungen) {
 		this.bezeichnung = bezeichnung;
 		this.umfang = umfang;
@@ -40,11 +40,11 @@ public class Lehrveranstaltung extends BusinessObject {
 		this.bezeichnung = bezeichnung;
 	}
 
-	public double getUmfang() {
+	public int getUmfang() {
 		return umfang;
 	}
 
-	public void setUmfang(double umfang) {
+	public void setUmfang(int umfang) {
 		this.umfang = umfang;
 	}
 

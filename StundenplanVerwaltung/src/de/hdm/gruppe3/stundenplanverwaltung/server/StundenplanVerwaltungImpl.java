@@ -167,22 +167,23 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements S
 
 	//Methoden Lehrveranstaltung
 	@Override
-	public Lehrveranstaltung anlegenLehrveranstaltung (String bezeichnung, int semester, int umfang){ //Kleinschreibung Diagramm übernehmen
-
+	public Lehrveranstaltung anlegenLehrveranstaltung (String bezeichnung, int semester, int umfang, int dozentId){ //Kleinschreibung Diagramm übernehmen
+		
+		//Erst Dozent mit der Id befüllen damit er der Lehrveranstaltung hinzugefügt werden kann
+		Dozent d = new Dozent();
+		d.setId(dozentId);
+		
 		Lehrveranstaltung l = new Lehrveranstaltung ();
 		l.setBezeichnung (bezeichnung);
 		l.setSemester (semester);
 		l.setUmfang (umfang);
+		l.setDozent(d);
 		return lvMapper.anlegen(l);
 		}
 
 	@Override
-	public Lehrveranstaltung modifizierenLehrveranstaltung (String bezeichnung, int semester, int umfang){ //Diagramm anpassen
+	public Lehrveranstaltung modifizierenLehrveranstaltung (Lehrveranstaltung l){ //Diagramm anpassen
 
-		Lehrveranstaltung l = new Lehrveranstaltung ();
-		l.setBezeichnung (bezeichnung);
-		l.setSemester (semester);
-		l.setUmfang (umfang);
 		return lvMapper.modifizieren(l);
 		}
 

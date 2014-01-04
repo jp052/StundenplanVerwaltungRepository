@@ -75,8 +75,10 @@ public class LehrveranstaltungMapper {
 //			        stmt = con.createStatement();
 
 			        // Jetzt erst erfolgt die tatsächliche Einfügeoperation
-			        stmt.executeUpdate("INSERT INTO Lehrveranstaltung (EDVNr, Bezeichnung, Umfang, Semester) " + "VALUES ( "
-			        	+ "NULL,'" + lv.getBezeichnung() + "','" + lv.getUmfang() +"','" +lv.getSemester()+"')");
+			      String sql = "INSERT INTO Lehrveranstaltung (LVNr, Bezeichnung, Umfang, Semester, PersonalNr) " + "VALUES ( "
+				        	+ "NULL," + "\"" + lv.getBezeichnung() + "\"," + lv.getUmfang() + "," + lv.getSemester() + "," + lv.getDozent().getId() +")";
+			      
+			      stmt.executeUpdate(sql);
 			      //}
 			    }
 			    catch (SQLException e2) {
@@ -101,8 +103,10 @@ public class LehrveranstaltungMapper {
 
 		    try {
 		      Statement stmt = con.createStatement();
+		      //UPDATE Lehrveranstaltung SET Bezeichnung="Software-t" , Umfang="12"  , Semester="4" , PersonalNr=2 WHERE LVNr=1
+		      String sql = "UPDATE Lehrveranstaltung " + "SET Bezeichnung=\"" + lv.getBezeichnung() + "\", Umfang=" + lv.getUmfang() +  ", Semester=" + lv.getSemester() + ", PersonalNr=" + lv.getDozent().getId() + " WHERE LVNr=" + lv.getId();
 
-		      stmt.executeUpdate("UPDATE Lehrveranstaltung " + "SET Bezeichnung=\"" + lv.getBezeichnung() + "\" SET Umfang=\"" + lv.getUmfang() + "\" "+ "SET Semester=\"" + lv.getSemester() + "WHERE LVNr=" + lv.getId());
+		      stmt.executeUpdate(sql);
 
 		    }
 		    catch (SQLException e2) {
@@ -163,17 +167,18 @@ public class LehrveranstaltungMapper {
 		}
 	  
 
-		public Lehrveranstaltung findeId(int i){
+		public Lehrveranstaltung findeId(int lvId){
 		    // DB-Verbindung holen
 		    Connection con = DBVerbindung.connection();
 
 		    try {
 		      // Leeres SQL-Statement (JDBC) anlegen
 		      Statement stmt = con.createStatement();
+		  //    Select * From Lehrveranstaltung Inner Join Dozent On Lehrveranstaltung.PersonalNr=Dozent.PersonalNr Where LVNr=1
 
 		      // Statement ausfüllen und als Query an die DB schicken
-		      ResultSet rs = stmt.executeQuery("SELECT LVNr, Bezeichnung, Umfang, Semester FROM Lehrveranstaltung "
-		          + "WHERE LVNr=" + i + " ORDER BY Bezeichnung");
+		      ResultSet rs = stmt.executeQuery("SELECT * FROM Lehrveranstaltung INNER JOIN Dozent On Lehrveranstaltung.PersonalNr=Dozent.PersonalNr"
+		          + " WHERE LVNr=" + lvId);
 
 		      /*
 		       * Da lv Primärschlüssel ist, kann lvx. nur ein Tupel zurückgegeben
@@ -184,8 +189,14 @@ public class LehrveranstaltungMapper {
 		    	Lehrveranstaltung lv = new Lehrveranstaltung();
 		        lv.setId(rs.getInt("LVNr"));
 		        lv.setBezeichnung(rs.getString("Bezeichnung"));
-		        lv.setUmfang(rs.getDouble("Umfang"));
+		        lv.setUmfang(rs.getInt("Umfang"));
 		        lv.setSemester(rs.getInt("Semester"));
+		        
+		        Dozent d = new Dozent();
+		        d.setId(rs.getInt("Dozent.PersonalNr"));
+		        d.setVorname(rs.getString("Dozent.Vorname"));
+		        d.setNachname(rs.getString("Dozent.Nachname"));
+		        lv.setDozent(d);
 		        
 		        return lv;
 		      }

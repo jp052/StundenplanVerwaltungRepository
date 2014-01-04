@@ -51,5 +51,9 @@ public class Dozent extends BusinessObject {
 	public void setVeranstaltungen(Vector<Lehrveranstaltung> veranstaltungen) {
 		this.veranstaltungen = veranstaltungen;
 	}
+	
+	public String toString(){
+		return vorname + " " + nachname;
+	}
 
 }
