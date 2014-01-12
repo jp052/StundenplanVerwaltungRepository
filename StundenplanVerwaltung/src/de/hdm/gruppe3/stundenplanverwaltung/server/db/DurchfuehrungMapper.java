@@ -4,165 +4,188 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Vector;
 
-import de.hdm.gruppe3.stundenplanverwaltung.server.db.*;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.*;
 
-
 public class DurchfuehrungMapper {
-	 /** test
-	    * Die Klasse DurchfuehrungMapper wird nur eindfl instantiiert. Man spricht hierbei
-	    * von einem sogenannten <b>Singleton</b>.
-	    * <p>
-	    * Diese Variable ist durch den Bezeichner <code>static</code> nur eindfl fÃ¼r
-	    * sÃ¤mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
-	    * einzige Instanz dieser Klasse.
-	    * 
-	    * @see dfMapper()
-	    */
-	   private static DurchfuehrungMapper dfMapper = null;
 
-	   /**
-	    * GeschÃ¼tzter Konstruktor - verhindert die MÃ¶glichkeit, mit <code>new</code>
-	    * neue Instanzen dieser Klasse zu erzeugen.
-	    */
-	   protected DurchfuehrungMapper() {
-	   }
+	private static DurchfuehrungMapper dfMapper = null;
 
-	   /**
-	    * Diese statische Methode kann aufgrufen werden durch
-	    * <code>DurchfuehrungMapper.dfMapper()</code>. Sie stellt die
-	    * Singleton-Eigenschaft sicher, indem Sie dafÃ¼r sorgt, dass nur eine einzige
-	    * Instanz von <code>DurchfuehrungMapper</code> existiert.
-	    * <p>
-	    * 
-	    * <b>Fazit:</b> DurchfuehrungMapper sollte nicht mittels <code>new</code>
-	    * instantiiert werden, sondern stets durch Aufruf dieser statischen Methode.
-	    * 
-	    * @return DAS <code>DurchfuehrungMapper</code>-Objekt.
-	    * @see dfMapper
-	    */
-	   public static DurchfuehrungMapper dfMapper() {
-	     if (dfMapper == null) {
-	       dfMapper = new DurchfuehrungMapper();
-	     }
+	/**
+	 * Protected Verhindert, dass mit new ein neuer Mapper erstellt werden kann.
+	 */
+	protected DurchfuehrungMapper() {
+	}
 
-	     return dfMapper;
-	   }
-	   
-	   //LVDurchfuehrung df, Raum r, Semesterverband sv, Lehrveranstaltung lv, Zeitslot z
-	   public LVDurchfuehrung anlegen(LVDurchfuehrung lvd){
-	    Connection con = DBVerbindung.connection();
+	/**
+	 * Diese statische Methode kann aufgrufen werden durch
+	 * <code>DurchfuehrungMapper.dfMapper()</code>. Sie stellt die
+	 * Singleton-Eigenschaft sicher, indem Sie dafÃ¼r sorgt, dass nur eine
+	 * einzige Instanz von <code>DurchfuehrungMapper</code> existiert.
+	 * <p>
+	 * 
+	 * <b>Fazit:</b> DurchfuehrungMapper sollte nicht mittels <code>new</code>
+	 * instantiiert werden, sondern stets durch Aufruf dieser statischen
+	 * Methode.
+	 * 
+	 * @return DAS <code>DurchfuehrungMapper</code>-Objekt.
+	 * @see dfMapper
+	 */
+	public static DurchfuehrungMapper dfMapper() {
+		if (dfMapper == null) {
+			dfMapper = new DurchfuehrungMapper();
+		}
 
-	       try {
-	         Statement stmt = con.createStatement();
+		return dfMapper;
+	}
 
-//	         /*
-//	          * ZunÃ¤chst schauen wir nach, welches der momentan hÃ¶chste
-//	          * PrimÃ¤rschlÃ¼sselwert ist.
-//	          */
-//	         ResultSet rs = stmt.executeQuery("SELECT MAX(df) AS dfxdf "
-//	             + "FROM df ");
-	 //
-//	         // Wenn wir etwas zurÃ¼ckerhalten, kann dies nur einzeilig sein
-//	         if (rs.next()) {
-//	           /*
-//	            * a erhÃ¤lt den bisher dfxdfozentlen, nun um 1 inkrementierten
-//	            * PrimÃ¤rschlÃ¼ssel.
-//	            */
-//	           m.setID(rs.getInt("dfxdf") + 1);
-	 //
-//	           stmt = con.createStatement();
+	/**
+	 * Anlegen der LVDurchführung
+	 * 
+	 * @param lvd
+	 * @return LVDurchfuehrung
+	 */
+	public LVDurchfuehrung anlegen(int svId, int raumId, int lvId, Zeitslot z) {
+		Connection con = DBVerbindung.connection();
+		
+		LVDurchfuehrung lvd = new LVDurchfuehrung();
+		
+		try {
+			Statement stmt = con.createStatement();
+			
+			//TODO Zeitslot zuerst anlgend und die Id auslesen
+			String sql = "INSERT INTO Durchfuehrung (ZeitNr, SVNr, RaumNr, LVNr) "+ "VALUES (" + 1 + "," + svId+ "," + raumId + "," + lvId + ")";
 
-	           // Jetzt erst erfolgt die tatsÃ¤chliche EinfÃ¼geoperation
-	           stmt.executeUpdate("INSERT INTO Durchfuehrung (LVDNr, ZeitNr, SVNr, RaumNr, LVNr) " + "VALUES ( "
-	            + "NULL,'" + lvd.getZIds() +"','" +lvd.getSemesterverband()+ "','" + lvd.getRaum()+"','" +lvd.getLvId()+"')");
-	         //}
-	       }
-	       catch (SQLException e2) {
-	         e2.printStackTrace();
-	       } 
+			// Ausführen des SQL Statement
+			stmt.executeUpdate(sql);
+			
+			
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+		}
+		
+		//TODO Lehrveranstaltungs Objekt mit Daten füllen!
+		return lvd;
 
-	       /*
-	        * RÃ¼ckgabe, des evtl. korrigierten Accounts.
-	        * 
-	        * HINWEIS: Da in Java nur Referenzen auf Objekte und keine physischen
-	        * Objekte Ã¼bergeben werden, wÃ¤re die Anpassung des s-Objekts auch
-	        * ohne diese explizite RÃ¼ckgabe auï¿½erhalb dieser Methode sichtbar. Die
-	        * explizite RÃ¼ckgabe von a ist eher ein Stilmittel, um zu signalisieren,
-	        * dass sich das Objekt evtl. im Laufe der Methode verÃ¤ndert hat.
-	        */
-	       return lvd;
-	   
-	  }
-	  
-	  public LVDurchfuehrung modifizieren(LVDurchfuehrung df){
-	      Connection con = DBVerbindung.connection();
+	}
 
-	      try {
-	        Statement stmt = con.createStatement();
+	public LVDurchfuehrung modifizieren(int lvdNr, int svNr, int raumNr, int lvNr, int zeitNr) {
+		// DB-Verbindung holen
+		Connection con = DBVerbindung.connection();
+		
+		LVDurchfuehrung lvd = new LVDurchfuehrung();
 
-	        stmt.executeUpdate("UPDATE df " + "\" SET RaumNr=\"" + df.getRaum() + "\" "+ "SET ZeitNr=\"" + df.getZIds() + "\" "+"SET SVNr=\"" + df.getSemesterverband() + "\" " + "SET LVNr=\"" + df.getLvId() + "\" "+ "WHERE df=" + df.getId());
+		try {
+			Statement stmt = con.createStatement();
 
-	      }
-	      catch (SQLException e2) {
-	        e2.printStackTrace();
-	      } 
+			// Die Query die ausgeführt werden soll.
+			String sql = "UPDATE LVDurchfuerhung SET " +				
+					"ZeitNr="	+ zeitNr + 
+					", SVNr=" + svNr + 
+					", RaumNr="	+ raumNr + 
+					", LVNr=" + lvNr + 
+					" WHERE LVDNr="	+ lvdNr;
 
-	      // Um Analogie zu insert(Durchfuehrung a) zu wahren, geben wir a zurÃ¼ck
-	      return df;
-	  }
-	  
-	  public LVDurchfuehrung loeschen(LVDurchfuehrung df){
-	      Connection con = DBVerbindung.connection();
+			// Query ausführen
+			stmt.executeUpdate(sql);
 
-	      try {
-	        Statement stmt = con.createStatement();
+		} catch (SQLException e2) {
+			// Den Fehler in der Kommandozeile Anzeigen.
+			e2.printStackTrace();
+		}
 
-	        stmt.executeUpdate("DELETE FROM df " + "WHERE df=" + df.getId());
+		// Rückgabe des Objektes
+		//TODO Lehrveranstaltungs Objekt mit Daten füllen!
+		return lvd;
+	}
 
-	      }
-	      catch (SQLException e2) {
-	        e2.printStackTrace();
-	      }
-		return df; 
-	  }
-	  //, Raum r, Semesterverband sv, Lehrveranstaltung lv, Zeitslot z
-	  public LVDurchfuehrung findeId(LVDurchfuehrung d){
-	      // DB-Verbindung holen
-	      Connection con = DBVerbindung.connection();
+	public LVDurchfuehrung loeschen(LVDurchfuehrung lvd) {
+		// DB-Verbindung holen
+		Connection con = DBVerbindung.connection();
 
-	      try {
-	        // Leeres SQL-Statement (JDBC) anlegen
-	        Statement stmt = con.createStatement();
+		try {
+			Statement stmt = con.createStatement();
 
-	        // Statement ausfÃ¼llen und als Query an die DB schicken
-	        ResultSet rs = stmt.executeQuery("SELECT LVDNr, ZeitNr, SVNr, RaumNr, EDVNr FROM df "
-	            + "WHERE LVDNr=" + d.getId() + " ORDER BY LVDNr");
+			// Die SQL Query die ausgeführt werden soll.
+			String sql = "DELETE FROM LVDurchfuerhung " + "WHERE LVDNr="
+					+ lvd.getId();
 
-	        /*
-	         * Da df PrimÃ¤rschlÃ¼ssel ist, kann dfx. nur ein Tupel zurÃ¼ckgegeben
-	         * werden. PrÃ¼fe, ob ein Ergebnis vorliegt.
-	         */
-	        if (rs.next()) {
-	          // Ergebnis-Tupel in Objekt umwandeln
-	       LVDurchfuehrung df = new LVDurchfuehrung();
-	          df.setId(rs.getInt("LVDNr"));
-	          df.setRaum(rs.getInt("RaumNr"));
-	          df.setSemesterverband(rs.getInt("SVNr"));
-	          df.setLV(rs.getInt("LDVNr"));
-	          df.setZIds(rs.getInt("ZeitNr"));
+			// Die SQL Query ausführen.
+			stmt.executeUpdate(sql);
 
-	          return df;
-	        }
-	      }
-	      catch (SQLException e2) {
-	        e2.printStackTrace();
-	        return null;
-	      } 
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+		}
+		return lvd;
+	}
 
-	      return null;
-	  }
-   
+	public LVDurchfuehrung findeId(int lvdNr) {
+		// DB-Verbindung holen
+		Connection con = DBVerbindung.connection();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			// Die SQL Query die ausgeführt werden soll.
+			String sql = "SELECT * FROM Durchfuehrung WHERE LVDNr=" + lvdNr
+					+ " ORDER BY LVDNr";
+
+			// Die SQL Query ausführen.
+			ResultSet rs = stmt.executeQuery(sql);
+
+			// Nur ausführen wenn das Result nicht null ist
+			if (rs.next()) {
+				// Benögtigtes Objekte aus dem ResultSet erstellen.
+
+				// RaumMapper um alle Attribute aus der Datebank zu lesen, ind
+				// dem ResultSet ist nur die Id vorhanden.
+				// Raum Objekt erstellen indem die Id and den Mapper übergeben
+				// wird
+				RaumMapper rMapper = RaumMapper.raumMapper();
+				Raum raum = new Raum();
+				raum = rMapper.findeId(rs.getInt("RaumNr"));
+
+				// SemesterverbandMapper um alle Attribute aus der Datebank zu
+				// lesen, ind dem ResultSet ist nur die Id vorhanden.
+				// Semesterverband Objekt erstellen indem die Id and den Mapper
+				// übergeben wird
+				SemesterverbandMapper svMapper = SemesterverbandMapper
+						.svMapper();
+				Semesterverband sv = new Semesterverband();
+				sv = svMapper.findeId(rs.getInt("SVNr"));
+
+				// LehrveranstaltungMapper um alle Attribute aus der Datebank zu
+				// lesen, ind dem ResultSet ist nur die Id vorhanden.
+				// Lehrveranstaltung Objekt erstellen indem die Id and den
+				// Mapper übergeben wird.
+				LehrveranstaltungMapper lvMapper = LehrveranstaltungMapper
+						.lvMapper();
+				Lehrveranstaltung lv = new Lehrveranstaltung();
+				lv = lvMapper.findeId(rs.getInt("LVId"));
+
+				// LehrveranstaltungMapper um alle Attribute aus der Datebank zu
+				// lesen, ind dem ResultSet ist nur die Id vorhanden.
+				// Lehrveranstaltung Objekt erstellen indem die Id and den
+				// Mapper übergeben wird.
+				ZeitslotMapper zMapper = ZeitslotMapper.zeitslotMapper();
+				Zeitslot z = new Zeitslot();
+				z = zMapper.findeId(rs.getInt("ZeitNr"));
+
+				// Jetzt das Durchführungs Objekt mit allen Objekten füllen
+				LVDurchfuehrung lvd = new LVDurchfuehrung();
+				lvd.setId(rs.getInt("LVDNr"));
+				lvd.setId(rs.getInt("LVDNr"));
+				lvd.setRaum(raum);
+				lvd.setSemesterverband(sv);
+				lvd.setLehrveranstaltung(lv);
+				lvd.setZeitslot(z);
+			}
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+			return null;
+		}
+
+		return null;
+	}
+
 }

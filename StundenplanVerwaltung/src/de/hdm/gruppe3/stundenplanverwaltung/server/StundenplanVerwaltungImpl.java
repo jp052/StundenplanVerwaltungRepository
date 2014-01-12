@@ -217,13 +217,12 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 
 	// Methoden Dozent
 	@Override
-	public Dozent anlegenDozent(String vorname, String nachname) { // Kleinschreibung
-																	// Diagramm
-																	// übernehmen
 
-		Dozent d = new Dozent();
-		d.setVorname(vorname);
-		d.setNachname(nachname);
+	public Dozent anlegenDozent (String vorname, String nachname){ //Kleinschreibung Diagramm übernehmen
+		Dozent d = new Dozent ();
+		d.setVorname (vorname);
+		d.setNachname (nachname);
+
 		return dMapper.anlegen(d);
 	}
 
@@ -245,35 +244,24 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public Dozent getDozentByName(Dozent name) {
 
-		return dMapper.findeName(name);
-	}
+	public Dozent getDozentByName (Dozent name){
 
-	// Methoden LVDurchführung
+		return dMapper.findeName (name);
+		}
+	
+	//Methoden LVDurchführung
 	@Override
-	public LVDurchfuehrung anlegenDurchfuehrung(int svId, int raumId, int lvId,
-			int zIds) {
+	public LVDurchfuehrung anlegenDurchfuehrung (int svNr, int raumNr, int lvNr, Zeitslot z){
 
-		LVDurchfuehrung lvd = new LVDurchfuehrung();
-		lvd.setId(svId);
-		lvd.setRaum(raumId);
-		lvd.setLV(lvId);
-		lvd.setZIds(zIds);
-		return dfMapper.anlegen(lvd);
-	}
+		return dfMapper.anlegen(svNr, raumNr, lvNr, z);
+		}
 
 	@Override
-	public LVDurchfuehrung modifizierenDurchfuehrung(int svId, int raumId,
-			int lvId, int zIds) {
-
-		LVDurchfuehrung lvd = new LVDurchfuehrung();
-		lvd.setId(svId);
-		lvd.setRaum(raumId);
-		lvd.setLV(lvId);
-		lvd.setZIds(zIds);
-		return dfMapper.modifizieren(lvd);
-	}
+	public LVDurchfuehrung modifizierenDurchfuehrung (int lvdNr, int svNr, int raumNr, int lvNr, int zeitNr){
+		return dfMapper.modifizieren(lvdNr, svNr, raumNr, lvNr, zeitNr);
+		}
+		
 
 	@Override
 	public LVDurchfuehrung loeschenDurchfuehrung(LVDurchfuehrung d) { // Diagramm
@@ -283,10 +271,12 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public LVDurchfuehrung getDurchfuehrungByNummer(LVDurchfuehrung nr) {
 
-		return dfMapper.findeId(nr);
-	}
+	public LVDurchfuehrung getDurchfuehrungByNummer (int lvdNr){
+
+		return dfMapper.findeId(lvdNr);
+		}
+
 
 	@Override
 	public Semesterverband getSemesterverbandBySemesterHalbjahr(

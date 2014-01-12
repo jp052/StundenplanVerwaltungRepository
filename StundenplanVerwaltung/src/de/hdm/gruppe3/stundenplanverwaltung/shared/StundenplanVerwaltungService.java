@@ -72,11 +72,13 @@ public interface StundenplanVerwaltungService extends RemoteService {
 
 	// public Dozent getDozentByName (String name);
 
-	public LVDurchfuehrung anlegenDurchfuehrung(int svId, int raumId, int lvId,
-			int zIds);
 
-	public LVDurchfuehrung modifizierenDurchfuehrung(int svId, int raumId,
-			int lvId, int zIds);
+	LVDurchfuehrung anlegenDurchfuehrung(int svId, int raumId, int lvId,
+			Zeitslot zeitslot);
+
+	LVDurchfuehrung modifizierenDurchfuehrung(int lvdNr, int svNr, int raumNr,
+			int lvNr, int zeitNr);
+
 
 	LVDurchfuehrung loeschenDurchfuehrung(LVDurchfuehrung d);
 
@@ -90,7 +92,9 @@ public interface StundenplanVerwaltungService extends RemoteService {
 
 	Dozent getDozentByName(Dozent name);
 
-	LVDurchfuehrung getDurchfuehrungByNummer(LVDurchfuehrung nr);
+
+	LVDurchfuehrung getDurchfuehrungByNummer(int lvdNr);
+
 
 	Vector<Dozent> getAllDozenten();
 
@@ -105,6 +109,7 @@ public interface StundenplanVerwaltungService extends RemoteService {
 	String test(String string);
 
 	Raum modifizierenRaum(Raum r);
+
 	
 	Vector<Lehrveranstaltung> getAllLV();
 
