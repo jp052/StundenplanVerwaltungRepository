@@ -13,7 +13,7 @@ public class Zeitslot extends BusinessObject {
 	private static final long serialVersionUID = 1L;
 
 	private int anfangszeit;
-	private int dauer;
+	private int endzeit;
 	private String Wochentag;
 	private Vector<LVDurchfuehrung> durchfuehrungen = new Vector<LVDurchfuehrung>();
 
@@ -21,7 +21,7 @@ public class Zeitslot extends BusinessObject {
 	public Zeitslot(int anfangszeit, int dauer, String wochentag,
 			Vector<LVDurchfuehrung> durchfuehrungen) {
 		this.anfangszeit = anfangszeit;
-		this.dauer = dauer;
+		this.endzeit = dauer;
 		Wochentag = wochentag;
 		this.durchfuehrungen = durchfuehrungen;
 	}
@@ -37,12 +37,12 @@ public class Zeitslot extends BusinessObject {
 		this.anfangszeit = anfangszeit;
 	}
 
-	public int getDauer() {
-		return dauer;
+	public int getEndzeit() {
+		return endzeit;
 	}
 
-	public void setDauer(int dauer) {
-		this.dauer = dauer;
+	public void setEndzeit(int dauer) {
+		this.endzeit = dauer;
 	}
 
 	public String getWochentag() {

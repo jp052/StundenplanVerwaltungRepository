@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.gruppe3.stundenplanverwaltung.client.gui.DozentForm;
+import de.hdm.gruppe3.stundenplanverwaltung.client.gui.LVDurchfuehrungForm;
 import de.hdm.gruppe3.stundenplanverwaltung.client.gui.LehrveranstaltungForm;
 import de.hdm.gruppe3.stundenplanverwaltung.client.gui.RaumForm;
 import de.hdm.gruppe3.stundenplanverwaltung.client.gui.SemesterverbandForm;
@@ -83,6 +84,23 @@ public class TestGUIForms {
 				LehrveranstaltungForm lf = new LehrveranstaltungForm();
 				lf.setSelected(result);
 				mainPanel.add(lf);
+				
+			}
+		});
+		
+		stdplnVerwService.getDurchfuehrungByNummer(1,  new AsyncCallback<LVDurchfuehrung>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(LVDurchfuehrung result) {
+				LVDurchfuehrungForm lvdf = new LVDurchfuehrungForm();
+				//lvdf.setSelected(result);
+				mainPanel.add(lvdf);
 				
 			}
 		});

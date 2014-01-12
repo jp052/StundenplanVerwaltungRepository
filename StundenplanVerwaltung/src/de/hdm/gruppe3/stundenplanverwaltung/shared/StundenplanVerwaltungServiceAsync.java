@@ -28,7 +28,7 @@ public interface StundenplanVerwaltungServiceAsync {
 	void anlegenDozent(String Vorname, String Nachname,
 			AsyncCallback<Dozent> callback);
 
-	void anlegenDurchfuehrung(int svId, int raumId, int lvId, int zIds,
+	void anlegenDurchfuehrung(int svId, int raumId, int lvId, Zeitslot zeitslot,
 			AsyncCallback<LVDurchfuehrung> callback);
 
 	void anlegenLehrveranstaltung(String Bezeichnung, int Semester, int Umfang, int dozentId,
@@ -48,7 +48,7 @@ public interface StundenplanVerwaltungServiceAsync {
 
 	void getDozentByNummer(int nr, AsyncCallback<Dozent> callback);
 
-	void getDurchfuehrungByNummer(LVDurchfuehrung nr,
+	void getDurchfuehrungByNummer(int lvdNr,
 			AsyncCallback<LVDurchfuehrung> callback);
 
 	void getLehrveranstaltungByBezeichnung(String bez,
@@ -86,8 +86,8 @@ public interface StundenplanVerwaltungServiceAsync {
 
 	void modifizierenDozent(Dozent d, AsyncCallback<Dozent> callback);
 
-	void modifizierenDurchfuehrung(int svId, int raumId, int lvId, int zIds,
-			AsyncCallback<LVDurchfuehrung> callback);
+	void modifizierenDurchfuehrung(int lvdNr, int svNr, int raumNr, int lvNr,
+			int zeitNr, AsyncCallback<LVDurchfuehrung> callback);
 
 	void modifizierenLehrveranstaltung(Lehrveranstaltung lv, AsyncCallback<Lehrveranstaltung> callback);
 

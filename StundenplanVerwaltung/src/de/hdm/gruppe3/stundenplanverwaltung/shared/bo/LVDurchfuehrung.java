@@ -12,23 +12,18 @@ public class LVDurchfuehrung extends BusinessObject {
 	private static final long serialVersionUID = 1L;
 
 	private Lehrveranstaltung veranstaltung;
-	private Vector<Zeitslot> zeitslots = new Vector<Zeitslot>();
+	private Zeitslot zeitslot;
 	private Raum raum;
-	private Semesterverband sv;
-	
-	private int r;
-	private int semesterverband;
-	private int lvId;
-	private int zIds;
+	private Semesterverband semesterverband;
 
 	// Konstruktor
 	public LVDurchfuehrung(Lehrveranstaltung veranstaltung,
-			Vector<Zeitslot> zeitslots, Raum raum,
+			Zeitslot zeitslot, Raum raum,
 			Semesterverband semesterverband) {
 		this.veranstaltung = veranstaltung;
-		this.zeitslots = zeitslots;
+		this.zeitslot = zeitslot;
 		this.raum = raum;
-		this.sv = sv;
+		this.semesterverband = semesterverband;
 	}
 	
 	
@@ -37,56 +32,36 @@ public class LVDurchfuehrung extends BusinessObject {
 
 
 	// Getter und Setter
-	public Lehrveranstaltung getVeranstaltung() {
+	public Lehrveranstaltung getLehrveranstaltung() {
 		return veranstaltung;
 	}
 
-	public void setVeranstaltung(Lehrveranstaltung veranstaltung) {
+	public void setLehrveranstaltung(Lehrveranstaltung veranstaltung) {
 		this.veranstaltung = veranstaltung;
 	}
-	
 
-	public int getLvId() {
-		return lvId;
+	public Zeitslot getZeitslot() {
+		return zeitslot;
 	}
 
-
-	public void setLV(int lvId) {
-		this.lvId = lvId;
+	public void setZeitslot(Zeitslot zeitslot) {
+		this.zeitslot = zeitslot;
 	}
 
-	public Vector<Zeitslot> getZeitslots() {
-		return zeitslots;
+	public Raum getRaum() {
+		return raum;
 	}
 
-	public void setZeitslots(Vector<Zeitslot> zeitslots) {
-		this.zeitslots = zeitslots;
+	public void setRaum(Raum raum) {
+		this.raum = raum;
 	}
 
-	public int getRaum() {
-		return r;
-	}
-
-	public void setRaum(int raumId) {
-		r = raumId;
-	}
-
-	public int getSemesterverband() {
+	public Semesterverband getSemesterverband() {
 		return semesterverband;
 	}
 
-	public void setSemesterverband(int semesterverband) {
+	public void setSemesterverband(Semesterverband semesterverband) {
 		this.semesterverband = semesterverband;
-	}
-
-
-	public void setZIds(int zIds) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public int getZIds(){
-		return zIds;
 	}
 
 }

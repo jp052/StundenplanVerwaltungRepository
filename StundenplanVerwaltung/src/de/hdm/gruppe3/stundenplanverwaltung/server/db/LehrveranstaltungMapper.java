@@ -168,30 +168,28 @@ public class LehrveranstaltungMapper {
 	  
 
 		public Lehrveranstaltung findeId(int lvId){
-		    // DB-Verbindung holen
+		    //DB-Verbindung holen
 		    Connection con = DBVerbindung.connection();
 
 		    try {
-		      // Leeres SQL-Statement (JDBC) anlegen
 		      Statement stmt = con.createStatement();
-		  //    Select * From Lehrveranstaltung Inner Join Dozent On Lehrveranstaltung.PersonalNr=Dozent.PersonalNr Where LVNr=1
+		      
+		      //Die Query die ausgef¸hrt werden soll
+		      //Besser w‰re kein Join zu machen, sondern den DozentMapper zu verwenden.
+		      String sql = "SELECT * FROM Lehrveranstaltung INNER JOIN Dozent On Lehrveranstaltung.PersonalNr=Dozent.PersonalNr" + " WHERE LVNr=" + lvId;
 
-		      // Statement ausf√ºllen und als Query an die DB schicken
-		      ResultSet rs = stmt.executeQuery("SELECT * FROM Lehrveranstaltung INNER JOIN Dozent On Lehrveranstaltung.PersonalNr=Dozent.PersonalNr"
-		          + " WHERE LVNr=" + lvId);
+		      //Query ausf¸hren
+		      ResultSet rs = stmt.executeQuery(sql);
 
-		      /*
-		       * Da lv Prim√§rschl√ºssel ist, kann lvx. nur ein Tupel zur√ºckgegeben
-		       * werden. Pr√ºfe, ob ein Ergebnis vorliegt.
-		       */
 		      if (rs.next()) {
-		        // Ergebnis-Tupel in Objekt umwandeln
+		        //Lehrveranstaltungsobjekt aus ResultSet erstellen
 		    	Lehrveranstaltung lv = new Lehrveranstaltung();
 		        lv.setId(rs.getInt("LVNr"));
 		        lv.setBezeichnung(rs.getString("Bezeichnung"));
 		        lv.setUmfang(rs.getInt("Umfang"));
 		        lv.setSemester(rs.getInt("Semester"));
 		        
+		      //Dozent aus ResultSet erstellen
 		        Dozent d = new Dozent();
 		        d.setId(rs.getInt("Dozent.PersonalNr"));
 		        d.setVorname(rs.getString("Dozent.Vorname"));
