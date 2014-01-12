@@ -92,6 +92,7 @@ public class LehrveranstaltungMapper {
 			     * Objekte übergeben werden, wäre die Anpassung des Lehrveranstaltung-Objekts auch
 			     * ohne diese explizite Rückgabe au�erhalb dieser Methode sichtbar. Die
 			     * explizite Rückgabe von a ist eher ein Stilmittel, um zu signalisieren,
+		 * ist eher ein Stilmittel, um zu signalisieren, dass sich das Objekt
 			     * dass sich das Objekt evtl. im Laufe der Methode verändert hat.
 			     */
 			    return lv;
@@ -103,7 +104,8 @@ public class LehrveranstaltungMapper {
 
 		    try {
 		      Statement stmt = con.createStatement();
-		      //UPDATE Lehrveranstaltung SET Bezeichnung="Software-t" , Umfang="12"  , Semester="4" , PersonalNr=2 WHERE LVNr=1
+			// UPDATE Lehrveranstaltung SET Bezeichnung="Software-t" ,
+
 		      String sql = "UPDATE Lehrveranstaltung " + "SET Bezeichnung=\"" + lv.getBezeichnung() + "\", Umfang=" + lv.getUmfang() +  ", Semester=" + lv.getSemester() + ", PersonalNr=" + lv.getDozent().getId() + " WHERE LVNr=" + lv.getId();
 
 		      stmt.executeUpdate(sql);
@@ -218,21 +220,29 @@ public class LehrveranstaltungMapper {
 			    try {
 			      Statement stmt = con.createStatement();
 
-			      ResultSet rs = stmt.executeQuery("SELECT LVNr, Bezeichnung, Umfang, Semester FROM Lehrveranstaltung "
-			          + " ORDER BY LVNr");
+			ResultSet rs = stmt
+					.executeQuery("SELECT Lehrveranstaltung.LVNr, Lehrveranstaltung.Bezeichnung, Lehrveranstaltung.Umfang, Lehrveranstaltung.Semester, Dozent.nachname FROM Lehrveranstaltung INNER JOIN Dozent ON Lehrveranstaltung.personalNr = Dozent.personalNr ");
 
-			      // F¸r jeden Eintrag im Suchergebnis wird nun ein Account-Objekt erstellt.
-			      while (rs.next()) {
-			        Lehrveranstaltung d = new Lehrveranstaltung();
-			        d.setId(rs.getInt("LVNr"));
-			        d.setBezeichnung(rs.getString("Bezeichnung"));
-					d.setUmfang(rs.getInt("Umfang"));
-					d.setSemester(rs.getInt("Semester"));
+			// F�r jeden Eintrag im Suchergebnis wird nun ein Account-Objekt
+			// erstellt.
+			while (rs.next()) {
+				Lehrveranstaltung lv = new Lehrveranstaltung();
+				lv.setId(rs.getInt("Lehrveranstaltung.LVNr"));
+				lv.setBezeichnung(rs.getString("Lehrveranstaltung.Bezeichnung"));
+				lv.setUmfang(rs.getInt("Lehrveranstaltung.Umfang"));
+				lv.setSemester(rs.getInt("Lehrveranstaltung.Semester"));
+				lv.setDozentName(rs.getString("dozent.nachname"));
+				
+//				Dozent d = new Dozent();
+//				d.setId(rs.getInt("Dozent.PersonalNr"));
+//				d.setVorname(rs.getString("Dozent.Vorname"));
+//				d.setNachname(rs.getString("Dozent.Nachname"));
+//				lv.setDozent(d);
 
-			        // Hinzuf¸gen des neuen Objekts zum Ergebnisvektor
-			        result.addElement(d);
-			      }
-			    }
+				// Hinzuf¸gen des neuen Objekts zum Ergebnisvektor
+				result.addElement(lv);
+				}
+			   }
 			    catch (SQLException e2) {
 			      e2.printStackTrace();
 			    }

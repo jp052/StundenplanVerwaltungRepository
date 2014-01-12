@@ -2,10 +2,9 @@ package de.hdm.gruppe3.stundenplanverwaltung.shared.bo;
 
 import java.util.Vector;
 
-
 /**
  * @author Yasemin Karakoc, Jan Plank
- *
+ * 
  */
 public class Raum extends BusinessObject {
 

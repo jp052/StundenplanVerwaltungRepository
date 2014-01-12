@@ -15,70 +15,74 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Zeitslot;
 
 /**
  * @author Yasemin Karakoc, Jan Plank
- *
+ * 
  */
-
 
 @RemoteServiceRelativePath("stundenplanVerwaltung")
 public interface StundenplanVerwaltungService extends RemoteService {
-	
+
 	public Semesterverband anlegenSemesterverband(int semesterhalbjahr,
 			int anzahlStudierende, int jahrgang);
 
 	Semesterverband modifizierenSemesterverband(Semesterverband semeserverband);
 
-	public Semesterverband getSemesterverbandByNummer (int nr);
+	public Semesterverband getSemesterverbandByNummer(int nr);
 
-	public Semesterverband getSemesterverbandBySemesterHalbjahr (String semesterHalbjahr);
+	public Semesterverband getSemesterverbandBySemesterHalbjahr(
+			String semesterHalbjahr);
 
-	public Semesterverband loeschenSemesterverband (Semesterverband sv);
+	public Semesterverband loeschenSemesterverband(Semesterverband sv);
 
-	//public Zeitslot anlegenZeitslot (String wochentag, int anfangszeit);
+	// public Zeitslot anlegenZeitslot (String wochentag, int anfangszeit);
 
-	//public Zeitslot modifizierenZeitslot (Zeitslot z);
+	// public Zeitslot modifizierenZeitslot (Zeitslot z);
 
-	public Zeitslot loeschenZeitslot (Zeitslot z);
+	public Zeitslot loeschenZeitslot(Zeitslot z);
 
-	public Zeitslot getZeitslotByNummer (int nr);
+	public Zeitslot getZeitslotByNummer(int nr);
 
-	public Raum anlegenRaum (String Bezeichnung, int Kapazitaet);//klein schreiben !
+	public Raum anlegenRaum(String Bezeichnung, int Kapazitaet);// klein
+																// schreiben !
 
-	//public Raum modifizierenRaum (Raum r);
+	// public Raum modifizierenRaum (Raum r);
 
-	public Raum loeschenRaum (Raum r);
+	public Raum loeschenRaum(Raum r);
 
-	public Raum getRaumbyNummer (int nr);
+	public Raum getRaumbyNummer(int nr);
 
 	Lehrveranstaltung anlegenLehrveranstaltung(String Bezeichnung,
 			int Semester, int Umfang, int dozentId);
 
-	//public Lehrveranstaltung modifizierenLehrveranstaltung (Lehrveranstaltung lv);
+	// public Lehrveranstaltung modifizierenLehrveranstaltung (Lehrveranstaltung
+	// lv);
 
-	public Lehrveranstaltung loeschenLehrveranstaltung (Lehrveranstaltung lv);
+	public Lehrveranstaltung loeschenLehrveranstaltung(Lehrveranstaltung lv);
 
-	public Lehrveranstaltung getLehrveranstaltungByNummer (int nr);
+	public Lehrveranstaltung getLehrveranstaltungByNummer(int nr);
 
-	public Lehrveranstaltung getLehrveranstaltungByBezeichnung (String bez);
+	public Lehrveranstaltung getLehrveranstaltungByBezeichnung(String bez);
 
-	public Dozent anlegenDozent (String Vorname, String Nachname);
+	public Dozent anlegenDozent(String Vorname, String Nachname);
 
-	//public Dozent modifizierenDozent (Dozent d);
+	// public Dozent modifizierenDozent (Dozent d);
 
-	public Dozent loeschenDozent (Dozent d);
+	public Dozent loeschenDozent(Dozent d);
 
-	public Dozent getDozentByNummer (int nr);
+	public Dozent getDozentByNummer(int nr);
 
-	//public Dozent getDozentByName (String name);
+	// public Dozent getDozentByName (String name);
 
-	public LVDurchfuehrung anlegenDurchfuehrung (int svId, int raumId, int lvId, int zIds);
+	public LVDurchfuehrung anlegenDurchfuehrung(int svId, int raumId, int lvId,
+			int zIds);
 
-	public LVDurchfuehrung modifizierenDurchfuehrung (int svId, int raumId, int lvId, int zIds);
+	public LVDurchfuehrung modifizierenDurchfuehrung(int svId, int raumId,
+			int lvId, int zIds);
 
 	LVDurchfuehrung loeschenDurchfuehrung(LVDurchfuehrung d);
 
-	//public LVDurchfuehrung getDurchfuehrungByNummer (int nr);
+	// public LVDurchfuehrung getDurchfuehrungByNummer (int nr);
 
-	//public Raum getRaumByBezeichnung (String bez);
+	// public Raum getRaumByBezeichnung (String bez);
 
 	Vector<Raum> getAllRaeume();
 
@@ -87,7 +91,7 @@ public interface StundenplanVerwaltungService extends RemoteService {
 	Dozent getDozentByName(Dozent name);
 
 	LVDurchfuehrung getDurchfuehrungByNummer(LVDurchfuehrung nr);
-	
+
 	Vector<Dozent> getAllDozenten();
 
 	Dozent modifizierenDozent(Dozent d);
@@ -101,9 +105,7 @@ public interface StundenplanVerwaltungService extends RemoteService {
 	String test(String string);
 
 	Raum modifizierenRaum(Raum r);
-
-
-
 	
+	Vector<Lehrveranstaltung> getAllLV();
 
 }

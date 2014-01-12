@@ -15,6 +15,7 @@ public class Lehrveranstaltung extends BusinessObject {
 	private int umfang;
 	private int semester;
 	private Dozent dozent;
+	private String dozentString;
 	private Vector<LVDurchfuehrung> durchfuehungen = new Vector<LVDurchfuehrung>();
 
 	// Konstruktor
@@ -62,6 +63,14 @@ public class Lehrveranstaltung extends BusinessObject {
 
 	public void setDozent(Dozent dozent) {
 		this.dozent = dozent;
+	}
+	
+	public void setDozentName(String n){
+		this.dozentString = n;
+	}
+	
+	public String getDozentName(){
+		return this.dozentString;
 	}
 
 	public Vector<LVDurchfuehrung> getDurchfuehungen() {

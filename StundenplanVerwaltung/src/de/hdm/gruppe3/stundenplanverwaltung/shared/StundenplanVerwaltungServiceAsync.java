@@ -21,7 +21,7 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Zeitslot;
 
 /**
  * @author Yasemin Karakoc, Jan Plank
- *
+ * 
  */
 public interface StundenplanVerwaltungServiceAsync {
 
@@ -31,8 +31,8 @@ public interface StundenplanVerwaltungServiceAsync {
 	void anlegenDurchfuehrung(int svId, int raumId, int lvId, int zIds,
 			AsyncCallback<LVDurchfuehrung> callback);
 
-	void anlegenLehrveranstaltung(String Bezeichnung, int Semester, int Umfang, int dozentId,
-			AsyncCallback<Lehrveranstaltung> callback);
+	void anlegenLehrveranstaltung(String Bezeichnung, int Semester, int Umfang,
+			int dozentId, AsyncCallback<Lehrveranstaltung> callback);
 
 	void anlegenRaum(String Bezeichnung, int Kapazitaet,
 			AsyncCallback<Raum> callback);
@@ -89,7 +89,8 @@ public interface StundenplanVerwaltungServiceAsync {
 	void modifizierenDurchfuehrung(int svId, int raumId, int lvId, int zIds,
 			AsyncCallback<LVDurchfuehrung> callback);
 
-	void modifizierenLehrveranstaltung(Lehrveranstaltung lv, AsyncCallback<Lehrveranstaltung> callback);
+	void modifizierenLehrveranstaltung(Lehrveranstaltung lv,
+			AsyncCallback<Lehrveranstaltung> callback);
 
 	void modifizierenRaum(Raum r, AsyncCallback<Raum> callback);
 
@@ -101,5 +102,8 @@ public interface StundenplanVerwaltungServiceAsync {
 	void test(String string, AsyncCallback<String> asyncCallback);
 
 	void getAllDozenten(AsyncCallback<Vector<Dozent>> callback);
+
+	void getAllLV(AsyncCallback<Vector<Lehrveranstaltung>> callback);
+
 
 }

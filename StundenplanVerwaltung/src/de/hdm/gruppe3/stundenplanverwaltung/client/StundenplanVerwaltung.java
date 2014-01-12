@@ -1,5 +1,8 @@
 package de.hdm.gruppe3.stundenplanverwaltung.client;
 
+import de.hdm.gruppe3.stundenplanverwaltung.client.gui.LehrveranstaltungForm;
+import de.hdm.gruppe3.stundenplanverwaltung.client.gui.LehrveranstaltungTabelle;
+import de.hdm.gruppe3.stundenplanverwaltung.client.gui.RaumTabelle;
 import de.hdm.gruppe3.stundenplanverwaltung.client.testGui.TestGUI;
 import de.hdm.gruppe3.stundenplanverwaltung.client.testGui.TestGUIForms;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.FieldVerifier;
@@ -35,24 +38,34 @@ public class StundenplanVerwaltung implements EntryPoint {
 			+ "connection and try again.";
 
 	/**
-	 * Create a remote service proxy to talk to the server-side Greeting service.
+	 * Create a remote service proxy to talk to the server-side Greeting
+	 * service.
 	 */
-	private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
-	private final StundenplanVerwaltungServiceAsync stdplnVerwService = GWT.create(StundenplanVerwaltungService.class);
-	
+	private final GreetingServiceAsync greetingService = GWT
+			.create(GreetingService.class);
+	private final StundenplanVerwaltungServiceAsync stdplnVerwService = GWT
+			.create(StundenplanVerwaltungService.class);
+
 	private Button sendButton = new Button("Send");
-	private TextBox nameField = new TextBox();	
+	private TextBox nameField = new TextBox();
 	private TextBox output = new TextBox();
 
-	
 	public void onModuleLoad() {
-		//Test1 funktioniert nicht, da Forms und Tree verwsendet werden müssen
-//		TestGUI gui = new TestGUI();
-//		gui.testFelder();
+		// Test1 funktioniert nicht, da Forms und Tree verwsendet werden müssen
+		// TestGUI gui = new TestGUI();
+		// gui.testFelder();
+
+		LehrveranstaltungForm lForm = new LehrveranstaltungForm();
+		TestGUIForms guiForms = new TestGUIForms();
 		
-		TestGUIForms guiForms= new TestGUIForms();
-		guiForms.formsAnzeigen();
+		LehrveranstaltungTabelle t = new LehrveranstaltungTabelle();
+		RaumTabelle rt = new RaumTabelle();
 		
+		rt.zeigeTabelle();
+
+//		t.zeigeTabelle();
+//		guiForms.formsAnzeigen();
+		//guiForms.zeigeTabelle();
 
 	}
 }
