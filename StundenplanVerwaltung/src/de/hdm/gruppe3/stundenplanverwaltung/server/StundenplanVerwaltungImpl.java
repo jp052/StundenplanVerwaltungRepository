@@ -217,7 +217,6 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 
 	// Methoden Dozent
 	@Override
-
 	public Dozent anlegenDozent (String vorname, String nachname){ //Kleinschreibung Diagramm übernehmen
 		Dozent d = new Dozent ();
 		d.setVorname (vorname);
@@ -271,12 +270,10 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-
 	public LVDurchfuehrung getDurchfuehrungByNummer (int lvdNr){
 
 		return dfMapper.findeId(lvdNr);
 		}
-
 
 	@Override
 	public Semesterverband getSemesterverbandBySemesterHalbjahr(
