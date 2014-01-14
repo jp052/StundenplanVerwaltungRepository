@@ -105,5 +105,7 @@ public interface StundenplanVerwaltungServiceAsync {
 
 	void getAllLV(AsyncCallback<Vector<Lehrveranstaltung>> callback);
 
+	void getAllSemesterverband(AsyncCallback<Vector<Semesterverband>> callback);
+
 
 }

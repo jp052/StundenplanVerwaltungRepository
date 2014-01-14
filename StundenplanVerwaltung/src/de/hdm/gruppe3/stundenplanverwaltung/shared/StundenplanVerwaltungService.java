@@ -25,6 +25,8 @@ public interface StundenplanVerwaltungService extends RemoteService {
 			int anzahlStudierende, int jahrgang);
 
 	Semesterverband modifizierenSemesterverband(Semesterverband semeserverband);
+	
+	public Vector<Semesterverband> getAllSemesterverband();
 
 	public Semesterverband getSemesterverbandByNummer(int nr);
 

@@ -40,7 +40,7 @@ public class DurchfuehrungMapper {
 	}
 
 	/**
-	 * Anlegen der LVDurchführung
+	 * Anlegen der LVDurchfï¿½hrung
 	 * 
 	 * @param lvd
 	 * @return LVDurchfuehrung
@@ -56,7 +56,7 @@ public class DurchfuehrungMapper {
 			//TODO Zeitslot zuerst anlgend und die Id auslesen
 			String sql = "INSERT INTO Durchfuehrung (ZeitNr, SVNr, RaumNr, LVNr) "+ "VALUES (" + 1 + "," + svId+ "," + raumId + "," + lvId + ")";
 
-			// Ausführen des SQL Statement
+			// Ausfï¿½hren des SQL Statement
 			stmt.executeUpdate(sql);
 			
 			
@@ -64,7 +64,7 @@ public class DurchfuehrungMapper {
 			e2.printStackTrace();
 		}
 		
-		//TODO Lehrveranstaltungs Objekt mit Daten füllen!
+		//TODO Lehrveranstaltungs Objekt mit Daten fï¿½llen!
 		return lvd;
 
 	}
@@ -78,7 +78,7 @@ public class DurchfuehrungMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			// Die Query die ausgeführt werden soll.
+			// Die Query die ausgefï¿½hrt werden soll.
 			String sql = "UPDATE LVDurchfuerhung SET " +				
 					"ZeitNr="	+ zeitNr + 
 					", SVNr=" + svNr + 
@@ -86,7 +86,7 @@ public class DurchfuehrungMapper {
 					", LVNr=" + lvNr + 
 					" WHERE LVDNr="	+ lvdNr;
 
-			// Query ausführen
+			// Query ausfï¿½hren
 			stmt.executeUpdate(sql);
 
 		} catch (SQLException e2) {
@@ -94,8 +94,8 @@ public class DurchfuehrungMapper {
 			e2.printStackTrace();
 		}
 
-		// Rückgabe des Objektes
-		//TODO Lehrveranstaltungs Objekt mit Daten füllen!
+		// Rï¿½ckgabe des Objektes
+		//TODO Lehrveranstaltungs Objekt mit Daten fï¿½llen!
 		return lvd;
 	}
 
@@ -106,11 +106,11 @@ public class DurchfuehrungMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			// Die SQL Query die ausgeführt werden soll.
+			// Die SQL Query die ausgefï¿½hrt werden soll.
 			String sql = "DELETE FROM LVDurchfuerhung " + "WHERE LVDNr="
 					+ lvd.getId();
 
-			// Die SQL Query ausführen.
+			// Die SQL Query ausfï¿½hren.
 			stmt.executeUpdate(sql);
 
 		} catch (SQLException e2) {
@@ -122,24 +122,26 @@ public class DurchfuehrungMapper {
 	public LVDurchfuehrung findeId(int lvdNr) {
 		// DB-Verbindung holen
 		Connection con = DBVerbindung.connection();
+		
+		LVDurchfuehrung lvd = new LVDurchfuehrung();
 
 		try {
 			Statement stmt = con.createStatement();
 
-			// Die SQL Query die ausgeführt werden soll.
+			// Die SQL Query die ausgefï¿½hrt werden soll.
 			String sql = "SELECT * FROM Durchfuehrung WHERE LVDNr=" + lvdNr
 					+ " ORDER BY LVDNr";
 
-			// Die SQL Query ausführen.
+			// Die SQL Query ausfï¿½hren.
 			ResultSet rs = stmt.executeQuery(sql);
 
-			// Nur ausführen wenn das Result nicht null ist
+			// Nur ausfï¿½hren wenn das Result nicht null ist
 			if (rs.next()) {
-				// Benögtigtes Objekte aus dem ResultSet erstellen.
+				// Benï¿½gtigtes Objekte aus dem ResultSet erstellen.
 
 				// RaumMapper um alle Attribute aus der Datebank zu lesen, ind
 				// dem ResultSet ist nur die Id vorhanden.
-				// Raum Objekt erstellen indem die Id and den Mapper übergeben
+				// Raum Objekt erstellen indem die Id and den Mapper ï¿½bergeben
 				// wird
 				RaumMapper rMapper = RaumMapper.raumMapper();
 				Raum raum = new Raum();
@@ -148,7 +150,7 @@ public class DurchfuehrungMapper {
 				// SemesterverbandMapper um alle Attribute aus der Datebank zu
 				// lesen, ind dem ResultSet ist nur die Id vorhanden.
 				// Semesterverband Objekt erstellen indem die Id and den Mapper
-				// übergeben wird
+				// ï¿½bergeben wird
 				SemesterverbandMapper svMapper = SemesterverbandMapper
 						.svMapper();
 				Semesterverband sv = new Semesterverband();
@@ -157,22 +159,22 @@ public class DurchfuehrungMapper {
 				// LehrveranstaltungMapper um alle Attribute aus der Datebank zu
 				// lesen, ind dem ResultSet ist nur die Id vorhanden.
 				// Lehrveranstaltung Objekt erstellen indem die Id and den
-				// Mapper übergeben wird.
+				// Mapper ï¿½bergeben wird.
 				LehrveranstaltungMapper lvMapper = LehrveranstaltungMapper
 						.lvMapper();
 				Lehrveranstaltung lv = new Lehrveranstaltung();
-				lv = lvMapper.findeId(rs.getInt("LVId"));
+				lv = lvMapper.findeId(rs.getInt("LVNr"));
 
 				// LehrveranstaltungMapper um alle Attribute aus der Datebank zu
 				// lesen, ind dem ResultSet ist nur die Id vorhanden.
 				// Lehrveranstaltung Objekt erstellen indem die Id and den
-				// Mapper übergeben wird.
+				// Mapper ï¿½bergeben wird.
 				ZeitslotMapper zMapper = ZeitslotMapper.zeitslotMapper();
 				Zeitslot z = new Zeitslot();
 				z = zMapper.findeId(rs.getInt("ZeitNr"));
 
-				// Jetzt das Durchführungs Objekt mit allen Objekten füllen
-				LVDurchfuehrung lvd = new LVDurchfuehrung();
+				// Jetzt das Durchfï¿½hrungs Objekt mit allen Objekten fï¿½llen
+				
 				lvd.setId(rs.getInt("LVDNr"));
 				lvd.setId(rs.getInt("LVDNr"));
 				lvd.setRaum(raum);
@@ -182,10 +184,9 @@ public class DurchfuehrungMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			return null;
 		}
 
-		return null;
+		return lvd;
 	}
 
 }

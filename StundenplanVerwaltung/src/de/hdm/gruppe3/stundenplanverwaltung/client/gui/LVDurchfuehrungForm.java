@@ -1,5 +1,6 @@
 package de.hdm.gruppe3.stundenplanverwaltung.client.gui;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 import com.google.gwt.core.shared.GWT;
@@ -15,6 +16,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.gruppe3.stundenplanverwaltung.client.ClientsideSettings;
+import de.hdm.gruppe3.stundenplanverwaltung.shared.ConstantsStdpln;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungServiceAsync;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.*;
@@ -26,12 +28,12 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.*;
  *
  */
 public class LVDurchfuehrungForm extends VerticalPanel{
-	ListBox lbLehrveranstatlung = new ListBox();
+	ListBox lbLehrveranstaltung = new ListBox();
 	ListBox lbRaum = new ListBox();
 	ListBox lbSemesterverband = new ListBox();
-	ListBox lbZeitslotVon = new ListBox();
-	ListBox lbZeitslotBis = new ListBox();
-	ListBox lbZeitslotTag = new ListBox();
+	ListBox lbAnfangszeit = new ListBox();
+	ListBox lbEndzeit = new ListBox();
+	ListBox lbWochentag = new ListBox();
 	
 	Label idValueLabel = new Label();
 
@@ -40,7 +42,7 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 	StundenplanVerwaltungTreeViewModel treeModel = null;
 
 	/**
-	 * Formular für die Darstellung des selektierten Kunden
+	 * Formular fï¿½r die Darstellung des selektierten Kunden
 	 */
 	public LVDurchfuehrungForm() {
 		Grid customerGrid = new Grid(5, 2);
@@ -48,7 +50,7 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 
 		Label lLehrveranstaltung = new Label("Lehrveranstaltung");
 		customerGrid.setWidget(0, 0, lLehrveranstaltung);
-		customerGrid.setWidget(0, 1, lbLehrveranstatlung);
+		customerGrid.setWidget(0, 1, lbLehrveranstaltung);
 
 		Label lRaum = new Label("Raum");
 		customerGrid.setWidget(1, 0, lRaum);
@@ -60,19 +62,21 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 		
 		
 		HorizontalPanel hPanelZeitslot = new HorizontalPanel();
-		hPanelZeitslot.add(lbZeitslotVon);
-		hPanelZeitslot.add(lbZeitslotBis);
-		hPanelZeitslot.add(lbZeitslotTag);
+		hPanelZeitslot.add(lbAnfangszeit);
+		hPanelZeitslot.add(lbEndzeit);
+		hPanelZeitslot.add(lbWochentag);
 		
 		Label lZeitslot = new Label("Zeitslot");
 		customerGrid.setWidget(3, 0, lZeitslot);
 		customerGrid.setWidget(3, 1, hPanelZeitslot);
 		//this.add(hPanelZeitslot);
 		
-		//List Boxen  füllen
-		setAnfangszeitListBox();
-//		setEndzeitListBox();
-//		setWochentagListBox();
+		//List Boxen  fÃ¼llen
+		setLehrveranstaltungListBox();
+		setRaumListBox();
+		setSemesterverbandListBox();
+		setZeitListBox();
+		setWochentagListBox();
 
 		Label idLabel = new Label("ID");
 		customerGrid.setWidget(4, 0, idLabel);
@@ -81,28 +85,28 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 		HorizontalPanel hPanelLVDruchfuehrungButtons = new HorizontalPanel();
 		this.add(hPanelLVDruchfuehrungButtons);
 
-		Button modifizierenButton = new Button("Ändern");
+		Button modifizierenButton = new Button("Ã„ndern");
 		modifizierenButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				//löst das ändern aus
+				//lï¿½st das ï¿½ndern aus
 				modifizierenSelectedLVDurchfuehrung();
 			}
 		});
 		hPanelLVDruchfuehrungButtons.add(modifizierenButton);
 		
 		
-		Button loeschenButton = new Button("Löschen");
+		Button loeschenButton = new Button(ConstantsStdpln.LOESCHEN);
 		loeschenButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				//löst das löschen aus
+				//lï¿½st das lï¿½schen aus
 				loeschenSelectedLVDurchfuehrung();
 			}
 		});
 		
 		hPanelLVDruchfuehrungButtons.add(loeschenButton);
 		
-		Button neuButton = new Button("Neu");
+		Button neuButton = new Button(ConstantsStdpln.NEU);
 		neuButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -115,53 +119,126 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 	}
 
 
-	void setFields() {
-//		lbLehrveranstatlung.setText(selectedLehrveranstaltung.getBezeichnung());
-////		Integer in String umwandeln
-//		lbRaum.setText(Integer.toString(selectedLehrveranstaltung.getSemester()));
-//		lbSemesterverband.setText(Integer.toString(selectedLehrveranstaltung.getUmfang()));
-//		
-//		//richten Eintrag in der ListBox wählen wenn eine Lehrveranstaltung existiert
-//		if(selectedLehrveranstaltung != null) {
-//			lbZeitslotBis.setSelectedIndex(selectedLehrveranstaltung.getDozent().getId());
-//		}
-//		
-//		idValueLabel.setText(Integer.toString(selectedLehrveranstaltung.getId()));
+
+	
+	private void setLehrveranstaltungListBox() {
+		stundenplanVerwaltung.getAllLV(new AsyncCallback<Vector<Lehrveranstaltung>>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				System.out.println("Fehler!");
+			}
+
+			@Override
+			public void onSuccess(Vector<Lehrveranstaltung> result) {
+//				Erster Eintrag soll leer sein bzw. Bitte wÃ¤hlen enthalten
+				lbLehrveranstaltung.addItem("--Bitte wÃ¤hlen--", "0");
+				
+				for(Lehrveranstaltung lv : result) {					
+					//Der zweite Parameter von addItem ist die gewï¿½hlte Lehrveranstatlungs Id welche beim anlegen der DurchfÃ¼hrung 
+					//benÃ¶tigt wird.
+					lbLehrveranstaltung.addItem(lv.getBezeichnung(), String.valueOf(lv.getId()));
+				}				
+			}
+		});
+	}
+	private void setRaumListBox(){
+		stundenplanVerwaltung.getAllRaeume(new AsyncCallback<Vector<Raum>>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				System.out.println("Fehler!");
+			}
+
+			@Override
+			public void onSuccess(Vector<Raum> result) {
+				//Erster Eintrag soll leer sein bzw. Bitte wÃ¤hlen enthalten
+				lbRaum.addItem("--Bitte wÃ¤hlen--", "0");
+				
+				for(Raum r : result) {
+					//Der zweite Parameter von addItem ist die gewï¿½hlte Raum Id welche beim anlegen der DurchfÃ¼hrung 
+					//v wird.
+					lbRaum.addItem(r.getBezeichnung(), String.valueOf(r.getId()));
+				}				
+			}
+		});
+	}
+	
+	private void setSemesterverbandListBox(){
+		stundenplanVerwaltung.getAllSemesterverband(new AsyncCallback<Vector<Semesterverband>>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				System.out.println("Fehler!");
+				
+			}
+
+			@Override
+			public void onSuccess(Vector<Semesterverband> result) {
+				//Erster Eintrag soll leer sein bzw. Bitte wÃ¤hlen enthalten
+				lbSemesterverband.addItem("--Bitte wÃ¤hlen--", "0");
+				
+				for(Semesterverband sv : result) {
+					StringBuilder listBoxItem = new StringBuilder();
+					
+					//Vorraussetzung ist, dass sich Studenten nur zum Wintersemester einschreiben kÃ¶nnen!
+					//Ansonsten stimmt die Logik zur bestimmung ob ein Semester im Winter Semester (WS) oder dem Sommersemester (SS) nicht.
+					//ist die Semesterzahl ungerade ist das Semester im WS, ansonste SS.
+					//Der Modulo Operator(%) mit der Zahl 2 liefert  bei einer ungeraden Zahl einne 1 und bei einer geraden Zahl eine 0 zurÃ¼ck.
+					String halbjahr = "SS";
+					int semester = sv.getSemester();
+					if(semester % 2 == 1) {						
+						halbjahr = "WS";
+					} 
+					
+					//Beispiel des Stings der in der ListBox angezeigt werden wird:
+					//WS 2013-Semester 3
+					listBoxItem.append(halbjahr); //WS oder SS
+					listBoxItem.append(" "); //Abstand
+					listBoxItem.append(sv.getJahrgang()); //Jahr z.B. 2013
+					listBoxItem.append("-"); //Trennung mit Minus#
+					listBoxItem.append("Semester " + semester); //Aktuelles Semester z.B. Semester 3
+					
+					//Der erste Prameter von addItem enthÃ¤lt den anzeige String, er wird vom StringBuffer in einen normalen String umgewandelt.
+					//Der zweite Parameter von addItem ist die gewÃ¤hlte Semesterverband Id welche beim anlegen der DurchfÃ¼hrung 
+					//benÃ¶gtigt wird.
+					lbSemesterverband.addItem(listBoxItem.toString(), String.valueOf(sv.getId()));
+//					lbSemesterverband.setValue(index, value);
+				}
+				
+			}
+		});
 	}
 	
 	/**
-	 * Füllt die Anfangszeit ListBox
+	 * FÃ¼llt anfangszeit und endzeit ListBox
 	 */
-	private void setAnfangszeitListBox() {
-//		stundenplanVerwaltung.getAllDozenten(new AsyncCallback<Vector<Dozent>>() {
-//
-//			@Override
-//			public void onFailure(Throwable caught) {
-////				ClientsideSettings.getLogger().severe("Befüllen der DozentenListBox fehlgeschlagen");				
-//			}
-//
-//			@Override
-//			public void onSuccess(Vector<Dozent> result) {
-//				for(Dozent d : result) {
-//					//Der zweite Parameter von addItem ist die gewählte Dozenten Id welche beim anlegen der Lehrveranstaltung 
-//					//benötigt wird.
-//					lbZeitslotBis.addItem(d.toString(), String.valueOf(d.getId()));
-//				}
-//				
-//				
-//			}
-//		});
+	private void setZeitListBox() {
+		//Erster Eintrag soll leer sein bzw. Bitte wÃ¤hlen enthalten
+		lbAnfangszeit.addItem("--Bitte wÃ¤hlen--", "0");
+		lbEndzeit.addItem("--Bitte wÃ¤hlen--", "0");
+		
+		for(int zeit : ConstantsStdpln.UHRZEITEN) {
+			//Vorher int in String umwandeln mit String.valueOf
+			lbAnfangszeit.addItem(String.valueOf(zeit));
+			lbEndzeit.addItem(String.valueOf(zeit));
+		}
+	}
+	
+	/**
+	 * FÃ¼llte die Tage in die ListBox
+	 */
+	private void setWochentagListBox() {
+		//Erster Eintrag soll leer sein bzw. Bitte wÃ¤hlen enthalten
+		lbWochentag.addItem("--Bitte wÃ¤hlen--", "0");
+		//LÃ¤uft durch den ganzen Wochentag Array der in ConstantsStdpln definiert ist 
+		//und fÃ¼llt diese in die Wochentag ListBox.
+		for(String tag : ConstantsStdpln.WOCHENTAGE) {
+			lbWochentag.addItem(tag);
+		}
 	}
 
-	public void clearFields() {
-		lbLehrveranstatlung.setItemSelected(0, true);
-		lbRaum.setItemSelected(0, true);
-		lbSemesterverband.setItemSelected(0, true);
-		lbZeitslotVon.setItemSelected(0, true);
-		lbZeitslotBis.setItemSelected(0, true);
-		lbZeitslotTag.setItemSelected(0, true);
-		idValueLabel.setText("");
-	}
+
 
 	public void setSelected(LVDurchfuehrung lvd) {
 		if (lvd != null) {
@@ -172,9 +249,33 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 		}
 	}
 	
+	void setFields() {
+	
+		//richten Eintrag in der ListBox wï¿½hlen wenn eine Lehrveranstaltung existiert
+		if(selectedLVDurchfuehrung != null) {
+			lbWochentag.setSelectedIndex(3);
+			lbRaum.setSelectedIndex(2);
+			lbAnfangszeit.setSelectedIndex(4);
+//			lbLehrveranstatlung.setSelectedIndex(selectedLVDurchfuehrung.getLehrveranstaltung().getId());
+//			lbLehrveranstaltung.setSelectedIndex(1);
+//			lbRaum.setSelectedIndex(1);
+//			lbZeitslotBis.setSelectedIndex(selectedLehrveranstaltung.getDozent().getId());
+		}
+	}
+	
+	public void clearFields() {
+//		lbLehrveranstaltung.setItemSelected(0, true);
+//		lbRaum.setItemSelected(0, true);
+//		lbSemesterverband.setItemSelected(0, true);
+//		lbAnfangszeit.setItemSelected(0, true);
+//		lbEndzeit.setItemSelected(0, true);
+//		lbWochentag.setItemSelected(0, true);
+//		idValueLabel.setText("");
+	}
+	
 	public void modifizierenSelectedLVDurchfuehrung() {
 //		if (this.selectedLVDurchfuehrung!=null){
-//			//Die ausgewählten Id des gewählten Elementes auswählen und am ende and die entsprechende Async Methode schicken.
+//			//Die ausgewï¿½hlten Id des gewï¿½hlten Elementes auswï¿½hlen und am ende and die entsprechende Async Methode schicken.
 //			int zeitNr = Integer.valueOf(lbZ.getValue(lbLehrveranstatlung.getSelectedIndex()));
 //			
 //			int lvNr = Integer.valueOf(lbLehrveranstatlung.getValue(lbLehrveranstatlung.getSelectedIndex()));
@@ -186,7 +287,7 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 //			selectedLVDurchfuehrung.setSemester(Integer.valueOf(lbRaum.getText()));
 //			selectedLVDurchfuehrung.setUmfang(Integer.valueOf(lbSemesterverband.getText()));
 //			
-//			//Dozent Object das nur die Id enthält, mehr ist nicht vorhanden und auch nicht nötig.
+//			//Dozent Object das nur die Id enthï¿½lt, mehr ist nicht vorhanden und auch nicht nï¿½tig.
 //			Dozent d = new Dozent();
 //			int dozentId = Integer.valueOf(lbZeitslotBis.getValue(lbZeitslotBis.getSelectedIndex()));
 //			d.setId(dozentId);
@@ -203,7 +304,7 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 //
 //				@Override
 //				public void onSuccess(Lehrveranstaltung result) {
-//					System.out.println("Lehrveranstaltung geändert");
+//					System.out.println("Lehrveranstaltung geï¿½ndert");
 ////					treeModel.updateDozent(shownDozent);
 //					
 //				}
@@ -225,7 +326,7 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 //				@Override
 //				public void onSuccess(Lehrveranstaltung result) {
 //					if (result != null) {
-//						System.out.println("Lehrveranstaltung gelöscht");
+//						System.out.println("Lehrveranstaltung gelï¿½scht");
 //						setSelected(null);
 //						//TODO: Liste oder Tree aktualisieren
 //					}					
@@ -235,27 +336,27 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 	}
 	
 	public void anlegenLVDurchfuehrung() {
-		//Die ausgewählten Id des gewählten Elementes auswählen und am ende and die entsprechende Async Methode schicken.
+		//Die ausgewï¿½hlten Id des gewï¿½hlten Elementes auswï¿½hlen und am ende and die entsprechende Async Methode schicken.
 		
-		//Werte für Zeitslot Objekt aus Listbox auslesen
-		int anfangsZeit = Integer.valueOf(lbZeitslotVon.getValue(lbZeitslotVon.getSelectedIndex()));
-		int endZeit = Integer.valueOf(lbZeitslotBis.getValue(lbZeitslotBis.getSelectedIndex()));
-		String wochentag = lbZeitslotTag.getItemText(lbZeitslotTag.getSelectedIndex());
+		//Werte fï¿½r Zeitslot Objekt aus Listbox auslesen
+		int anfangsZeit = Integer.valueOf(lbAnfangszeit.getValue(lbAnfangszeit.getSelectedIndex()));
+		int endZeit = Integer.valueOf(lbEndzeit.getValue(lbEndzeit.getSelectedIndex()));
+		String wochentag = lbWochentag.getItemText(lbWochentag.getSelectedIndex());
 		
-		//Zeitslot Objekt mit aus der ListBox gelesenen Werten füllen.
+		//Zeitslot Objekt mit aus der ListBox gelesenen Werten fï¿½llen.
 		Zeitslot zeitslot = new Zeitslot();
 		zeitslot.setAnfangszeit(anfangsZeit);
 		zeitslot.setEndzeit(endZeit);
 		zeitslot.setWochentag(wochentag);
 		
-		//Wert für Semesterverband auslsen
+		//Wert fï¿½r Semesterverband auslsen
 		int svId = Integer.valueOf(lbSemesterverband.getValue(lbSemesterverband.getSelectedIndex()));
 		
-		//Wert für Raum auslsen
+		//Wert fï¿½r Raum auslsen
 		int raumId = Integer.valueOf(lbRaum.getValue(lbRaum.getSelectedIndex()));
 		
-		//Wert für Lehrveranstaltung auslsen
-		int lvId = Integer.valueOf(lbLehrveranstatlung.getValue(lbLehrveranstatlung.getSelectedIndex()));
+		//Wert fï¿½r Lehrveranstaltung auslsen
+		int lvId = Integer.valueOf(lbLehrveranstaltung.getValue(lbLehrveranstaltung.getSelectedIndex()));
 		
 		
 		//Ruft Serverseitige Methode auf

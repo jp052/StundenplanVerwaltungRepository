@@ -166,16 +166,17 @@ public class SemesterverbandMapper {
 		public Vector<Semesterverband> findeAlle(){
 			 Connection con = DBVerbindung.connection();
 
-			    // Ergebnisvektor vorbereiten
+			    //Vector mit angeforderten Objekten
 			    Vector<Semesterverband> result = new Vector<Semesterverband>();
 
 			    try {
 			      Statement stmt = con.createStatement();
+			      
+			      String sql = "SELECT * FROM Semesterverband  ORDER BY SVNr";
 
-			      ResultSet rs = stmt.executeQuery("SELECT SVNr, AnzahlStudierende, SemesterHalbjahr, Jahrgang FROM Semesterverband "
-			          + " ORDER BY SVNr");
+			      ResultSet rs = stmt.executeQuery(sql);
 
-			      // F¸r jeden Eintrag im Suchergebnis wird nun ein Account-Objekt erstellt.
+			      
 			      while (rs.next()) {
 			        Semesterverband sv = new Semesterverband();
 					sv.setId(rs.getInt("SVNr"));
@@ -183,7 +184,7 @@ public class SemesterverbandMapper {
 					sv.setSemester(rs.getInt("SemesterHalbjahr"));
 					sv.setJahrgang(rs.getInt("Jahrgang"));
 
-			        // Hinzuf¸gen des neuen Objekts zum Ergebnisvektor
+			        
 			        result.addElement(sv);
 			      }
 			    }
@@ -191,7 +192,7 @@ public class SemesterverbandMapper {
 			      e2.printStackTrace();
 			    }
 
-			 // Ergebnisvektor zur¸ckgeben
+		
 			 return result;
 		}
 		

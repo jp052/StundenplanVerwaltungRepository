@@ -88,7 +88,7 @@ public class TestGUIForms {
 			}
 		});
 		
-		stdplnVerwService.getDurchfuehrungByNummer(1,  new AsyncCallback<LVDurchfuehrung>() {
+		stdplnVerwService.getDurchfuehrungByNummer(2,  new AsyncCallback<LVDurchfuehrung>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -99,7 +99,7 @@ public class TestGUIForms {
 			@Override
 			public void onSuccess(LVDurchfuehrung result) {
 				LVDurchfuehrungForm lvdf = new LVDurchfuehrungForm();
-				//lvdf.setSelected(result);
+				lvdf.setSelected(result);
 				mainPanel.add(lvdf);
 				
 			}

@@ -44,7 +44,7 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 													// StundenplanVerwaltungImpl,
 													// Datentyp
 													// DurchfuehrungMapper,
-													// dvMapper heißt dfMapper
+													// dvMapper heiï¿½t dfMapper
 
 	public StundenplanVerwaltungImpl() throws IllegalArgumentException {
 	}
@@ -79,6 +79,10 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 
 		return svMapper.modifizieren(sv);
 	}
+	
+	public Vector<Semesterverband> getAllSemesterverband() {
+		return svMapper.findeAlle();
+	}
 
 	@Override
 	public Semesterverband getSemesterverbandByNummer(int nr) {
@@ -98,15 +102,15 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 	 * return svMapper.loeschen(sv.getId()); }
 	 */
 
-	// TODO Methoden Zeitslot, Zeitslot muss verändert werden, da die Attribute
-	// noch nicht vollständig sind
+	// TODO Methoden Zeitslot, Zeitslot muss verï¿½ndert werden, da die Attribute
+	// noch nicht vollstï¿½ndig sind
 	@Override
 	public Zeitslot anlegenZeitslot(String wochentag) { // Kleinschreibung
-														// Diagramm übernehmen,
+														// Diagramm ï¿½bernehmen,
 														// Aktuelle Attribute
 														// von der Klasse
 														// Zeitslot hier
-														// einfügen
+														// einfï¿½gen
 
 		Zeitslot z = new Zeitslot();
 		z.setWochentag(wochentag);
@@ -116,7 +120,7 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 	@Override
 	public Zeitslot modifizierenZeitslot(String wochentag) { // wochentag in
 																// Diagramm
-																// übernehmen
+																// ï¿½bernehmen
 																// bzw. ersetzen
 
 		Zeitslot z = new Zeitslot();
@@ -175,10 +179,10 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 	@Override
 	public Lehrveranstaltung anlegenLehrveranstaltung(String bezeichnung,
 			int semester, int umfang, int dozentId) { // Kleinschreibung
-														// Diagramm übernehmen
+														// Diagramm ï¿½bernehmen
 
-		// Erst Dozent mit der Id befüllen damit er der Lehrveranstaltung
-		// hinzugefügt werden kann
+		// Erst Dozent mit der Id befï¿½llen damit er der Lehrveranstaltung
+		// hinzugefï¿½gt werden kann
 		Dozent d = new Dozent();
 		d.setId(dozentId);
 
@@ -217,7 +221,7 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 
 	// Methoden Dozent
 	@Override
-	public Dozent anlegenDozent (String vorname, String nachname){ //Kleinschreibung Diagramm übernehmen
+	public Dozent anlegenDozent (String vorname, String nachname){ //Kleinschreibung Diagramm ï¿½bernehmen
 		Dozent d = new Dozent ();
 		d.setVorname (vorname);
 		d.setNachname (nachname);
@@ -249,7 +253,7 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 		return dMapper.findeName (name);
 		}
 	
-	//Methoden LVDurchführung
+	//Methoden LVDurchfï¿½hrung
 	@Override
 	public LVDurchfuehrung anlegenDurchfuehrung (int svNr, int raumNr, int lvNr, Zeitslot z){
 

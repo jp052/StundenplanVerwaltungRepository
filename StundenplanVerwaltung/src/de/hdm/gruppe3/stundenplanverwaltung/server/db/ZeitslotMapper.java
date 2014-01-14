@@ -32,19 +32,7 @@ public class ZeitslotMapper {
 	  protected ZeitslotMapper() {
 	  }
 
-	  /**
-	   * Diese statische Methode kann aufgrufen werden durch
-	   * <code>ZeitslotMapper.zeitslotMapper()</code>. Sie stellt die
-	   * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine einzige
-	   * Instanz von <code>ZeitslotMapper</code> existiert.
-	   * <p>
-	   * 
-	   * <b>Fazit:</b> ZeitslotMapper sollte nicht mittels <code>new</code>
-	   * instantiiert werden, sondern stets durch Aufruf dieser statischen Methode.
-	   * 
-	   * @return DAS <code>ZeitslotMapper</code>-Objekt.
-	   * @see zeitslotMapper
-	   */
+
 	  public static ZeitslotMapper zeitslotMapper() {
 	    if (zeitslotMapper == null) {
 	      zeitslotMapper = new ZeitslotMapper();
@@ -58,41 +46,15 @@ public class ZeitslotMapper {
 			    try {
 			      Statement stmt = con.createStatement();
 
-//			      /*
-//			       * Zunächst schauen wir nach, welches der momentan höchste
-//			       * Primärschlüsselwert ist.
-//			       */
-//			      ResultSet rs = stmt.executeQuery("SELECT MAX(zeitslot) AS zeitslotxzeitslot "
-//			          + "FROM zeitslot ");
-	//
-//			      // Wenn wir etwas zurückerhalten, kann dies nur einzeilig sein
-//			      if (rs.next()) {
-//			        /*
-//			         * a erhält den bisher zeitslotxzeitslotozentlen, nun um 1 inkrementierten
-//			         * Primärschlüssel.
-//			         */
-//			        m.setID(rs.getInt("zeitslotxzeitslot") + 1);
-	//
-//			        stmt = con.createStatement();
 
-			        // Jetzt erst erfolgt die tatsächliche Einfügeoperation
 			        stmt.executeUpdate("INSERT INTO zeitslot (ZeitNr, Wochentag, Anfangszeit) " + "VALUES ( "
 			        	+ "NULL,'" + m.getWochentag()  +"','" +m.getAnfangszeit()+ "')");
-			      //}
+			      
 			    }
 			    catch (SQLException e2) {
 			      e2.printStackTrace();
 			    } 
 
-			    /*
-			     * Rückgabe, des evtl. korrigierten Accounts.
-			     * 
-			     * HINWEIS: Da in Java nur Referenzen auf Objekte und keine physischen
-			     * Objekte übergeben werden, wäre die Anpassung des Zeitslot-Objekts auch
-			     * ohne diese explizite Rückgabe au�erhalb dieser Methode sichtbar. Die
-			     * explizite Rückgabe von a ist eher ein Stilmittel, um zu signalisieren,
-			     * dass sich das Objekt evtl. im Laufe der Methode verändert hat.
-			     */
 			    return m;
 			
 		}
@@ -129,37 +91,34 @@ public class ZeitslotMapper {
 			return zeitslot; 
 		}
 		
-		public Zeitslot findeId(int i){
-		    // DB-Verbindung holen
+		public Zeitslot findeId(int zeitId){
+
 		    Connection con = DBVerbindung.connection();
+		    Zeitslot zeitslot = new Zeitslot();
 
 		    try {
-		      // Leeres SQL-Statement (JDBC) anlegen
+
 		      Statement stmt = con.createStatement();
 
-		      // Statement ausfüllen und als Query an die DB schicken
-		      ResultSet rs = stmt.executeQuery("SELECT ID, Name, Vorname, Anschrift, PLZ, Ort FROM zeitslot "
-		          + "WHERE ID=" + i + " ORDER BY Name");
+		      String sql = "SELECT *FROM Zeitslot WHERE ZeitNr=" + zeitId;
+		      
+		      ResultSet rs = stmt.executeQuery(sql);
 
-		      /*
-		       * Da zeitslot Primärschlüssel ist, kann zeitslotx. nur ein Tupel zurückgegeben
-		       * werden. Prüfe, ob ein Ergebnis vorliegt.
-		       */
+		     
+		      
 		      if (rs.next()) {
-		        // Ergebnis-Tupel in Objekt umwandeln
-		    	Zeitslot zeitslot = new Zeitslot();
-		        zeitslot.setId(rs.getInt("ID"));
+		    	
+		        zeitslot.setId(rs.getInt("ZeitNr"));
 		        zeitslot.setWochentag(rs.getString("Wochentag"));
-				//zeitslot.setEndzeit(rs.getString("Endzeit"));   To-Do
-				//zeitslot.setAnfangszeit(rs.getString("Anfangszeit")); To-Do
-		        return zeitslot;
+				zeitslot.setEndzeit(rs.getInt("Endzeit"));
+				zeitslot.setAnfangszeit(rs.getInt("Anfangszeit"));
+		        
 		      }
 		    }
 		    catch (SQLException e2) {
 		      e2.printStackTrace();
-		      return null;
 		    } 
-		    return null;
+		    return zeitslot;
 		}
 		
 		public Vector<Zeitslot> findeAlle(){
@@ -174,13 +133,13 @@ public class ZeitslotMapper {
 			      ResultSet rs = stmt.executeQuery("SELECT ZeitNr, Wochentag, Endzeit, Anfangszeit name FROM Zeitslot "
 			          + " ORDER BY ZeitNr");
 
-			      // F�r jeden Eintrag im Suchergebnis wird nun ein Account-Objekt erstellt.
+			      // F�r jeden Eintrag im Suchergebnis wird nun ein Account-Objekt erstellt.
 			      while (rs.next()) {
 			    	Zeitslot z = new Zeitslot();
 //			        r.setId(rs.getInt("id"));
 //			        r.setOwnerID(rs.getInt("owner"));
 
-			        // Hinzuf�gen des neuen Objekts zum Ergebnisvektor
+			        // Hinzuf�gen des neuen Objekts zum Ergebnisvektor
 			        result.addElement(z);
 			      }
 			    }
@@ -188,7 +147,7 @@ public class ZeitslotMapper {
 			      e2.printStackTrace();
 			    }
 
-			 // Ergebnisvektor zur�ckgeben
+			 // Ergebnisvektor zur�ckgeben
 			 return result;
 		}
 		
