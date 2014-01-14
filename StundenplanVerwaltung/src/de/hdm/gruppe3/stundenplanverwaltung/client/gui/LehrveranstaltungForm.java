@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.gruppe3.stundenplanverwaltung.client.ClientsideSettings;
+import de.hdm.gruppe3.stundenplanverwaltung.shared.ConstantsStdpln;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungServiceAsync;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.*;
@@ -37,7 +38,7 @@ public class LehrveranstaltungForm extends VerticalPanel{
 	StundenplanVerwaltungTreeViewModel treeModel = null;
 
 	/**
-	 * Formular für die Darstellung des selektierten Kunden
+	 * Formular fï¿½r die Darstellung des selektierten Kunden
 	 */
 	public LehrveranstaltungForm() {
 		Grid customerGrid = new Grid(5, 2);
@@ -59,7 +60,7 @@ public class LehrveranstaltungForm extends VerticalPanel{
 		customerGrid.setWidget(3, 0, dozentLabel);
 		customerGrid.setWidget(3, 1, dozentenListBox);
 		
-		//dozentenListBox füllen
+		//dozentenListBox fï¿½llen
 		setDozentenListBox();
 
 		Label idLabel = new Label("ID");
@@ -69,7 +70,7 @@ public class LehrveranstaltungForm extends VerticalPanel{
 		HorizontalPanel semesterverbandButtonsPanel = new HorizontalPanel();
 		this.add(semesterverbandButtonsPanel);
 
-		Button modifizierenButton = new Button("Ändern");
+		Button modifizierenButton = new Button(ConstantsStdpln.AENDERN);
 		modifizierenButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				modifizierenSelectedLehrveranstaltung();
@@ -78,18 +79,18 @@ public class LehrveranstaltungForm extends VerticalPanel{
 		semesterverbandButtonsPanel.add(modifizierenButton);
 		
 		
-		Button loeschenButton = new Button("Löschen");
+		Button loeschenButton = new Button(ConstantsStdpln.LOESCHEN);
 		loeschenButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				//löst das löschen aus
+				//lï¿½st das lï¿½schen aus
 				loeschenSelectedLehrveranstaltung();
 			}
 		});
 		
 		semesterverbandButtonsPanel.add(loeschenButton);
 		
-		Button neuButton = new Button("Neu");
+		Button neuButton = new Button(ConstantsStdpln.NEU);
 		neuButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -105,22 +106,10 @@ public class LehrveranstaltungForm extends VerticalPanel{
 		this.treeModel = treeModel;
 	}
 
-	void setFields() {
-		bezeichnungTextBox.setText(selectedLehrveranstaltung.getBezeichnung());
-//		Integer in String umwandeln
-		semesterTextBox.setText(Integer.toString(selectedLehrveranstaltung.getSemester()));
-		umfangTextBox.setText(Integer.toString(selectedLehrveranstaltung.getUmfang()));
-		
-		//richten Eintrag in der ListBox wählen wenn eine Lehrveranstaltung existiert
-		if(selectedLehrveranstaltung != null) {
-			dozentenListBox.setSelectedIndex(selectedLehrveranstaltung.getDozent().getId());
-		}
-		
-		idValueLabel.setText(Integer.toString(selectedLehrveranstaltung.getId()));
-	}
+
 	
 	/**
-	 * Füllt die dozentenListBox mit allen in der Datenbank vorhandenen Dozenten.
+	 * Fï¿½llt die dozentenListBox mit allen in der Datenbank vorhandenen Dozenten.
 	 * 
 	 */
 	private void setDozentenListBox() {
@@ -128,27 +117,30 @@ public class LehrveranstaltungForm extends VerticalPanel{
 
 			@Override
 			public void onFailure(Throwable caught) {
-//				ClientsideSettings.getLogger().severe("Befüllen der DozentenListBox fehlgeschlagen");				
+//				ClientsideSettings.getLogger().severe("Befï¿½llen der DozentenListBox fehlgeschlagen");				
 			}
 
 			@Override
 			public void onSuccess(Vector<Dozent> result) {
+				int valueIndex = 1; //Bei 1 angangen, da 0 der "Bitte wÃ¤hlen" Text ist.
+//				dozentenListBox.addItem("Bitte, value);
 				for(Dozent d : result) {
-					//Der zweite Parameter von addItem ist die gewählte Dozenten Id welche beim anlegen der Lehrveranstaltung 
-					//benötigt wird.
+					//Der zweite Parameter von addItem ist die gewï¿½hlte Dozenten Id welche beim anlegen der Lehrveranstaltung 
+					//benï¿½tigt wird.
 					dozentenListBox.addItem(d.toString(), String.valueOf(d.getId()));
+//					dozentenListBox.addItem(d.toString(), String.valueOf(valueIndex));
+//					dozentenListBox.setValue(valueIndex, String.valueOf(d.getId()));
+					valueIndex++;
+					
 				}
 				
+				dozentenListBox.setSelectedIndex(2);
 				
 			}
 		});
 	}
 
-	public void clearFields() {
-		bezeichnungTextBox.setText("");
-		semesterTextBox.setText("");
-		idValueLabel.setText("");
-	}
+
 
 	public void setSelected(Lehrveranstaltung s) {
 		if (s != null) {
@@ -159,6 +151,27 @@ public class LehrveranstaltungForm extends VerticalPanel{
 		}
 	}
 	
+	public void setFields() {
+		bezeichnungTextBox.setText(selectedLehrveranstaltung.getBezeichnung());
+//		Integer in String umwandeln
+		semesterTextBox.setText(Integer.toString(selectedLehrveranstaltung.getSemester()));
+		umfangTextBox.setText(Integer.toString(selectedLehrveranstaltung.getUmfang()));
+		
+		//richten Eintrag in der ListBox wï¿½hlen wenn eine Lehrveranstaltung existiert
+//		dozentenListBox.setSelectedIndex(2);
+		if(selectedLehrveranstaltung != null) {
+//			dozentenListBox.setSelectedIndex(2);
+		}
+		
+		idValueLabel.setText(Integer.toString(selectedLehrveranstaltung.getId()));
+	}
+	
+	public void clearFields() {
+		bezeichnungTextBox.setText("");
+		semesterTextBox.setText("");
+		idValueLabel.setText("");
+	}
+	
 	public void modifizierenSelectedLehrveranstaltung() {
 		if (this.selectedLehrveranstaltung!=null){
 			selectedLehrveranstaltung.setBezeichnung(bezeichnungTextBox.getText());
@@ -166,7 +179,7 @@ public class LehrveranstaltungForm extends VerticalPanel{
 			selectedLehrveranstaltung.setSemester(Integer.valueOf(semesterTextBox.getText()));
 			selectedLehrveranstaltung.setUmfang(Integer.valueOf(umfangTextBox.getText()));
 			
-			//Dozent Object das nur die Id enthält, mehr ist nicht vorhanden und auch nicht nötig.
+			//Dozent Object das nur die Id enthï¿½lt, mehr ist nicht vorhanden und auch nicht nï¿½tig.
 			Dozent d = new Dozent();
 			int dozentId = Integer.valueOf(dozentenListBox.getValue(dozentenListBox.getSelectedIndex()));
 			d.setId(dozentId);
@@ -183,7 +196,7 @@ public class LehrveranstaltungForm extends VerticalPanel{
 
 				@Override
 				public void onSuccess(Lehrveranstaltung result) {
-					System.out.println("Lehrveranstaltung geändert");
+					System.out.println("Lehrveranstaltung geï¿½ndert");
 //					treeModel.updateDozent(shownDozent);
 					
 				}
@@ -205,7 +218,7 @@ public class LehrveranstaltungForm extends VerticalPanel{
 				@Override
 				public void onSuccess(Lehrveranstaltung result) {
 					if (result != null) {
-						System.out.println("Lehrveranstaltung gelöscht");
+						System.out.println("Lehrveranstaltung gelï¿½scht");
 						setSelected(null);
 						//TODO: Liste oder Tree aktualisieren
 					}					

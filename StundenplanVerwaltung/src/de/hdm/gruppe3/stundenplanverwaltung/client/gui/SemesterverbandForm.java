@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import de.hdm.gruppe3.stundenplanverwaltung.shared.ConstantsStdpln;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungServiceAsync;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.*;
@@ -32,7 +33,7 @@ public class SemesterverbandForm extends VerticalPanel{
 	StundenplanVerwaltungTreeViewModel treeModel = null;
 
 	/**
-	 * Formular für die Darstellung des selektierten Kunden
+	 * Formular fï¿½r die Darstellung des selektierten Kunden
 	 */
 	public SemesterverbandForm() {
 		Grid customerGrid = new Grid(4, 2);
@@ -57,7 +58,7 @@ public class SemesterverbandForm extends VerticalPanel{
 		HorizontalPanel semesterverbandButtonsPanel = new HorizontalPanel();
 		this.add(semesterverbandButtonsPanel);
 
-		Button modifizierenButton = new Button("Ändern");
+		Button modifizierenButton = new Button(ConstantsStdpln.AENDERN);
 		modifizierenButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				modifizierenSelectedSemesterverband();
@@ -66,18 +67,18 @@ public class SemesterverbandForm extends VerticalPanel{
 		semesterverbandButtonsPanel.add(modifizierenButton);
 		
 		
-		Button loeschenButton = new Button("Löschen");
+		Button loeschenButton = new Button(ConstantsStdpln.LOESCHEN);
 		loeschenButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				//löst das löschen aus
+				//lï¿½st das lï¿½schen aus
 				loeschenSelectedSemesterverband();
 			}
 		});
 		
 		semesterverbandButtonsPanel.add(loeschenButton);
 		
-		Button neuButton = new Button("Neu");
+		Button neuButton = new Button(ConstantsStdpln.NEU);
 		neuButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -133,7 +134,7 @@ public class SemesterverbandForm extends VerticalPanel{
 
 				@Override
 				public void onSuccess(Semesterverband result) {
-					System.out.println("Semesterverband geändert");
+					System.out.println("Semesterverband geï¿½ndert");
 //					treeModel.updateDozent(shownDozent);
 					
 				}
@@ -155,7 +156,7 @@ public class SemesterverbandForm extends VerticalPanel{
 				@Override
 				public void onSuccess(Semesterverband result) {
 					if (result != null) {
-						System.out.println("Semesterverband gelöscht");
+						System.out.println("Semesterverband gelï¿½scht");
 						setSelected(null);
 						//TODO: Liste oder Tree aktualisieren
 					}

@@ -57,11 +57,12 @@ public class StundenplanVerwaltung implements EntryPoint {
 
 		LehrveranstaltungForm lForm = new LehrveranstaltungForm();
 		TestGUIForms guiForms = new TestGUIForms();
+		guiForms.formsAnzeigen();
 		
-		LehrveranstaltungTabelle t = new LehrveranstaltungTabelle();
-		RaumTabelle rt = new RaumTabelle();
+//		LehrveranstaltungTabelle t = new LehrveranstaltungTabelle();
+//		RaumTabelle rt = new RaumTabelle();
 		
-		rt.zeigeTabelle();
+//		rt.zeigeTabelle();
 
 //		t.zeigeTabelle();
 //		guiForms.formsAnzeigen();

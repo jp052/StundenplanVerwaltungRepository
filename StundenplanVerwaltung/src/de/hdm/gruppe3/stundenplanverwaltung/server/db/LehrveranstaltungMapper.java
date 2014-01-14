@@ -56,45 +56,17 @@ public class LehrveranstaltungMapper {
 
 			    try {
 			      Statement stmt = con.createStatement();
-
-//			      /*
-//			       * Zunächst schauen wir nach, welches der momentan höchste
-//			       * Primärschlüsselwert ist.
-//			       */
-//			      ResultSet rs = stmt.executeQuery("SELECT MAX(lv) AS lvxlv "
-//			          + "FROM lv ");
-	//
-//			      // Wenn wir etwas zurückerhalten, kann dies nur einzeilig sein
-//			      if (rs.next()) {
-//			        /*
-//			         * a erhält den bisher lvxlvozentlen, nun um 1 inkrementierten
-//			         * Primärschlüssel.
-//			         */
-//			        m.setID(rs.getInt("lvxlv") + 1);
-	//
-//			        stmt = con.createStatement();
-
-			        // Jetzt erst erfolgt die tatsächliche Einfügeoperation
+			      
 			      String sql = "INSERT INTO Lehrveranstaltung (LVNr, Bezeichnung, Umfang, Semester, PersonalNr) " + "VALUES ( "
 				        	+ "NULL," + "\"" + lv.getBezeichnung() + "\"," + lv.getUmfang() + "," + lv.getSemester() + "," + lv.getDozent().getId() +")";
 			      
 			      stmt.executeUpdate(sql);
-			      //}
+			      
 			    }
 			    catch (SQLException e2) {
 			      e2.printStackTrace();
 			    } 
 
-			    /*
-			     * Rückgabe, des evtl. korrigierten Accounts.
-			     * 
-			     * HINWEIS: Da in Java nur Referenzen auf Objekte und keine physischen
-			     * Objekte übergeben werden, wäre die Anpassung des Lehrveranstaltung-Objekts auch
-			     * ohne diese explizite Rückgabe au�erhalb dieser Methode sichtbar. Die
-			     * explizite Rückgabe von a ist eher ein Stilmittel, um zu signalisieren,
-		 * ist eher ein Stilmittel, um zu signalisieren, dass sich das Objekt
-			     * dass sich das Objekt evtl. im Laufe der Methode verändert hat.
-			     */
 			    return lv;
 			
 		}
@@ -176,11 +148,11 @@ public class LehrveranstaltungMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 		      
-		      //Die Query die ausgef�hrt werden soll
-		      //Besser w�re kein Join zu machen, sondern den DozentMapper zu verwenden.
+		      //Die Query die ausgef�hrt werden soll
+		      //Besser w�re kein Join zu machen, sondern den DozentMapper zu verwenden.
 		      String sql = "SELECT * FROM Lehrveranstaltung INNER JOIN Dozent On Lehrveranstaltung.PersonalNr=Dozent.PersonalNr" + " WHERE LVNr=" + lvId;
 
-		      //Query ausf�hren
+		      //Query ausf�hren
 		      ResultSet rs = stmt.executeQuery(sql);
 
 		      if (rs.next()) {
@@ -221,7 +193,7 @@ public class LehrveranstaltungMapper {
 			ResultSet rs = stmt
 					.executeQuery("SELECT Lehrveranstaltung.LVNr, Lehrveranstaltung.Bezeichnung, Lehrveranstaltung.Umfang, Lehrveranstaltung.Semester, Dozent.nachname FROM Lehrveranstaltung INNER JOIN Dozent ON Lehrveranstaltung.personalNr = Dozent.personalNr ");
 
-			// F�r jeden Eintrag im Suchergebnis wird nun ein Account-Objekt
+			// F�r jeden Eintrag im Suchergebnis wird nun ein Account-Objekt
 			// erstellt.
 			while (rs.next()) {
 				Lehrveranstaltung lv = new Lehrveranstaltung();

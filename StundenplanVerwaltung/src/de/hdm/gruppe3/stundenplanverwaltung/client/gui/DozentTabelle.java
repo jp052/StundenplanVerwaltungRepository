@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import de.hdm.gruppe3.stundenplanverwaltung.shared.ConstantsStdpln;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungServiceAsync;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Dozent;
@@ -59,7 +60,7 @@ public class DozentTabelle {
 				for (final Dozent d : result) {
 					Button l = new Button("X");
 					Button b = new Button("Speichern");
-					Button a = new Button("�ndern");
+					Button a = new Button(ConstantsStdpln.AENDERN);
 
 					final TextBox tbN = new TextBox();
 					final TextBox tbV = new TextBox();

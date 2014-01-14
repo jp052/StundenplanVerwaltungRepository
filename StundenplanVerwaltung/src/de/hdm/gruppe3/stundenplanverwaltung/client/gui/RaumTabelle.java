@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import de.hdm.gruppe3.stundenplanverwaltung.shared.ConstantsStdpln;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungServiceAsync;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Dozent;
@@ -60,7 +61,7 @@ public class RaumTabelle {
 				for (final Raum r : result) {
 					Button l = new Button("X");
 					Button b = new Button("Speichern");
-//					Button a = new Button("�ndern");
+//					Button a = new Button(StdplnConstants.AENDERN);
 
 					final TextBox tbN = new TextBox();
 					final TextBox tbV = new TextBox();

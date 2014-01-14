@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import de.hdm.gruppe3.stundenplanverwaltung.shared.ConstantsStdpln;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungServiceAsync;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.*;
@@ -31,7 +32,7 @@ public class RaumForm extends VerticalPanel{
 	StundenplanVerwaltungTreeViewModel treeModel = null;
 
 	/**
-	 * Formular für die Darstellung des selektierten Kunden
+	 * Formular fï¿½r die Darstellung des selektierten Kunden
 	 */
 	public RaumForm() {
 		Grid customerGrid = new Grid(3, 2);
@@ -41,7 +42,7 @@ public class RaumForm extends VerticalPanel{
 		customerGrid.setWidget(0, 0, bezeichnungLabel);
 		customerGrid.setWidget(0, 1, bezeichnungTextBox);
 
-		Label kapazitaetLabel = new Label("Kapazität");
+		Label kapazitaetLabel = new Label("KapazitÃ¤t");
 		customerGrid.setWidget(1, 0, kapazitaetLabel);
 		customerGrid.setWidget(1, 1, kapazitaetTextBox);
 
@@ -52,7 +53,7 @@ public class RaumForm extends VerticalPanel{
 		HorizontalPanel raumButtonsPanel = new HorizontalPanel();
 		this.add(raumButtonsPanel);
 
-		Button modifizierenButton = new Button("Ändern");
+		Button modifizierenButton = new Button(ConstantsStdpln.AENDERN);
 		modifizierenButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				modifizierenSelectedRaum();
@@ -61,18 +62,18 @@ public class RaumForm extends VerticalPanel{
 		raumButtonsPanel.add(modifizierenButton);
 		
 		
-		Button loeschenButton = new Button("Löschen");
+		Button loeschenButton = new Button(ConstantsStdpln.LOESCHEN);
 		loeschenButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				//löst das löschen aus
+				//lï¿½st das lï¿½schen aus
 				loeschenSelectedRaum();
 			}
 		});
 		
 		raumButtonsPanel.add(loeschenButton);
 		
-		Button neuButton = new Button("Neu");
+		Button neuButton = new Button(ConstantsStdpln.NEU);
 		neuButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -126,7 +127,7 @@ public class RaumForm extends VerticalPanel{
 
 				@Override
 				public void onSuccess(Raum result) {
-					System.out.println("Raum geändert");
+					System.out.println("Raum geï¿½ndert");
 //					treeModel.updateDozent(shownDozent);
 					
 				}
@@ -148,7 +149,7 @@ public class RaumForm extends VerticalPanel{
 				@Override
 				public void onSuccess(Raum result) {
 					if (result != null) {
-						System.out.println("Raum gelöscht");
+						System.out.println("Raum gelï¿½scht");
 						setSelected(null);
 						//TODO: Liste oder Tree aktualisieren
 					}

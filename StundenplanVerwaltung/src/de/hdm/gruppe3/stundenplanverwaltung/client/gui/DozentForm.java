@@ -11,8 +11,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
-import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungServiceAsync;
+import de.hdm.gruppe3.stundenplanverwaltung.shared.*;
+
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Dozent;
 
 
@@ -31,7 +31,7 @@ public class DozentForm extends VerticalPanel{
 	StundenplanVerwaltungTreeViewModel treeModel = null;
 
 	/**
-	 * Formular für die Darstellung des selektierten Kunden
+	 * Formular fï¿½r die Darstellung des selektierten Kunden
 	 */
 	public DozentForm() {
 		Grid customerGrid = new Grid(3, 2);
@@ -52,7 +52,7 @@ public class DozentForm extends VerticalPanel{
 		HorizontalPanel dozentButtonsPanel = new HorizontalPanel();
 		this.add(dozentButtonsPanel);
 
-		Button modifizierenButton = new Button("Ändern");
+		Button modifizierenButton = new Button(ConstantsStdpln.AENDERN);
 		modifizierenButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				modifizierenSelectedDozent();
@@ -61,7 +61,7 @@ public class DozentForm extends VerticalPanel{
 		dozentButtonsPanel.add(modifizierenButton);
 		
 		
-		Button loeschenButton = new Button("Löschen");
+		Button loeschenButton = new Button(ConstantsStdpln.LOESCHEN);
 		loeschenButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -71,7 +71,7 @@ public class DozentForm extends VerticalPanel{
 		
 		dozentButtonsPanel.add(loeschenButton);
 		
-		Button neuButton = new Button("Neu");
+		Button neuButton = new Button(ConstantsStdpln.NEU);
 		neuButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -123,7 +123,7 @@ public class DozentForm extends VerticalPanel{
 
 				@Override
 				public void onSuccess(Dozent result) {
-					System.out.println("Dozent geändert");
+					System.out.println("Dozent geï¿½ndert");
 //					treeModel.updateDozent(shownDozent);
 					
 				}
@@ -148,7 +148,7 @@ public class DozentForm extends VerticalPanel{
 		@Override
 		public void onSuccess(Dozent result) {
 			if (dozent != null) {
-				System.out.println("Dozent gelöscht");
+				System.out.println("Dozent gelï¿½scht");
 				setSelected(null);
 //				treeModel.loeschenDozent(dozent);
 			}
