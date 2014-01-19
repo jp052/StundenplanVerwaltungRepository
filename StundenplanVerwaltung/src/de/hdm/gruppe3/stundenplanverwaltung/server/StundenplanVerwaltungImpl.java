@@ -10,6 +10,7 @@ import java.util.Vector;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.hdm.gruppe3.stundenplanverwaltung.server.db.*;
+import de.hdm.gruppe3.stundenplanverwaltung.shared.RaumBelegtException;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Dozent;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.LVDurchfuehrung;
@@ -253,17 +254,43 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 		return dMapper.findeName (name);
 		}
 	
-	//Methoden LVDurchf�hrung
+	/**
+	 * Prüft zuerst ob der angegbene Raum verfügbar ist, legt den Zeitslot an und dann die Durchführung.
+	 */
 	@Override
-	public LVDurchfuehrung anlegenDurchfuehrung (int svNr, int raumNr, int lvNr, Zeitslot z){
-
-		return dfMapper.anlegen(svNr, raumNr, lvNr, z);
+	public LVDurchfuehrung anlegenDurchfuehrung (int svId, int raumId, int lvId, Zeitslot zeitslot) throws Exception {
+		//Erst prüfen ob der Raum zu dem Zeitunkt verfügbar ist
+		boolean isVerfuegbar = zMapper.checkVerfuegbarkeit(zeitslot, raumId);
+		
+		//Wenn isVerfuegbar nicht true ist, dann abbrechen und null zurückgeben
+		if(!isVerfuegbar) {
+			return null;
 		}
-
+		
+		//Den übergebenen Zeitslot wird mit dem dann angelegten überschrieben. Der Übergebene hat bis hierher noch keine Id.
+		//Es wird auch noch weitere Überprüfungslogik ausgeführt, um mehr zu sehen siehe innerhalt der anlegen Methode.
+		zeitslot = zMapper.anlegen(zeitslot);
+		return dfMapper.anlegen(svId, raumId, lvId, zeitslot);
+		}
+	
+	/**
+	 * Prüft zuerst ob der angegbene Raum verfügbar ist, legt den Zeitslot an und ändert dann die Durchführung.
+	 */
 	@Override
-	public LVDurchfuehrung modifizierenDurchfuehrung (int lvdNr, int svNr, int raumNr, int lvNr, int zeitNr){
-		return dfMapper.modifizieren(lvdNr, svNr, raumNr, lvNr, zeitNr);
+	public LVDurchfuehrung modifizierenDurchfuehrung(int lvdId, int svId, int raumId, int lvId, Zeitslot zeitslot) throws RaumBelegtException {
+		//Erst prüfen ob der Raum zu dem Zeitunkt verfügbar ist
+		boolean isVerfuegbar = zMapper.checkVerfuegbarkeit(zeitslot, raumId);
+		
+		//Wenn isVerfuegbar nicht true ist wird eine Ausnahme Fehler geworfen
+		if(!isVerfuegbar) {
+			return null;
 		}
+		
+		//Den übergebenen Zeitslot wird mit dem dann angelegten überschrieben. Der Übergebene hat bis hierher noch keine Id.
+		//Es wird auch noch weitere Überprüfungslogik ausgeführt, um mehr zu sehen siehe innerhalt der anlegen Methode.
+		zeitslot = zMapper.anlegen(zeitslot);
+		return dfMapper.modifizieren(lvdId, svId, raumId, lvId, zeitslot);
+	}
 		
 
 	@Override

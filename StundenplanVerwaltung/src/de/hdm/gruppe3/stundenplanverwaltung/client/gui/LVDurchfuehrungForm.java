@@ -3,20 +3,26 @@ package de.hdm.gruppe3.stundenplanverwaltung.client.gui;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import sun.awt.CausedFocusEvent.Cause;
+
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DecoratedPopupPanel;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.gruppe3.stundenplanverwaltung.client.ClientsideSettings;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.ConstantsStdpln;
+import de.hdm.gruppe3.stundenplanverwaltung.shared.RaumBelegtException;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungServiceAsync;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.*;
@@ -35,7 +41,7 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 	ListBox lbEndzeit = new ListBox();
 	ListBox lbWochentag = new ListBox();
 	
-	Label idValueLabel = new Label();
+	Label lbIdValue = new Label();
 
 	StundenplanVerwaltungServiceAsync stundenplanVerwaltung = GWT.create(StundenplanVerwaltungService.class);
 	LVDurchfuehrung selectedLVDurchfuehrung = null;
@@ -80,7 +86,7 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 
 		Label idLabel = new Label("ID");
 		customerGrid.setWidget(4, 0, idLabel);
-		customerGrid.setWidget(4, 1, idValueLabel);
+		customerGrid.setWidget(4, 1, lbIdValue);
 
 		HorizontalPanel hPanelLVDruchfuehrungButtons = new HorizontalPanel();
 		this.add(hPanelLVDruchfuehrungButtons);
@@ -256,6 +262,7 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 			lbWochentag.setSelectedIndex(3);
 			lbRaum.setSelectedIndex(2);
 			lbAnfangszeit.setSelectedIndex(4);
+			lbIdValue.setText(String.valueOf(selectedLVDurchfuehrung.getId()));
 //			lbLehrveranstatlung.setSelectedIndex(selectedLVDurchfuehrung.getLehrveranstaltung().getId());
 //			lbLehrveranstaltung.setSelectedIndex(1);
 //			lbRaum.setSelectedIndex(1);
@@ -274,65 +281,62 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 	}
 	
 	public void modifizierenSelectedLVDurchfuehrung() {
-//		if (this.selectedLVDurchfuehrung!=null){
-//			//Die ausgew�hlten Id des gew�hlten Elementes ausw�hlen und am ende and die entsprechende Async Methode schicken.
-//			int zeitNr = Integer.valueOf(lbZ.getValue(lbLehrveranstatlung.getSelectedIndex()));
-//			
-//			int lvNr = Integer.valueOf(lbLehrveranstatlung.getValue(lbLehrveranstatlung.getSelectedIndex()));
-//			
-//			int
-//			
-//			selectedLVDurchfuehrung.setLehrveranstaltung(lv);
-//			//String in Integer umwandeln
-//			selectedLVDurchfuehrung.setSemester(Integer.valueOf(lbRaum.getText()));
-//			selectedLVDurchfuehrung.setUmfang(Integer.valueOf(lbSemesterverband.getText()));
-//			
-//			//Dozent Object das nur die Id enth�lt, mehr ist nicht vorhanden und auch nicht n�tig.
-//			Dozent d = new Dozent();
-//			int dozentId = Integer.valueOf(lbZeitslotBis.getValue(lbZeitslotBis.getSelectedIndex()));
-//			d.setId(dozentId);
-//			
-//			selectedLVDurchfuehrung.setDozent(d);
-//			//Ruft Serverseitige Methode auf
-//			stundenplanVerwaltung.modifizierenLehrveranstaltung(selectedLVDurchfuehrung, new AsyncCallback<Lehrveranstaltung>() {
-//
-//				@Override
-//				public void onFailure(Throwable caught) {
-//					// TODO Auto-generated method stub
-//					
-//				}
-//
-//				@Override
-//				public void onSuccess(Lehrveranstaltung result) {
-//					System.out.println("Lehrveranstaltung ge�ndert");
-////					treeModel.updateDozent(shownDozent);
-//					
-//				}
-//			});
-//		}
+		//Die ausgew�hlten Id des gew�hlten Elementes ausw�hlen und am ende and die entsprechende Async Methode schicken.
+		
+		//Werte f�r Zeitslot Objekt aus Listbox auslesen
+		int anfangsZeit = Integer.valueOf(lbAnfangszeit.getValue(lbAnfangszeit.getSelectedIndex()));
+		int endZeit = Integer.valueOf(lbEndzeit.getValue(lbEndzeit.getSelectedIndex()));
+		String wochentag = lbWochentag.getItemText(lbWochentag.getSelectedIndex());
+		
+		//Zeitslot Objekt mit aus der ListBox gelesenen Werten f�llen, die id fehlt und wird in den mapper emittelt.
+		Zeitslot zeitslot = new Zeitslot();
+		zeitslot.setAnfangszeit(anfangsZeit);
+		zeitslot.setEndzeit(endZeit);
+		zeitslot.setWochentag(wochentag);
+		
+		//Wert der Durchführungs Id auslsen
+		int lvdId = Integer.valueOf(lbIdValue.getText());
+		//Wert f�r Semesterverband auslsen
+		int svId = Integer.valueOf(lbSemesterverband.getValue(lbSemesterverband.getSelectedIndex()));
+		
+		//Wert f�r Raum auslsen
+		int raumId = Integer.valueOf(lbRaum.getValue(lbRaum.getSelectedIndex()));
+		
+		//Wert f�r Lehrveranstaltung auslsen
+		int lvId = Integer.valueOf(lbLehrveranstaltung.getValue(lbLehrveranstaltung.getSelectedIndex()));
+		
+		
+		//Ruft Serverseitige Methode auf
+		stundenplanVerwaltung.modifizierenDurchfuehrung(lvdId, svId, raumId, lvId, zeitslot, new AsyncCallback<LVDurchfuehrung>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub				
+			}
+
+			@Override
+			public void onSuccess(LVDurchfuehrung result) {
+				System.out.println("Geändert");			
+			}	
+		});
 	}
 	
 	public void loeschenSelectedLVDurchfuehrung() {
-//		if(this.selectedLVDurchfuehrung != null) {
-//			//Ruft Serverseitige Methode auf
-//			stundenplanVerwaltung.loeschenLehrveranstaltung(selectedLVDurchfuehrung, new AsyncCallback<Lehrveranstaltung>() {
-//
-//				@Override
-//				public void onFailure(Throwable caught) {
-//					// TODO Auto-generated method stub
-//					
-//				}
-//
-//				@Override
-//				public void onSuccess(Lehrveranstaltung result) {
-//					if (result != null) {
-//						System.out.println("Lehrveranstaltung gel�scht");
-//						setSelected(null);
-//						//TODO: Liste oder Tree aktualisieren
-//					}					
-//				}				
-//			});
-//		}
+		if(this.selectedLVDurchfuehrung != null) {
+			//Ruft Serverseitige Methode auf
+			stundenplanVerwaltung.loeschenDurchfuehrung(selectedLVDurchfuehrung, new AsyncCallback<LVDurchfuehrung>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					// TODO Auto-generated method stub
+				}
+
+				@Override
+				public void onSuccess(LVDurchfuehrung result) {
+					System.out.println("Gelöscht");			
+				}				
+			});
+		}
 	}
 	
 	public void anlegenLVDurchfuehrung() {
@@ -343,7 +347,7 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 		int endZeit = Integer.valueOf(lbEndzeit.getValue(lbEndzeit.getSelectedIndex()));
 		String wochentag = lbWochentag.getItemText(lbWochentag.getSelectedIndex());
 		
-		//Zeitslot Objekt mit aus der ListBox gelesenen Werten f�llen.
+		//Zeitslot Objekt mit aus der ListBox gelesenen Werten f�llen, die id fehlt und wird in den mapper emittelt.
 		Zeitslot zeitslot = new Zeitslot();
 		zeitslot.setAnfangszeit(anfangsZeit);
 		zeitslot.setEndzeit(endZeit);

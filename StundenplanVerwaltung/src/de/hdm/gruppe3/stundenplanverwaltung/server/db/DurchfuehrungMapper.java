@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import de.hdm.gruppe3.stundenplanverwaltung.shared.RaumBelegtException;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.*;
 
 public class DurchfuehrungMapper {
@@ -44,17 +45,17 @@ public class DurchfuehrungMapper {
 	 * 
 	 * @param lvd
 	 * @return LVDurchfuehrung
+	 * @throws RaumBelegtException 
 	 */
-	public LVDurchfuehrung anlegen(int svId, int raumId, int lvId, Zeitslot z) {
+	public LVDurchfuehrung anlegen(int svId, int raumId, int lvId, Zeitslot zeitslot) throws RaumBelegtException {			
 		Connection con = DBVerbindung.connection();
 		
-		LVDurchfuehrung lvd = new LVDurchfuehrung();
-		
+		LVDurchfuehrung lvd = new LVDurchfuehrung();	
 		try {
 			Statement stmt = con.createStatement();
 			
 			//TODO Zeitslot zuerst anlgend und die Id auslesen
-			String sql = "INSERT INTO Durchfuehrung (ZeitNr, SVNr, RaumNr, LVNr) "+ "VALUES (" + 1 + "," + svId+ "," + raumId + "," + lvId + ")";
+			String sql = "INSERT INTO Durchfuehrung (ZeitNr, SVNr, RaumNr, LVNr) "+ "VALUES (" + zeitslot.getId() + "," + svId+ "," + raumId + "," + lvId + ")";
 
 			// Ausf�hren des SQL Statement
 			stmt.executeUpdate(sql);
@@ -69,7 +70,7 @@ public class DurchfuehrungMapper {
 
 	}
 
-	public LVDurchfuehrung modifizieren(int lvdNr, int svNr, int raumNr, int lvNr, int zeitNr) {
+	public LVDurchfuehrung modifizieren(int lvdNr, int svNr, int raumNr, int lvNr, Zeitslot zeitslot) {
 		// DB-Verbindung holen
 		Connection con = DBVerbindung.connection();
 		
@@ -79,8 +80,8 @@ public class DurchfuehrungMapper {
 			Statement stmt = con.createStatement();
 
 			// Die Query die ausgef�hrt werden soll.
-			String sql = "UPDATE LVDurchfuerhung SET " +				
-					"ZeitNr="	+ zeitNr + 
+			String sql = "UPDATE Durchfuehrung SET " +				
+					"ZeitNr="	+ zeitslot.getId() + 
 					", SVNr=" + svNr + 
 					", RaumNr="	+ raumNr + 
 					", LVNr=" + lvNr + 
@@ -107,7 +108,7 @@ public class DurchfuehrungMapper {
 			Statement stmt = con.createStatement();
 
 			// Die SQL Query die ausgef�hrt werden soll.
-			String sql = "DELETE FROM LVDurchfuerhung " + "WHERE LVDNr="
+			String sql = "DELETE FROM Durchfuehrung " + "WHERE LVDNr="
 					+ lvd.getId();
 
 			// Die SQL Query ausf�hren.

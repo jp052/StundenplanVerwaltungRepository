@@ -76,10 +76,10 @@ public interface StundenplanVerwaltungService extends RemoteService {
 
 
 	LVDurchfuehrung anlegenDurchfuehrung(int svId, int raumId, int lvId,
-			Zeitslot zeitslot);
+			Zeitslot zeitslot) throws Exception;
 
-	LVDurchfuehrung modifizierenDurchfuehrung(int lvdNr, int svNr, int raumNr,
-			int lvNr, int zeitNr);
+	LVDurchfuehrung modifizierenDurchfuehrung(int lvdId, int svId, int raumId, int lvId,
+			Zeitslot zeitslot) throws RaumBelegtException;
 
 	LVDurchfuehrung loeschenDurchfuehrung(LVDurchfuehrung d);
 
