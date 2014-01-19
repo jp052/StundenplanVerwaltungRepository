@@ -311,12 +311,24 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub				
+				//Unbekannte Fehlermeldung
+				String message = caught.getMessage();
+				
+				//Fehlermedlung wenn der Raum belegt ist
+				if(caught instanceof RaumBelegtException) {
+					message = ((RaumBelegtException)caught).getFehlerMessage();
+				}
+				//Das Popup Panel mit der Nachricht
+				UserInformation.popup(message);				
 			}
 
 			@Override
 			public void onSuccess(LVDurchfuehrung result) {
-				System.out.println("Geändert");			
+				if (result != null) {
+					UserInformation.popup("Durchführung geändert: " + result.getId());
+				} else {
+					UserInformation.popup("Durchführung geändert");
+				}		
 			}	
 		});
 	}
@@ -328,12 +340,15 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 
 				@Override
 				public void onFailure(Throwable caught) {
-					// TODO Auto-generated method stub
+					//Unbekannte Fehlermeldung
+					String message = caught.getMessage();
+					//Das Popup Panel mit der Nachricht
+					UserInformation.popup(message);
 				}
 
 				@Override
 				public void onSuccess(LVDurchfuehrung result) {
-					System.out.println("Gelöscht");			
+					UserInformation.popup("Durchführung gelöscht");				
 				}				
 			});
 		}
@@ -368,16 +383,24 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 
 			@Override
 			public void onFailure(Throwable caught) {
-//				ClientsideSettings.getLogger().severe("Lehrveranstaltung anlegen Fehler");	
+				//Unbekannte Fehlermeldung
+				String message = caught.getMessage();
+				
+				//Fehlermedlung wenn der Raum belegt ist
+				if(caught instanceof RaumBelegtException) {
+					message = ((RaumBelegtException)caught).getFehlerMessage();
+				}
+				//Das Popup Panel mit der Nachricht
+				UserInformation.popup(message);
 				
 			}
 
 			@Override
 			public void onSuccess(LVDurchfuehrung result) {
 				if (result != null) {
-					System.out.println("LVDurchfuehrung angelegt");
-					//TODO: Liste oder Tree aktualisieren
+					UserInformation.popup("Durchführung angelegt: " + result.getId());
 				}
+				UserInformation.popup("Durchführung angelegt");
 			}
 			
 		});

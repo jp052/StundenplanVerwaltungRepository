@@ -264,7 +264,7 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 		
 		//Wenn isVerfuegbar nicht true ist, dann abbrechen und null zurückgeben
 		if(!isVerfuegbar) {
-			return null;
+			throw new RaumBelegtException();
 		}
 		
 		//Den übergebenen Zeitslot wird mit dem dann angelegten überschrieben. Der Übergebene hat bis hierher noch keine Id.
@@ -283,7 +283,7 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 		
 		//Wenn isVerfuegbar nicht true ist wird eine Ausnahme Fehler geworfen
 		if(!isVerfuegbar) {
-			return null;
+			throw new RaumBelegtException();
 		}
 		
 		//Den übergebenen Zeitslot wird mit dem dann angelegten überschrieben. Der Übergebene hat bis hierher noch keine Id.
