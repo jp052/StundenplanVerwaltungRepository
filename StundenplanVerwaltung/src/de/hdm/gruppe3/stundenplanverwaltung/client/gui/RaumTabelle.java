@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 import de.hdm.gruppe3.stundenplanverwaltung.shared.ConstantsStdpln;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
@@ -36,7 +37,7 @@ public class RaumTabelle extends VerticalPanel{
 	
 	public RaumTabelle(){}
 
-	public void zeigeTabelle() {
+	public Widget zeigeTabelle() {
 
 		final FlexTable t = new FlexTable();
 		//
@@ -59,9 +60,9 @@ public class RaumTabelle extends VerticalPanel{
 						+ " Eintraege gefunden");
 				int i = 1;
 				for (final Raum r : result) {
-					Button l = new Button("X");
-					Button b = new Button("Speichern");
-//					Button a = new Button(StdplnConstants.AENDERN);
+//					Button l = new Button("X");
+//					Button b = new Button("Speichern");
+					Button a = new Button(ConstantsStdpln.AENDERN);
 
 					final TextBox tbN = new TextBox();
 					final TextBox tbV = new TextBox();
@@ -92,88 +93,85 @@ public class RaumTabelle extends VerticalPanel{
 //					t.setWidget(i, 3, lKapa);
 //					t.setWidget(i, 4, lDozent);
 
-					t.setWidget(i, 6, l);
+					t.setWidget(i, 6, a);
 //					t.setWidget(i, 7, b);
 //					t.setWidget(i, 8, a); 
 					// ------------------------------------------------------------------------------------
 					// L�schen Button
-					l.addClickHandler(new ClickHandler() {
-
-						@Override
-						public void onClick(ClickEvent event) {
-							// TODO hier bei der "loeschenDozent" Methode
-							// br�uchte man evt. ein Int statt Object im ersten
-							// Argument!
-							stundenplanVerwaltung.loeschenRaum(r,
-									new AsyncCallback<Raum>() {
-
-										@Override
-										public void onFailure(Throwable caught) {
-
-											Window.alert("Fehler beim loeschen");
-											Window.Location.reload();
-										}
-
-										@Override
-										public void onSuccess(Raum result) {
-
-											t.clear();
-
-											Window.alert("Loeschen erfolgreich!");
-											Window.Location.reload();
-										}
-									});
-						}
-					});
-
-					// Bearbeiten Button
-					b.addClickHandler(new ClickHandler() {
-
-						@Override
-						public void onClick(ClickEvent event) {
-							// TODO k�nnte mehr Argumente als ein Objekt
-							// brauchen.
-							
-//							stundenplanVerwaltung.modifizierenRaum(r,
-//									new AsyncCallback<Lehrveranstaltung>() {
+//					l.addClickHandler(new ClickHandler() {
+//
+//						@Override
+//						public void onClick(ClickEvent event) {
+//							// TODO hier bei der "loeschenDozent" Methode
+//							// br�uchte man evt. ein Int statt Object im ersten
+//							// Argument!
+//							stundenplanVerwaltung.loeschenRaum(r,
+//									new AsyncCallback<Raum>() {
 //
 //										@Override
 //										public void onFailure(Throwable caught) {
-//											Window.alert("Fehler beim aendern "
-//													+ caught);
+//
+//											Window.alert("Fehler beim loeschen");
 //											Window.Location.reload();
 //										}
 //
 //										@Override
-//										public void onSuccess(Lehrveranstaltung result) {
+//										public void onSuccess(Raum result) {
 //
-//											Window.alert("Aendern erfolgreich! "
-//													+ tbN.getText()
-//													+ tbV.getText());
+//											t.clear();
+//
+//											Window.alert("Loeschen erfolgreich!");
 //											Window.Location.reload();
-//
 //										}
 //									});
-
-						}
-					});
-					
-					// TODO Label in Textfeld �ndern.
-//					a.addClickHandler(new ClickHandler() {
-//						
-//						@Override
-//						public void onClick(ClickEvent event) {
-//							// TODO Auto-generated method stub
-////							tbNBoolean = tbN.setReadOnly(true);
-////							tbVBoolean = tbV.setReadOnly(true);
-//							if( && ){
-//								
-//							}
-//							tbN.setReadOnly(false);
-//							tbV.setReadOnly(false);
-//							
 //						}
 //					});
+
+					// Bearbeiten Button
+//					b.addClickHandler(new ClickHandler() {
+//
+//						@Override
+//						public void onClick(ClickEvent event) {
+//							// TODO k�nnte mehr Argumente als ein Objekt
+//							// brauchen.
+//							
+////							stundenplanVerwaltung.modifizierenRaum(r,
+////									new AsyncCallback<Lehrveranstaltung>() {
+////
+////										@Override
+////										public void onFailure(Throwable caught) {
+////											Window.alert("Fehler beim aendern "
+////													+ caught);
+////											Window.Location.reload();
+////										}
+////
+////										@Override
+////										public void onSuccess(Lehrveranstaltung result) {
+////
+////											Window.alert("Aendern erfolgreich! "
+////													+ tbN.getText()
+////													+ tbV.getText());
+////											Window.Location.reload();
+////
+////										}
+////									});
+//
+//						}
+//					});
+					
+					// TODO Label in Textfeld �ndern.
+					a.addClickHandler(new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent event) {
+							RaumForm raumForm = new RaumForm();
+							raumForm.setSelected(r);
+							mainPanel.clear();
+							mainPanel.add(raumForm);
+							
+							
+						}
+					});
 					
 					i++;
 				}
@@ -184,8 +182,8 @@ public class RaumTabelle extends VerticalPanel{
 
 		);
 		mainPanel.add(t);
-//		return mainPanel;
-		 RootPanel.get("starter").add(mainPanel);
+		return mainPanel;
+//		 RootPanel.get("starter").add(mainPanel);
 
 		// return t;
 	}

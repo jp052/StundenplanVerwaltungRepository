@@ -120,7 +120,7 @@ public class StundenplanVerwaltungFrontend{
 				right.clear();
 				right.add(new HTML("<h3>" + "Raumliste" + "</h3>"));
 				RaumTabelle raumTabelle = new RaumTabelle();
-				right.add(raumTabelle);
+				right.add(raumTabelle.zeigeTabelle());
 			}
 		};		
 		
@@ -129,7 +129,7 @@ public class StundenplanVerwaltungFrontend{
 				right.clear();
 				right.add(new HTML("<h3>" + "Liste der Lehrveranstaltungen" + "</h3>"));
 				LehrveranstaltungTabelle lehrTabelle = new LehrveranstaltungTabelle();
-				right.add(lehrTabelle);
+				right.add(lehrTabelle.zeigeTabelle());
 			}
 		};
 		

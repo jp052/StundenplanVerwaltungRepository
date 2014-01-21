@@ -26,6 +26,11 @@ public class RaumForm extends VerticalPanel{
 	TextBox bezeichnungTextBox = new TextBox();
 	TextBox kapazitaetTextBox = new TextBox();
 	Label idValueLabel = new Label();
+	HorizontalPanel raumButtonsPanel = new HorizontalPanel();
+	Button modifizierenButton = new Button(ConstantsStdpln.AENDERN);
+	Button loeschenButton = new Button(ConstantsStdpln.LOESCHEN);
+	Button neuButton = new Button(ConstantsStdpln.NEU);
+
 
 	StundenplanVerwaltungServiceAsync stundenplanVerwaltung = GWT.create(StundenplanVerwaltungService.class);
 	Raum selectedRaum = null;
@@ -46,23 +51,23 @@ public class RaumForm extends VerticalPanel{
 		customerGrid.setWidget(1, 0, kapazitaetLabel);
 		customerGrid.setWidget(1, 1, kapazitaetTextBox);
 
-		Label idLabel = new Label("ID");
-		customerGrid.setWidget(2, 0, idLabel);
-		customerGrid.setWidget(2, 1, idValueLabel);
+		
+		
+		if(selectedRaum != null){
+			Label idLabel = new Label("ID");
+			customerGrid.setWidget(2, 0, idLabel);
+			customerGrid.setWidget(2, 1, idValueLabel);			
+		}
 
-		HorizontalPanel raumButtonsPanel = new HorizontalPanel();
 		this.add(raumButtonsPanel);
 
-		Button modifizierenButton = new Button(ConstantsStdpln.AENDERN);
 		modifizierenButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				modifizierenSelectedRaum();
 			}
 		});
-		raumButtonsPanel.add(modifizierenButton);
 		
 		
-		Button loeschenButton = new Button(ConstantsStdpln.LOESCHEN);
 		loeschenButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -71,9 +76,7 @@ public class RaumForm extends VerticalPanel{
 			}
 		});
 		
-		raumButtonsPanel.add(loeschenButton);
 		
-		Button neuButton = new Button(ConstantsStdpln.NEU);
 		neuButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -82,8 +85,11 @@ public class RaumForm extends VerticalPanel{
 			}
 		});
 		
-		raumButtonsPanel.add(neuButton);
+	showButtons();
+		
 	}
+
+	
 
 	public void setCatvm(StundenplanVerwaltungTreeViewModel treeModel) {
 		this.treeModel = treeModel;
@@ -105,10 +111,25 @@ public class RaumForm extends VerticalPanel{
 	public void setSelected(Raum r) {
 		if (r != null) {
 			selectedRaum = r;
+			showButtons();
 			setFields();
 		} else {
 			clearFields();
 		}
+	}
+	
+	private void showButtons() {
+		// Nur wenn Raum geändert wird, dann werden der modifizieren und
+		// löschen Button angezeigt
+		if (selectedRaum != null) {
+			raumButtonsPanel.remove(neuButton);
+			raumButtonsPanel.add(loeschenButton);
+			raumButtonsPanel.add(modifizierenButton);
+		}else {
+			raumButtonsPanel.add(neuButton);
+
+		}
+		
 	}
 	
 	public void modifizierenSelectedRaum() {
@@ -183,8 +204,5 @@ public class RaumForm extends VerticalPanel{
 		});
 		
 	}
-	
-
-	
 
 }

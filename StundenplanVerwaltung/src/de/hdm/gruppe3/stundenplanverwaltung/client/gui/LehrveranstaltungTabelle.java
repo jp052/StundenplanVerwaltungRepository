@@ -38,7 +38,7 @@ public class LehrveranstaltungTabelle extends VerticalPanel{
 	
 	public LehrveranstaltungTabelle(){}
 	
-	public void zeigeTabelle() {
+	public Widget zeigeTabelle() {
 
 		final FlexTable t = new FlexTable();
 		//
@@ -64,8 +64,8 @@ public class LehrveranstaltungTabelle extends VerticalPanel{
 						+ " Eintraege gefunden");
 				int i = 1;
 				for (final Lehrveranstaltung lv : result) {
-					Button l = new Button("X");
-					Button b = new Button("Speichern");
+//					Button l = new Button("X");
+//					Button b = new Button("Speichern");
 					Button a = new Button(ConstantsStdpln.AENDERN);
 
 					final TextBox tbN = new TextBox();
@@ -97,88 +97,83 @@ public class LehrveranstaltungTabelle extends VerticalPanel{
 					t.setWidget(i, 3, lUmfang);
 					t.setWidget(i, 4, lDozent);
 
-					t.setWidget(i, 6, l);
+					t.setWidget(i, 6, a);
 //					t.setWidget(i, 7, b);
-//					t.setWidget(i, 8, a); 
+//					t.setWidget(i, 8, l); 
 					// ------------------------------------------------------------------------------------
 					// L�schen Button
-					l.addClickHandler(new ClickHandler() {
-
-						@Override
-						public void onClick(ClickEvent event) {
-							// TODO hier bei der "loeschenDozent" Methode
-							// br�uchte man evt. ein Int statt Object im ersten
-							// Argument!
-							stundenplanVerwaltung.loeschenLehrveranstaltung(lv,
-									new AsyncCallback<Lehrveranstaltung>() {
-
-										@Override
-										public void onFailure(Throwable caught) {
-
-											Window.alert("Fehler beim loeschen");
-											Window.Location.reload();
-										}
-
-										@Override
-										public void onSuccess(Lehrveranstaltung result) {
-
-											t.clear();
-
-											Window.alert("Loeschen erfolgreich!");
-											Window.Location.reload();
-										}
-									});
-						}
-					});
-
-					// Bearbeiten Button
-					b.addClickHandler(new ClickHandler() {
-
-						@Override
-						public void onClick(ClickEvent event) {
-							// TODO k�nnte mehr Argumente als ein Objekt
-							// brauchen.
-							
-							stundenplanVerwaltung.modifizierenLehrveranstaltung(lv,
-									new AsyncCallback<Lehrveranstaltung>() {
-
-										@Override
-										public void onFailure(Throwable caught) {
-											Window.alert("Fehler beim aendern "
-													+ caught);
-											Window.Location.reload();
-										}
-
-										@Override
-										public void onSuccess(Lehrveranstaltung result) {
-
-											Window.alert("Aendern erfolgreich! "
-													+ tbN.getText()
-													+ tbV.getText());
-											Window.Location.reload();
-
-										}
-									});
-
-						}
-					});
-					
-					// TODO Label in Textfeld �ndern.
-//					a.addClickHandler(new ClickHandler() {
-//						
+//					l.addClickHandler(new ClickHandler() {
+//
 //						@Override
 //						public void onClick(ClickEvent event) {
-//							// TODO Auto-generated method stub
-////							tbNBoolean = tbN.setReadOnly(true);
-////							tbVBoolean = tbV.setReadOnly(true);
-//							if( && ){
-//								
-//							}
-//							tbN.setReadOnly(false);
-//							tbV.setReadOnly(false);
-//							
+//							// TODO hier bei der "loeschenDozent" Methode
+//							// br�uchte man evt. ein Int statt Object im ersten
+//							// Argument!
+//							stundenplanVerwaltung.loeschenLehrveranstaltung(lv,
+//									new AsyncCallback<Lehrveranstaltung>() {
+//
+//										@Override
+//										public void onFailure(Throwable caught) {
+//
+//											Window.alert("Fehler beim loeschen");
+//											Window.Location.reload();
+//										}
+//
+//										@Override
+//										public void onSuccess(Lehrveranstaltung result) {
+//
+//											t.clear();
+//
+//											Window.alert("Loeschen erfolgreich!");
+//											Window.Location.reload();
+//										}
+//									});
 //						}
 //					});
+
+					// Bearbeiten Button
+//					b.addClickHandler(new ClickHandler() {
+//
+//						@Override
+//						public void onClick(ClickEvent event) {
+//							// TODO k�nnte mehr Argumente als ein Objekt
+//							// brauchen.
+//							
+//							stundenplanVerwaltung.modifizierenLehrveranstaltung(lv,
+//									new AsyncCallback<Lehrveranstaltung>() {
+//
+//										@Override
+//										public void onFailure(Throwable caught) {
+//											Window.alert("Fehler beim aendern "
+//													+ caught);
+//											Window.Location.reload();
+//										}
+//
+//										@Override
+//										public void onSuccess(Lehrveranstaltung result) {
+//
+//											Window.alert("Aendern erfolgreich! "
+//													+ tbN.getText()
+//													+ tbV.getText());
+//											Window.Location.reload();
+//
+//										}
+//									});
+//
+//						}
+//					});
+					
+					// TODO Label in Textfeld �ndern.
+					a.addClickHandler(new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent event) {
+							LehrveranstaltungForm lehrveranstaltungForm = new LehrveranstaltungForm();
+							lehrveranstaltungForm.setSelected(lv);
+							mainPanel.clear();
+							mainPanel.add(lehrveranstaltungForm);							
+						}
+					});
 					
 					i++;
 				}
@@ -189,8 +184,8 @@ public class LehrveranstaltungTabelle extends VerticalPanel{
 
 		);
 		mainPanel.add(t);
-//		return mainPanel;
-		 RootPanel.get("starter").add(mainPanel);
+		return mainPanel;
+//		 RootPanel.get("starter").add(mainPanel);
 
 		// return t;
 	}
