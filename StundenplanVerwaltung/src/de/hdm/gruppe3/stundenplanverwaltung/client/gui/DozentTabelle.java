@@ -58,8 +58,7 @@ public class DozentTabelle extends VerticalPanel{
 						+ " Eintraege gefunden");
 				int i = 1;
 				for (final Dozent d : result) {
-					Button l = new Button("X");
-					Button b = new Button("Speichern");
+					
 					Button a = new Button(ConstantsStdpln.AENDERN);
 
 					final TextBox tbN = new TextBox();
@@ -82,88 +81,89 @@ public class DozentTabelle extends VerticalPanel{
 					t.setWidget(i, 1, lN);
 					t.setWidget(i, 2, lV);
 
-					t.setWidget(i, 6, l);
-					t.setWidget(i, 7, b);
-//					t.setWidget(i, 8, a); 
-					// ------------------------------------------------------------------------------------
-					// L�schen Button
-					l.addClickHandler(new ClickHandler() {
-
-						@Override
-						public void onClick(ClickEvent event) {
-							// TODO hier bei der "loeschenDozent" Methode
-							// br�uchte man evt. ein Int statt Object im ersten
-							// Argument!
-							stundenplanVerwaltung.loeschenDozent(d,
-									new AsyncCallback<Dozent>() {
-
-										@Override
-										public void onFailure(Throwable caught) {
-
-											Window.alert("Fehler beim loeschen");
-											Window.Location.reload();
-										}
-
-										@Override
-										public void onSuccess(Dozent result) {
-
-											t.clear();
-
-											Window.alert("Loeschen erfolgreich!");
-											Window.Location.reload();
-										}
-									});
-						}
-					});
-
-					// Bearbeiten Button
-					b.addClickHandler(new ClickHandler() {
-
-						@Override
-						public void onClick(ClickEvent event) {
-							// TODO k�nnte mehr Argumente als ein Objekt
-							// brauchen.
-							
-							stundenplanVerwaltung.modifizierenDozent(d,
-									new AsyncCallback<Dozent>() {
-
-										@Override
-										public void onFailure(Throwable caught) {
-											Window.alert("Fehler beim aendern "
-													+ caught);
-											Window.Location.reload();
-										}
-
-										@Override
-										public void onSuccess(Dozent result) {
-
-											Window.alert("Aendern erfolgreich! "
-													+ tbN.getText()
-													+ tbV.getText());
-											Window.Location.reload();
-
-										}
-									});
-
-						}
-					});
+					t.setWidget(i, 6, a);
+//					t.setWidget(i, 7, b);
+//					t.setWidget(i, 8, a); #
 					
 					// TODO Label in Textfeld �ndern.
-//					a.addClickHandler(new ClickHandler() {
-//						
+					a.addClickHandler(new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent event) {
+							DozentForm dozForm = new DozentForm();
+							dozForm.setSelected(d);
+							mainPanel.clear();
+							mainPanel.add(dozForm);
+							
+							
+						}
+							
+					});
+					
+					// ------------------------------------------------------------------------------------
+					// L�schen Button
+//					l.addClickHandler(new ClickHandler() {
+//
 //						@Override
 //						public void onClick(ClickEvent event) {
-//							// TODO Auto-generated method stub
-////							tbNBoolean = tbN.setReadOnly(true);
-////							tbVBoolean = tbV.setReadOnly(true);
-//							if( && ){
-//								
-//							}
-//							tbN.setReadOnly(false);
-//							tbV.setReadOnly(false);
-//							
+//							// TODO hier bei der "loeschenDozent" Methode
+//							// br�uchte man evt. ein Int statt Object im ersten
+//							// Argument!
+//							stundenplanVerwaltung.loeschenDozent(d,
+//									new AsyncCallback<Dozent>() {
+//
+//										@Override
+//										public void onFailure(Throwable caught) {
+//
+//											Window.alert("Fehler beim loeschen");
+//											Window.Location.reload();
+//										}
+//
+//										@Override
+//										public void onSuccess(Dozent result) {
+//
+//											t.clear();
+//
+//											Window.alert("Loeschen erfolgreich!");
+//											Window.Location.reload();
+//										}
+//									});
 //						}
 //					});
+//
+//					// Bearbeiten Button
+//					b.addClickHandler(new ClickHandler() {
+//
+//						@Override
+//						public void onClick(ClickEvent event) {
+//							// TODO k�nnte mehr Argumente als ein Objekt
+//							// brauchen.
+//							
+//							stundenplanVerwaltung.modifizierenDozent(d,
+//									new AsyncCallback<Dozent>() {
+//
+//										@Override
+//										public void onFailure(Throwable caught) {
+//											Window.alert("Fehler beim aendern "
+//													+ caught);
+//											Window.Location.reload();
+//										}
+//
+//										@Override
+//										public void onSuccess(Dozent result) {
+//
+//											Window.alert("Aendern erfolgreich! "
+//													+ tbN.getText()
+//													+ tbV.getText());
+//											Window.Location.reload();
+//
+//										}
+//									});
+//
+//						}
+//					});
+					
+
 					
 					i++;
 				}

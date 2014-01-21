@@ -20,9 +20,16 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Dozent;
  * 
  */
 public class DozentForm extends VerticalPanel {
+	
 	TextBox vornameTextBox = new TextBox();
 	TextBox nachnameTextBox = new TextBox();
 	Label idValueLabel = new Label();
+	HorizontalPanel dozentButtonsPanel = new HorizontalPanel();
+	Button modifizierenButton = new Button(ConstantsStdpln.AENDERN);
+	Button neuButton = new Button(ConstantsStdpln.NEU);
+	Button loeschenButton = new Button(ConstantsStdpln.LOESCHEN);
+
+
 
 	StundenplanVerwaltungServiceAsync stundenplanVerwaltung = GWT
 			.create(StundenplanVerwaltungService.class);
@@ -51,17 +58,16 @@ public class DozentForm extends VerticalPanel {
 			customerGrid.setWidget(2, 1, idValueLabel);
 		}
 
-		HorizontalPanel dozentButtonsPanel = new HorizontalPanel();
+		
 		this.add(dozentButtonsPanel);
 
-		Button modifizierenButton = new Button(ConstantsStdpln.AENDERN);
+		
 		modifizierenButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				modifizierenSelectedDozent();
 			}
 		});
 
-		Button loeschenButton = new Button(ConstantsStdpln.LOESCHEN);
 		loeschenButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -70,14 +76,7 @@ public class DozentForm extends VerticalPanel {
 			}
 		});
 
-		// Nur wenn Dozent geändert wird, dann werden der modifizieren und
-		// löschen Button angezeigt
-		if (shownDozent != null) {
-			dozentButtonsPanel.add(modifizierenButton);
-			dozentButtonsPanel.add(loeschenButton);
-		}
-
-		Button neuButton = new Button(ConstantsStdpln.NEU);
+		
 		neuButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -87,8 +86,9 @@ public class DozentForm extends VerticalPanel {
 						new AnlegenDozentCallback());
 			}
 		});
-
-		dozentButtonsPanel.add(neuButton);
+		
+		showButtons();
+		
 	}
 
 	public void setCatvm(StundenplanVerwaltungTreeViewModel treeModel) {
@@ -107,13 +107,28 @@ public class DozentForm extends VerticalPanel {
 		idValueLabel.setText("");
 	}
 
-	public void setSelected(Dozent d) {
+	public void setSelected(Dozent d) {		
 		if (d != null) {
 			shownDozent = d;
+			showButtons();
 			setFields();
 		} else {
 			clearFields();
 		}
+	}
+	
+	public void showButtons(){
+		// Nur wenn Dozent geändert wird, dann werden der modifizieren und
+				// löschen Button angezeigt
+				if (shownDozent != null) {
+					dozentButtonsPanel.add(modifizierenButton);
+					dozentButtonsPanel.add(loeschenButton);
+					dozentButtonsPanel.remove(neuButton);
+				}else {
+					dozentButtonsPanel.add(neuButton);
+
+				}
+				
 	}
 
 	public void modifizierenSelectedDozent() {
