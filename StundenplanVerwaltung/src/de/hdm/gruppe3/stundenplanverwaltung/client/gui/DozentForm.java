@@ -15,18 +15,17 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.*;
 
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Dozent;
 
-
-
 /**
  * @author Yasemin Karakoc, Jan Plank
- *
+ * 
  */
-public class DozentForm extends VerticalPanel{
+public class DozentForm extends VerticalPanel {
 	TextBox vornameTextBox = new TextBox();
 	TextBox nachnameTextBox = new TextBox();
 	Label idValueLabel = new Label();
 
-	StundenplanVerwaltungServiceAsync stundenplanVerwaltung = GWT.create(StundenplanVerwaltungService.class);
+	StundenplanVerwaltungServiceAsync stundenplanVerwaltung = GWT
+			.create(StundenplanVerwaltungService.class);
 	Dozent shownDozent = null;
 	StundenplanVerwaltungTreeViewModel treeModel = null;
 
@@ -45,9 +44,12 @@ public class DozentForm extends VerticalPanel{
 		customerGrid.setWidget(1, 0, lastNameLabel);
 		customerGrid.setWidget(1, 1, nachnameTextBox);
 
-		Label idLabel = new Label("ID");
-		customerGrid.setWidget(2, 0, idLabel);
-		customerGrid.setWidget(2, 1, idValueLabel);
+		// Nur wenn Dozent geändert wird, dann wird das ID Feld angezeigt
+		if (shownDozent != null) {
+			Label idLabel = new Label("ID");
+			customerGrid.setWidget(2, 0, idLabel);
+			customerGrid.setWidget(2, 1, idValueLabel);
+		}
 
 		HorizontalPanel dozentButtonsPanel = new HorizontalPanel();
 		this.add(dozentButtonsPanel);
@@ -58,29 +60,34 @@ public class DozentForm extends VerticalPanel{
 				modifizierenSelectedDozent();
 			}
 		});
-		dozentButtonsPanel.add(modifizierenButton);
-		
-		
+
 		Button loeschenButton = new Button(ConstantsStdpln.LOESCHEN);
 		loeschenButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				stundenplanVerwaltung.loeschenDozent(shownDozent, new LoeschenDozentCallback(shownDozent));
+				stundenplanVerwaltung.loeschenDozent(shownDozent,
+						new LoeschenDozentCallback(shownDozent));
 			}
 		});
-		
-		dozentButtonsPanel.add(loeschenButton);
-		
+
+		// Nur wenn Dozent geändert wird, dann werden der modifizieren und
+		// löschen Button angezeigt
+		if (shownDozent != null) {
+			dozentButtonsPanel.add(modifizierenButton);
+			dozentButtonsPanel.add(loeschenButton);
+		}
+
 		Button neuButton = new Button(ConstantsStdpln.NEU);
 		neuButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
 				String vorname = vornameTextBox.getText();
 				String nachname = nachnameTextBox.getText();
-				stundenplanVerwaltung.anlegenDozent(vorname, nachname, new AnlegenDozentCallback());
+				stundenplanVerwaltung.anlegenDozent(vorname, nachname,
+						new AnlegenDozentCallback());
 			}
 		});
-		
+
 		dozentButtonsPanel.add(neuButton);
 	}
 
@@ -108,34 +115,35 @@ public class DozentForm extends VerticalPanel{
 			clearFields();
 		}
 	}
-	
+
 	public void modifizierenSelectedDozent() {
-		if (this.shownDozent!=null){
+		if (this.shownDozent != null) {
 			shownDozent.setVorname(vornameTextBox.getText());
 			shownDozent.setNachname(nachnameTextBox.getText());
-			stundenplanVerwaltung.modifizierenDozent(shownDozent, new AsyncCallback<Dozent>() {
+			stundenplanVerwaltung.modifizierenDozent(shownDozent,
+					new AsyncCallback<Dozent>() {
 
-				@Override
-				public void onFailure(Throwable caught) {
-					// TODO Auto-generated method stub
-					
-				}
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
 
-				@Override
-				public void onSuccess(Dozent result) {
-					System.out.println("Dozent ge�ndert");
-//					treeModel.updateDozent(shownDozent);
-					
-				}
-			});
+						}
+
+						@Override
+						public void onSuccess(Dozent result) {
+							System.out.println("Dozent ge�ndert");
+							// treeModel.updateDozent(shownDozent);
+
+						}
+					});
 		}
 	}
-	
+
 	class LoeschenDozentCallback implements AsyncCallback<Dozent> {
-		
+
 		Dozent dozent = null;
-		
-		//Konstruktor um callback mit Parameter aufzurufen
+
+		// Konstruktor um callback mit Parameter aufzurufen
 		LoeschenDozentCallback(Dozent d) {
 			dozent = d;
 		}
@@ -150,13 +158,12 @@ public class DozentForm extends VerticalPanel{
 			if (dozent != null) {
 				System.out.println("Dozent gel�scht");
 				setSelected(null);
-//				treeModel.loeschenDozent(dozent);
+				// treeModel.loeschenDozent(dozent);
 			}
 		}
-			
-		}
-	
-	
+
+	}
+
 	class AnlegenDozentCallback implements AsyncCallback<Dozent> {
 
 		@Override
@@ -166,11 +173,12 @@ public class DozentForm extends VerticalPanel{
 
 		public void onSuccess(Dozent dozent) {
 			if (dozent != null) {
-				System.out.println("Dozent angelegt");
-//				treeModel.anlegenDozent(dozent);
+				UserInformation.popup("Dozent angelegt");
+				clearFields();
+				// System.out.println("Dozent angelegt");
+				// treeModel.anlegenDozent(dozent);
 			}
 		}
 	}
-	
 
 }
