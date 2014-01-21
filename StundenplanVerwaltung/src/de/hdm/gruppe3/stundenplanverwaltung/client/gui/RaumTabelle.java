@@ -27,7 +27,7 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Raum;
  *
  */
 
-public class RaumTabelle {
+public class RaumTabelle extends VerticalPanel{
 	
 	VerticalPanel mainPanel = new VerticalPanel();
 	

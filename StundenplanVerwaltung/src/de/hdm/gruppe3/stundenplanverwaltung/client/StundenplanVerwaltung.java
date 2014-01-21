@@ -1,29 +1,12 @@
 package de.hdm.gruppe3.stundenplanverwaltung.client;
 
 import de.hdm.gruppe3.stundenplanverwaltung.client.gui.LehrveranstaltungForm;
-import de.hdm.gruppe3.stundenplanverwaltung.client.gui.LehrveranstaltungTabelle;
-import de.hdm.gruppe3.stundenplanverwaltung.client.gui.RaumTabelle;
-import de.hdm.gruppe3.stundenplanverwaltung.client.testGui.TestGUI;
-import de.hdm.gruppe3.stundenplanverwaltung.client.testGui.TestGUIForms;
-import de.hdm.gruppe3.stundenplanverwaltung.shared.FieldVerifier;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungServiceAsync;
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -51,13 +34,13 @@ public class StundenplanVerwaltung implements EntryPoint {
 	private TextBox output = new TextBox();
 
 	public void onModuleLoad() {
-		// Test1 funktioniert nicht, da Forms und Tree verwsendet werden müssen
+		// Test1 funktioniert nicht, da Forms und Tree verwsendet werden mï¿½ssen
 		// TestGUI gui = new TestGUI();
 		// gui.testFelder();
 
-		LehrveranstaltungForm lForm = new LehrveranstaltungForm();
-		TestGUIForms guiForms = new TestGUIForms();
-		guiForms.formsAnzeigen();
+		LehrveranstaltungForm lForm = new LehrveranstaltungForm();		
+		StundenplanVerwaltungFrontend copy = new StundenplanVerwaltungFrontend();		
+		copy.showMenue();
 		
 //		LehrveranstaltungTabelle t = new LehrveranstaltungTabelle();
 //		RaumTabelle rt = new RaumTabelle();

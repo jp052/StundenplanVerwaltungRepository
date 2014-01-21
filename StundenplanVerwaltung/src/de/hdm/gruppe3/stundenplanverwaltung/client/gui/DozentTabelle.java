@@ -26,7 +26,7 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Dozent;
  * @author Selim Karazehir, Julia Hammerer
  *
  */
-public class DozentTabelle {
+public class DozentTabelle extends VerticalPanel{
 
 	VerticalPanel mainPanel = new VerticalPanel();
 	

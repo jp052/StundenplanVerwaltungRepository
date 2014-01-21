@@ -28,7 +28,7 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Raum;
  *
  */
 
-public class LehrveranstaltungTabelle {
+public class LehrveranstaltungTabelle extends VerticalPanel{
 
 	VerticalPanel mainPanel = new VerticalPanel();
 	

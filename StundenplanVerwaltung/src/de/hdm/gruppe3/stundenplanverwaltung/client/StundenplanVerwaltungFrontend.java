@@ -1,8 +1,6 @@
 package de.hdm.gruppe3.stundenplanverwaltung.client;
 
-import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -13,17 +11,13 @@ import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
-
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungServiceAsync;
 import de.hdm.gruppe3.stundenplanverwaltung.client.gui.DozentForm;
 import de.hdm.gruppe3.stundenplanverwaltung.client.gui.DozentTabelle;
-import de.hdm.gruppe3.stundenplanverwaltung.client.gui.DozentTabelleTest;
 import de.hdm.gruppe3.stundenplanverwaltung.client.gui.LehrveranstaltungForm;
 import de.hdm.gruppe3.stundenplanverwaltung.client.gui.RaumForm;
 import de.hdm.gruppe3.stundenplanverwaltung.client.gui.SemesterverbandForm;
-import de.hdm.gruppe3.stundenplanverwaltung.client.testGui.TestGUIForms;
 
 /**
  * 
@@ -32,7 +26,7 @@ import de.hdm.gruppe3.stundenplanverwaltung.client.testGui.TestGUIForms;
  * 
  */
 
-public class StundenplanVerwaltungTest implements EntryPoint {
+public class StundenplanVerwaltungFrontend{
 	
 	private VerticalPanel mainPanel = new VerticalPanel();
 	VerticalPanel vertpan = new VerticalPanel();
@@ -46,196 +40,155 @@ public class StundenplanVerwaltungTest implements EntryPoint {
 	Button addStockButton = new Button("Add");
 	Label lastUpdatedLabel = new Label();
 	private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
-
 	private final StundenplanVerwaltungServiceAsync stdplnVerwService = GWT.create(StundenplanVerwaltungService.class);
-
-	TestGUIForms testguiforms = new TestGUIForms();
+	
 
 	/**
 	 * 
 	 * This is the entry point method.
 	 */
 
-	public void onModuleLoad() {
+	public void showMenue() {
 
 		// Commands hinzugefügt zum Anlegen
-		Command cmdDozent = new Command() {
-
+		Command createDozent = new Command() {
 			public void execute() {
-
 				right.clear();
-
-				right.add(new HTML("<h3>" + "TEST AFTER CLICK" + "</h3>"));
-
+				right.add(new HTML("<h3>" + "Anlegen eines Dozenten" + "</h3>"));
 				DozentForm doz = new DozentForm();
-
 				right.add(doz);
-
 			}
-
 		};
 
-		Command cmdRaum = new Command() {
-
+		Command createRaum = new Command() {
 			public void execute() {
-
 				right.clear();
-
-				right.add(new HTML("<h3>" + "TEST AFTER CLICK" + "</h3>"));
-
+				right.add(new HTML("<h3>" + "Anlegen eines Raums" + "</h3>"));
 				RaumForm raum = new RaumForm();
-
 				right.add(raum);
-
 			}
-
 		};
 
-		Command cmdLehrveranstaltung = new Command() {
-
+		Command createLehrveranstaltung = new Command() {
 			public void execute() {
-
 				right.clear();
-
-				right.add(new HTML("<h3>" + "TEST AFTER CLICK" + "</h3>"));
-
+				right.add(new HTML("<h3>" + "Anlegen einer Lehrveranstaltung" + "</h3>"));
 				LehrveranstaltungForm lehrver = new LehrveranstaltungForm();
-
 				right.add(lehrver);
-
 			}
-
 		};
 
-		Command cmdSemester = new Command() {
-
+		Command createSemesterverband = new Command() {
 			public void execute() {
-
 				right.clear();
-
-				right.add(new HTML("<h3>" + "TEST AFTER CLICK" + "</h3>"));
-
+				right.add(new HTML("<h3>" + "Anlegen eines Semesterverbands" + "</h3>"));
 				SemesterverbandForm semverb = new SemesterverbandForm();
-
 				right.add(semverb);
-
 			}
-
 		};
 
-		Command cmdVorlesung = new Command() {
-
+		Command createDurchfuerhung = new Command() {
 			public void execute() {
-
 				right.clear();
-
-				right.add(new HTML("<h3>" + "TEST AFTER CLICK" + "</h3>"));
-
+				right.add(new HTML("<h3>" + "Anlegen einer Durchführung" + "</h3>"));
 				LehrveranstaltungForm vorl = new LehrveranstaltungForm();
-
 				right.add(vorl);
-
 			}
-
 		};
 		
-		//Commands zum Anzeigen der bestehenden 
 		
-		Command cmdDozentTabelle = new Command() {
-
+		//////COMMANDS ZUM ANLEGEN DES REPORTS
+		
+		
+		
+		//Commands zum Anzeigen der bestehenden 		
+		Command showDozent = new Command() {
 			public void execute() {
-
 				right.clear();
-
-				right.add(new HTML("<h3>" + "TEST AFTER CLICK" + "</h3>"));
-
-				DozentTabelleTest dozTest = new DozentTabelleTest();
-
+				right.add(new HTML("<h3>" + "Dozentenliste" + "</h3>"));
+				DozentTabelle dozTest = new DozentTabelle();
 				right.add(dozTest);
-
 			}
-
 		};
-
 		
+		Command showRaum = new Command() {
+			public void execute() {
+				right.clear();
+				right.add(new HTML("<h3>" + "Raumliste" + "</h3>"));
+				DozentTabelle dozTest = new DozentTabelle();
+				right.add(dozTest);
+			}
+		};		
 		
+		Command showLehrveranstaltung = new Command() {
+			public void execute() {
+				right.clear();
+				right.add(new HTML("<h3>" + "Liste der Lehrveranstaltungen" + "</h3>"));
+				DozentTabelle dozTest = new DozentTabelle();
+				right.add(dozTest);
+			}
+		};
 		
+		Command showSemesterverband = new Command() {
+			public void execute() {
+				right.clear();
+				right.add(new HTML("<h3>" + "Liste der Semesterverbände" + "</h3>"));
+				DozentTabelle dozTest = new DozentTabelle();
+				right.add(dozTest);
+			}
+		};		
 		
+		Command showDurchfuehrung = new Command() {
+			public void execute() {
+				right.clear();
+				right.add(new HTML("<h3>" + "Liste der Durchführungen" + "</h3>"));
+				DozentTabelle dozTest = new DozentTabelle();
+				right.add(dozTest);
+			}
+		};		
 
 		mainPanel.add(vertpan);
-
 		mainPanel.add(hor1);
-
 		MenuBar dozMenu = new MenuBar(true);
-
 		MenuBar raumMenu = new MenuBar(true);
-
 		MenuBar lvMenu = new MenuBar(true);
-
-		MenuBar zeitMenu = new MenuBar(true);
-
 		MenuBar semMenu = new MenuBar(true);
-
-		MenuBar vorlesMenu = new MenuBar(true);
-
+		MenuBar durchfuer = new MenuBar(true);
 		MenuBar repoMenu = new MenuBar(true);
-
-		dozMenu.addItem("Dozent anzeigen", cmdDozentTabelle);
-
-		dozMenu.addItem("Dozent anlegen", cmdDozent);
-
-		raumMenu.addItem("Raum anzeigen", cmdRaum);
-
-		raumMenu.addItem("Raum anlegen", cmdRaum);
-
-		lvMenu.addItem("Lehrveranstaltung anzeigen", cmdLehrveranstaltung);
-
-		lvMenu.addItem("Lehrveranstaltung anlegen", cmdLehrveranstaltung);
-
-		semMenu.addItem("Semesterverband anzeigen", cmdSemester);
-
-		semMenu.addItem("Semesterverband anlegen", cmdSemester);
-
-		vorlesMenu.addItem("Vorlesung anzeigen", cmdVorlesung);
-
-		vorlesMenu.addItem("Vorlesung anlegen", cmdVorlesung);
-
-		repoMenu.addItem("Report anzeigen", cmdVorlesung);
-
-		repoMenu.addItem("Report anlegen", cmdVorlesung);
-
+		dozMenu.addItem("Dozent anzeigen", showDozent);
+		dozMenu.addItem("Dozent ändern", createDozent);
+		raumMenu.addItem("Raum anzeigen", showRaum);
+		raumMenu.addItem("Raum ändern", createRaum);
+		lvMenu.addItem("Lehrveranstaltung anzeigen", showLehrveranstaltung);
+		lvMenu.addItem("Lehrveranstaltung ändern", createLehrveranstaltung);
+		semMenu.addItem("Semesterverband anzeigen", showSemesterverband);
+		semMenu.addItem("Semesterverband ändern", createSemesterverband);
+		durchfuer.addItem("Vorlesung anzeigen", showDurchfuehrung);
+		durchfuer.addItem("Vorlesung ändern", createDurchfuerhung);
+		
+		//HIER NOCH DIE WEITEREN COMMANDS EINFÜGEN
+		repoMenu.addItem("Dozentreport", createDurchfuerhung);
+		repoMenu.addItem("Stundenplanreport", createDurchfuerhung);
+		repoMenu.addItem("Raumreport", createDurchfuerhung);
+		
 		MenuBar menu = new MenuBar();
-
 		menu.addItem("Dozent", dozMenu);
-
 		menu.addItem("Raum", raumMenu);
-
 		menu.addItem("Lehrveranstaltung", lvMenu);
-
-		menu.addItem("Zeitslot", zeitMenu);
-
 		menu.addItem("Semesterverband", semMenu);
-
-		menu.addItem("Vorlesung", vorlesMenu);
-
+		menu.addItem("Durchführung", durchfuer);
 		menu.addItem("Report", repoMenu);
-
+		
 		vertpan.add(new HTML(
 
-				"<img src=\"/Users/df/Documents/workspace/schedule.png\" alt=\"schedule\"><h1>TESTTESTTEST</h1>"));
+				"<img src=\"/Users/df/Documents/workspace/schedule.png\" alt=\"schedule\"><h1>Stundenplan Verwaltungs Tool</h1>"));
 
-		hor1.add(left);
-
-		left.add(new HTML("<h2>TreePanel</h2>"));
-
+//		hor1.add(left);
+//		left.add(new HTML("<h2>TreePanel</h2>"));
 		hor1.add(right);
-
 		right.add(new HTML("<h2>DetailPanel</h2>"));
-
 		hor1.setSpacing(5);
-
 		vertpan.add(menu);
-
 		RootPanel.get("starter").add(mainPanel);
 
 	}
