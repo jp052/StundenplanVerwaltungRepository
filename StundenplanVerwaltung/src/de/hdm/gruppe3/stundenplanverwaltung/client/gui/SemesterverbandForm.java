@@ -27,6 +27,10 @@ public class SemesterverbandForm extends VerticalPanel{
 	TextBox semesterHalbjahrTextBox = new TextBox();
 	TextBox jahrgangTextBox = new TextBox();
 	Label idValueLabel = new Label();
+	HorizontalPanel semesterverbandButtonsPanel = new HorizontalPanel();
+	Button modifizierenButton = new Button(ConstantsStdpln.AENDERN);
+	Button neuButton = new Button(ConstantsStdpln.NEU);
+	Button loeschenButton = new Button(ConstantsStdpln.LOESCHEN);
 
 	StundenplanVerwaltungServiceAsync stundenplanVerwaltung = GWT.create(StundenplanVerwaltungService.class);
 	Semesterverband selectedSemesterverband = null;
@@ -55,19 +59,15 @@ public class SemesterverbandForm extends VerticalPanel{
 		customerGrid.setWidget(3, 0, idLabel);
 		customerGrid.setWidget(3, 1, idValueLabel);
 
-		HorizontalPanel semesterverbandButtonsPanel = new HorizontalPanel();
 		this.add(semesterverbandButtonsPanel);
 
-		Button modifizierenButton = new Button(ConstantsStdpln.AENDERN);
 		modifizierenButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				modifizierenSelectedSemesterverband();
 			}
 		});
-		semesterverbandButtonsPanel.add(modifizierenButton);
-		
-		
-		Button loeschenButton = new Button(ConstantsStdpln.LOESCHEN);
+
+			
 		loeschenButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -76,9 +76,7 @@ public class SemesterverbandForm extends VerticalPanel{
 			}
 		});
 		
-		semesterverbandButtonsPanel.add(loeschenButton);
 		
-		Button neuButton = new Button(ConstantsStdpln.NEU);
 		neuButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -87,7 +85,7 @@ public class SemesterverbandForm extends VerticalPanel{
 			}
 		});
 		
-		semesterverbandButtonsPanel.add(neuButton);
+		showButtons();
 	}
 
 	public void setCatvm(StundenplanVerwaltungTreeViewModel treeModel) {
@@ -111,11 +109,31 @@ public class SemesterverbandForm extends VerticalPanel{
 	public void setSelected(Semesterverband s) {
 		if (s != null) {
 			selectedSemesterverband = s;
+			showButtons();
 			setFields();
 		} else {
 			clearFields();
 		}
 	}
+	
+	/**
+	 * Zeigt die Buttons an, je nachdem ob Neu oder Ändern.
+	 */
+	public void showButtons(){
+		// Nur wenn Dozent geändert wird, dann werden der modifizieren und
+		// löschen Button angezeigt
+		if (selectedSemesterverband != null) {
+			semesterverbandButtonsPanel.add(modifizierenButton);
+			semesterverbandButtonsPanel.add(loeschenButton);
+			//neu Button enfernen, da er beim ändern nicht angezeigt werden soll.
+			semesterverbandButtonsPanel.remove(neuButton);
+		} else {
+			semesterverbandButtonsPanel.add(neuButton);
+
+		}
+				
+	}
+
 	
 	public void modifizierenSelectedSemesterverband() {
 		if (this.selectedSemesterverband!=null){

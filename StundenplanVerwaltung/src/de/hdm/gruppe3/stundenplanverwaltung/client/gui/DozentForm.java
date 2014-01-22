@@ -189,11 +189,11 @@ public class DozentForm extends VerticalPanel {
 		public void onSuccess(Dozent dozent) {
 			if (dozent != null) {
 				UserInformation.popup("Dozent angelegt");
+				//Felder Leeren, damit gleich der nächste angelegt werden kann
 				clearFields();
-				// System.out.println("Dozent angelegt");
-				// treeModel.anlegenDozent(dozent);
 			}
 		}
 	}
 
 }
+
