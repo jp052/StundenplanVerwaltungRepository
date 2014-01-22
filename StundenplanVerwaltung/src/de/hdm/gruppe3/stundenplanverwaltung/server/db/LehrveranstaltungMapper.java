@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
+import com.google.gwt.user.client.ui.RootPanel;
+
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.*;
 
 //Import Impl Klasse Dozent
@@ -250,4 +252,81 @@ public class LehrveranstaltungMapper {
 		     */
 		    return RaumMapper.raumMapper().findeId(lv.getId());
 		  }
+		  
+		  /**
+		   * Mit dieser Methode suchen wir alle Vorlesungen mit der gleichen ID vom Dozenten
+		   * @param dozentID
+		   * @return
+		   */
+			public Vector<Lehrveranstaltung> findeLVbyDozent(int dozentID){
+				 Connection con = DBVerbindung.connection();
+
+				    //Vector mit angeforderten Objekten
+				    Vector<Lehrveranstaltung> result = new Vector<Lehrveranstaltung>();
+
+				    try {
+				      Statement stmt = con.createStatement();
+				      
+				      String sql = "SELECT * FROM Dozent LEFT JOIN Lehrveranstaltung ON dozent.personalNr = " + dozentID;
+
+				      ResultSet rs = stmt.executeQuery(sql);
+
+				      
+				      while (rs.next()) {
+				    	  Lehrveranstaltung lv = new Lehrveranstaltung();
+							lv.setId(rs.getInt("Lehrveranstaltung.LVNr"));
+							lv.setBezeichnung(rs.getString("Lehrveranstaltung.Bezeichnung"));
+							lv.setUmfang(rs.getInt("Lehrveranstaltung.Umfang"));
+							lv.setSemester(rs.getInt("Lehrveranstaltung.Semester"));
+
+				        
+				        result.addElement(lv);
+				      }
+				    }
+				    catch (SQLException e2) {
+				      e2.printStackTrace();
+				    }
+
+			
+				 return result;
+			}
+			
+			public Vector<Lehrveranstaltung> findeLVbyRaum(String bez){
+				 Connection con = DBVerbindung.connection();
+
+				    //Vector mit angeforderten Objekten
+				    Vector<Lehrveranstaltung> result = new Vector<Lehrveranstaltung>();
+
+				    try {
+				      Statement stmt = con.createStatement();
+				      
+				      //String sql = "SELECT * FROM Raum LEFT JOIN Lehrveranstaltung ON raum.bezeichnung = " + bez;
+
+				      String sql = "SELECT zeitslot.Wochentag, zeitslot.Anfangszeit, raum.Bezeichnung, lehrveranstaltung.bezeichnung "
+				      		+ " FROM durchfuehrung "
+				      		+ " JOIN raum ON raum.RaumNr = durchfuehrung.RaumNr "
+				      		+ " JOIN zeitslot ON zeitslot.ZeitNr = durchfuehrung.ZeitNr "
+				      		+ " JOIN lehrveranstaltung ON lehrveranstaltung.LVNr = durchfuehrung.LVNr "
+				      		+ " WHERE (raum.bezeichnung = '"+bez+"')";
+				      System.out.println(sql); 
+				      ResultSet rs = stmt.executeQuery(sql);
+
+				      
+				      while (rs.next()) {
+				    	  Lehrveranstaltung lv = new Lehrveranstaltung();
+				    	    lv.setRaumWochentag(rs.getString("zeitslot.Wochentag"));
+							lv.setBezeichnung(rs.getString("Lehrveranstaltung.Bezeichnung"));
+							lv.setRaumZeit(rs.getInt("zeitslot.Anfangszeit"));
+
+				        
+				        result.addElement(lv);
+				      }
+				    }
+				    catch (SQLException e2) {
+				      e2.printStackTrace();
+				    }
+
+			
+				 return result;
+			}
 }

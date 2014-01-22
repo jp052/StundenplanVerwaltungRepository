@@ -195,7 +195,9 @@ public class SemesterverbandMapper {
 		
 			 return result;
 		}
-		
+			      
+//			      String sql = "SELECT FROM Semesterverband LEFT JOIN Lehrveranstaltung ON semesterHalbjahr =4";
+	
 		public Lehrveranstaltung findeVL(Semesterverband sv) {
 		    /*
 		     * Wir bedienen uns hier einfach des CustomerMapper. Diesem geben wir

@@ -111,4 +111,13 @@ public interface StundenplanVerwaltungService extends RemoteService {
 	
 	Vector<Lehrveranstaltung> getAllLV();
 
+	Vector<Lehrveranstaltung> getLVBySV(int sv);
+	
+	
+	// Report 
+	public Vector<Lehrveranstaltung> reportLVbyDozent(int dozentID);
+	public Vector<Lehrveranstaltung> reportLVbyRaum(String bez);
+
+	Raum getRaumByBezeichnung(String r);
+
 }
