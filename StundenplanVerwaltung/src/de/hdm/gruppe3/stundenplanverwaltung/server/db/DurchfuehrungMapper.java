@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
 
 import de.hdm.gruppe3.stundenplanverwaltung.shared.RaumBelegtException;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.*;
@@ -188,6 +189,64 @@ public class DurchfuehrungMapper {
 		}
 
 		return lvd;
+	}
+	
+	/**
+	 * Holt alle vorhandenen Durchführungen mit allen Elementen.
+	 * @return Vector mit LVDurchführungsobjekten
+	 * @throws Exception 
+	 */
+	public Vector<LVDurchfuehrung> findeAlle() throws Exception {
+		 Connection con = DBVerbindung.connection();
+
+	    // Ergebnisvektor vorbereiten
+	    Vector<LVDurchfuehrung> result = new Vector<LVDurchfuehrung>();
+
+	    try {
+	    	Statement stmt = con.createStatement();
+	      
+	    	String sql = "SELECT * FROM Durchfuehrung ORDER BY LVDNr";
+			ResultSet rs = stmt.executeQuery(sql);
+	
+			while (rs.next()) {
+				//Benötigte Objekte
+				LVDurchfuehrung lvd = new LVDurchfuehrung();
+				Zeitslot zeitslot = new Zeitslot();
+				Semesterverband sv = new Semesterverband();
+				Raum raum = new Raum();
+				Lehrveranstaltung lv = new Lehrveranstaltung();
+				
+				//Mapper holen
+				ZeitslotMapper zMapper = ZeitslotMapper.zeitslotMapper();
+				SemesterverbandMapper svMapper = SemesterverbandMapper.svMapper();
+				RaumMapper rMapper = RaumMapper.raumMapper();
+				LehrveranstaltungMapper lvMapper = LehrveranstaltungMapper.lvMapper();
+				
+				//Objekte füllen mit den entsprechenden Mapper Methoden
+				zeitslot = zMapper.findeId(rs.getInt("ZeitNr"));
+				sv = svMapper.findeId(rs.getInt("SVNr"));
+				raum = rMapper.findeId(rs.getInt("RaumNr"));
+				lv = lvMapper.findeId(rs.getInt("LVNr"));
+				
+				//LVDurchführungsobjekt befüllen
+				lvd.setId(rs.getInt("LVDNr"));
+				lvd.setZeitslot(zeitslot);
+				lvd.setSemesterverband(sv);
+				lvd.setRaum(raum);
+				lvd.setLehrveranstaltung(lv);
+				
+				//Befüllte Durchführung dem Vector hinzufügen
+				result.addElement(lvd);
+				
+				}
+		   }
+		    catch (SQLException e2) {
+		      e2.printStackTrace();
+		      throw new Exception("Datenbank Problem");
+		    }
+
+		 // Ergebnisvektor zur¸ckgeben
+		 return result;
 	}
 
 }

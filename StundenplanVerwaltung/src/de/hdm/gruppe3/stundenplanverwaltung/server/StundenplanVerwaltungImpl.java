@@ -242,12 +242,6 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public Dozent getDozentByNummer(int nr) {
-
-		return dMapper.findeId(nr);
-	}
-
-	@Override
 
 	public Dozent getDozentByName (Dozent name){
 
@@ -273,6 +267,12 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 		return dfMapper.anlegen(svId, raumId, lvId, zeitslot);
 		}
 	
+	@Override
+	public Dozent getDozentByNummer(int nr) {
+	
+		return dMapper.findeId(nr);
+	}
+
 	/**
 	 * Prüft zuerst ob der angegbene Raum verfügbar ist, legt den Zeitslot an und ändert dann die Durchführung.
 	 */
@@ -298,6 +298,10 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 																		// anpassen
 
 		return dfMapper.loeschen(d);
+	}
+	
+	public Vector<LVDurchfuehrung> getAllDurchfuehrungen() throws Exception {
+		return dfMapper.findeAlle();
 	}
 
 	@Override

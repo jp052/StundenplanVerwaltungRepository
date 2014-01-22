@@ -82,6 +82,8 @@ public interface StundenplanVerwaltungService extends RemoteService {
 			Zeitslot zeitslot) throws RaumBelegtException;
 
 	LVDurchfuehrung loeschenDurchfuehrung(LVDurchfuehrung d);
+	
+	public Vector<LVDurchfuehrung> getAllDurchfuehrungen() throws Exception;
 
 	// public LVDurchfuehrung getDurchfuehrungByNummer (int nr);
 

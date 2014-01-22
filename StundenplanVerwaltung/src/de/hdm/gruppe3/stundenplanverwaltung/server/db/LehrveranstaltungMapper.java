@@ -181,7 +181,7 @@ public class LehrveranstaltungMapper {
 		}
 		
 		
-				public Vector<Lehrveranstaltung> findeAlle(){
+		public Vector<Lehrveranstaltung> findeAlle(){
 			 Connection con = DBVerbindung.connection();
 
 			    // Ergebnisvektor vorbereiten
