@@ -16,6 +16,24 @@ public class Lehrveranstaltung extends BusinessObject {
 	private int semester;
 	private Dozent dozent;
 	private String dozentString;
+	private String raumWochentag;
+	private int raumZeit;
+	public String getRaumWochentag() {
+		return raumWochentag;
+	}
+
+	public void setRaumWochentag(String raumWochentag) {
+		this.raumWochentag = raumWochentag;
+	}
+
+	public int getRaumZeit() {
+		return raumZeit;
+	}
+
+	public void setRaumZeit(int raumZeit) {
+		this.raumZeit = raumZeit;
+	}
+
 	private Vector<LVDurchfuehrung> durchfuehungen = new Vector<LVDurchfuehrung>();
 
 	// Konstruktor

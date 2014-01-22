@@ -20,7 +20,7 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Semesterverband;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Zeitslot;
 
 /**
- * @author Yasemin Karakoc, Jan Plank, Selim
+ * @author Yasemin Karakoc, Jan Plank, Selim Karazehir
  * 
  */
 public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
@@ -102,6 +102,7 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 	 * 
 	 * return svMapper.loeschen(sv.getId()); }
 	 */
+	
 
 	// TODO Methoden Zeitslot, Zeitslot muss ver�ndert werden, da die Attribute
 	// noch nicht vollst�ndig sind
@@ -170,6 +171,12 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 
 	@Override
 	public Raum getRaumByBezeichnung(Raum r) {
+
+		return rMapper.findeName(r);
+	}
+	
+	@Override
+	public Raum getRaumByBezeichnung(String r) {
 
 		return rMapper.findeName(r);
 	}
@@ -368,4 +375,34 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 		// TODO Auto-generated method stub
 		return lvMapper.findeAlle();
 	}
+
+	@Override
+	public Vector<Lehrveranstaltung> getLVBySV(int sv) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+	/**
+	 * Diese Methode wird für den Report benötigt um alle Lehrveranstaltungen im selben Semesterverband zu finden
+	 * @param sv
+	 * @return
+	 */
+	
+	// Report für die Lehrveranstaltung mit dem Dozenten
+	@Override
+	public Vector<Lehrveranstaltung> reportLVbyDozent(int dozentID) {
+		return lvMapper.findeLVbyDozent(dozentID);
+	}
+
+	@Override
+	public Vector<Lehrveranstaltung> reportLVbyRaum(String bez) {
+		return lvMapper.findeLVbyRaum(bez);
+	}
+
+
+//	@Override
+//	public Vector<Lehrveranstaltung> getLVBySV(int sv) {
+//		// Lehrveranstaltungen nach Semesterverband suchen und zurück geben.
+//		return lvMapper.findeLVbySV(sv);	}
 }

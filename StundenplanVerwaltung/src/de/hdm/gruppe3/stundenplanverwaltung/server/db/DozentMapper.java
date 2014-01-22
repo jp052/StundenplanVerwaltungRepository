@@ -238,6 +238,7 @@ public class DozentMapper {
        */      
        return LehrveranstaltungMapper.lvMapper().findeId(dozent.getId());
     }
+  
     
   public Raum findeRaum(Dozent dozent) {
       /*
