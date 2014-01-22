@@ -32,7 +32,6 @@ public class DozentTabelle extends VerticalPanel{
 	
 	StundenplanVerwaltungServiceAsync stundenplanVerwaltung = GWT
 			.create(StundenplanVerwaltungService.class);
-	Dozent shownDozent = null;
 	
 	public Widget zeigeTabelle() {
 
