@@ -19,10 +19,12 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.*;
 
 
 /**
+ * Enthält alle Elemente und nötigen Methoden für das Raum Formular
  * @author Yasemin Karakoc, Jan Plank
  *
  */
 public class RaumForm extends VerticalPanel{
+	//Gui Elemente
 	TextBox bezeichnungTextBox = new TextBox();
 	TextBox kapazitaetTextBox = new TextBox();
 	Label idValueLabel = new Label();
@@ -34,10 +36,9 @@ public class RaumForm extends VerticalPanel{
 
 	StundenplanVerwaltungServiceAsync stundenplanVerwaltung = GWT.create(StundenplanVerwaltungService.class);
 	Raum selectedRaum = null;
-	StundenplanVerwaltungTreeViewModel treeModel = null;
 
 	/**
-	 * Formular f�r die Darstellung des selektierten Kunden
+	 * Das Formular wird immer bei Konstruktoraufruf aufgerufen und zeigt alle GUI Elemente an.
 	 */
 	public RaumForm() {
 		Grid customerGrid = new Grid(3, 2);
@@ -89,25 +90,30 @@ public class RaumForm extends VerticalPanel{
 		
 	}
 
-	
-
-	public void setCatvm(StundenplanVerwaltungTreeViewModel treeModel) {
-		this.treeModel = treeModel;
-	}
-
+	/**
+	 * Setzt alle Felder auf den gewählten Wert beim editieren
+	 */
 	void setFields() {
 		bezeichnungTextBox.setText(selectedRaum.getBezeichnung());
 //		Integer in String umwandeln
 		kapazitaetTextBox.setText(Integer.toString(selectedRaum.getKapazitaet()));
 		idValueLabel.setText(Integer.toString(selectedRaum.getId()));
 	}
-
+	
+	/**
+	 * Löscht den Inhalt alle Eingabe Felder
+	 */
 	public void clearFields() {
 		bezeichnungTextBox.setText("");
 		kapazitaetTextBox.setText("");
 		idValueLabel.setText("");
 	}
-
+	
+	/**
+	* Setzt das gewählte Element zum editieren in die Instanz Variable und
+	* zeigt Buttons und Felder an.
+	* @param d Dozent
+	*/
 	public void setSelected(Raum r) {
 		if (r != null) {
 			selectedRaum = r;
@@ -118,6 +124,9 @@ public class RaumForm extends VerticalPanel{
 		}
 	}
 	
+	/**
+	 * Zeigt alle benötigten Buttons an.
+	 */
 	private void showButtons() {
 		// Nur wenn Raum geändert wird, dann werden der modifizieren und
 		// löschen Button angezeigt
@@ -132,6 +141,9 @@ public class RaumForm extends VerticalPanel{
 		
 	}
 	
+	/**
+	 * Ändert das ausgewählte Business Objekt im Editiermodus 
+	 */
 	public void modifizierenSelectedRaum() {
 		if (this.selectedRaum!=null){
 			selectedRaum.setBezeichnung(bezeichnungTextBox.getText());
@@ -156,6 +168,9 @@ public class RaumForm extends VerticalPanel{
 		}
 	}
 	
+	/**
+	 * Löscht das ausgewählte Business Objekt im Editiermodus 
+	 */
 	public void loeschenSelectedRaum() {
 		if(this.selectedRaum != null) {
 			//Ruft Serverseitige Methode auf
@@ -181,6 +196,9 @@ public class RaumForm extends VerticalPanel{
 		}
 	}
 	
+	/**
+	 * Legt das  das eingegebene Business Objekt an
+	 */
 	public void anlegenSelectedRaum() {
 		String bezeichnung = bezeichnungTextBox.getText();
 		int kapazitaet = Integer.valueOf(kapazitaetTextBox.getText());

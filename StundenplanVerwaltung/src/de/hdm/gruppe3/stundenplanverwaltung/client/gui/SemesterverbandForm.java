@@ -19,10 +19,12 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.*;
 
 
 /**
+ * Enthält alle Elemente und nötigen Methoden für das Semesterverband Formular
  * @author Yasemin Karakoc, Jan Plank
  *
  */
 public class SemesterverbandForm extends VerticalPanel{
+	//Gui Elemente
 	TextBox anzahlStudentenTextBox = new TextBox();
 	TextBox semesterHalbjahrTextBox = new TextBox();
 	TextBox jahrgangTextBox = new TextBox();
@@ -34,10 +36,9 @@ public class SemesterverbandForm extends VerticalPanel{
 
 	StundenplanVerwaltungServiceAsync stundenplanVerwaltung = GWT.create(StundenplanVerwaltungService.class);
 	Semesterverband selectedSemesterverband = null;
-	StundenplanVerwaltungTreeViewModel treeModel = null;
 
 	/**
-	 * Formular f�r die Darstellung des selektierten Kunden
+	 * Das Formular wird immer bei Konstruktoraufruf aufgerufen und zeigt alle GUI Elemente an.
 	 */
 	public SemesterverbandForm() {
 		Grid customerGrid = new Grid(4, 2);
@@ -88,10 +89,9 @@ public class SemesterverbandForm extends VerticalPanel{
 		showButtons();
 	}
 
-	public void setCatvm(StundenplanVerwaltungTreeViewModel treeModel) {
-		this.treeModel = treeModel;
-	}
-
+	/**
+	 * Setzt alle Felder auf den gewählten Wert beim editieren
+	 */
 	void setFields() {
 		anzahlStudentenTextBox.setText(Integer.toString(selectedSemesterverband.getAnzahlStudenten()));
 //		Integer in String umwandeln
@@ -99,13 +99,21 @@ public class SemesterverbandForm extends VerticalPanel{
 		jahrgangTextBox.setText(Integer.toString(selectedSemesterverband.getJahrgang()));
 		idValueLabel.setText(Integer.toString(selectedSemesterverband.getId()));
 	}
-
+	
+	/**
+	 * Löscht den Inhalt alle Eingabe Felder.
+	 */
 	public void clearFields() {
 		anzahlStudentenTextBox.setText("");
 		semesterHalbjahrTextBox.setText("");
 		idValueLabel.setText("");
 	}
-
+	
+	/**
+	 * Setzt das gewählte Element zum editieren in die Instanz Variable und
+	 * zeigt Buttons und Felder an.
+	 * @param s: Der Semesterverband
+	 */
 	public void setSelected(Semesterverband s) {
 		if (s != null) {
 			selectedSemesterverband = s;
@@ -134,7 +142,9 @@ public class SemesterverbandForm extends VerticalPanel{
 				
 	}
 
-	
+	/**
+	 * Ändert das ausgewählte Business Objekt im Editiermodus .
+	 */
 	public void modifizierenSelectedSemesterverband() {
 		if (this.selectedSemesterverband!=null){
 			selectedSemesterverband.setAnzahlStudenten(Integer.valueOf(anzahlStudentenTextBox.getText()));
@@ -160,6 +170,9 @@ public class SemesterverbandForm extends VerticalPanel{
 		}
 	}
 	
+	/**
+	 * Löscht das ausgewählte Business Objekt im Editiermodus 
+	 */
 	public void loeschenSelectedSemesterverband() {
 		if(this.selectedSemesterverband != null) {
 			//Ruft Serverseitige Methode auf
@@ -185,6 +198,9 @@ public class SemesterverbandForm extends VerticalPanel{
 		}
 	}
 	
+	/**
+	 * Legt das  das eingegebene Business Objekt an.
+	 */
 	public void anlegenSelectedSemesterverband() {
 		int anzahlStudenten = Integer.valueOf(anzahlStudentenTextBox.getText());
 		int semesterHalbjahr = Integer.valueOf(semesterHalbjahrTextBox.getText());
@@ -201,8 +217,7 @@ public class SemesterverbandForm extends VerticalPanel{
 			@Override
 			public void onSuccess(Semesterverband result) {
 				if (result != null) {
-					System.out.println("Semesterverband angelegt");
-					//TODO: Liste oder Tree aktualisieren
+					System.out.println("Semesterverband angelegt");					
 				}
 			}
 			

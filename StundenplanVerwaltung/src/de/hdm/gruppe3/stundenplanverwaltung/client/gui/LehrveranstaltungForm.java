@@ -20,12 +20,13 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungServiceAsync;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.*;
 
-/**
+/**Enthält alle Elemente und nötigen Methoden für das Lehrveranstaltung Formular
  * @author Yasemin Karakoc, Jan Plank
  * 
  */
 public class LehrveranstaltungForm extends VerticalPanel {
-
+	
+	//Gui Elemente
 	TextBox bezeichnungTextBox = new TextBox();
 	TextBox semesterTextBox = new TextBox();
 	TextBox umfangTextBox = new TextBox();
@@ -39,10 +40,9 @@ public class LehrveranstaltungForm extends VerticalPanel {
 	StundenplanVerwaltungServiceAsync stundenplanVerwaltung = GWT
 			.create(StundenplanVerwaltungService.class);
 	Lehrveranstaltung selectedLehrveranstaltung = null;
-	StundenplanVerwaltungTreeViewModel treeModel = null;
 
 	/**
-	 * Formular f�r die Darstellung des selektierten Kunden
+	 * Das Formular wird immer bei Konstruktoraufruf aufgerufen und zeigt alle GUI Elemente an.
 	 */
 	public LehrveranstaltungForm() {
 		Grid customerGrid = new Grid(5, 2);
@@ -125,13 +125,7 @@ public class LehrveranstaltungForm extends VerticalPanel {
 							// Dozenten Id welche beim anlegen der
 							// Lehrveranstaltung
 							// ben�tigt wird.
-							dozentenListBox.addItem(d.toString(), String.valueOf(d.getId()));
-							
-							// dozentenListBox.addItem(d.toString(),
-							// String.valueOf(valueIndex));
-							// dozentenListBox.setValue(valueIndex,
-							// String.valueOf(d.getId()));
-//							valueIndex++;
+							dozentenListBox.addItem(d.toString(), String.valueOf(d.getId()));							
 
 						}
 						
@@ -162,17 +156,25 @@ public class LehrveranstaltungForm extends VerticalPanel {
 					}
 				}
 	}
-
-	public void setSelected(Lehrveranstaltung s) {
-		if (s != null) {
-			selectedLehrveranstaltung = s;
+	
+	/**
+	 * Setzt das gewählte Element zum editieren in die Instanz Variable und
+	 * zeigt Buttons und Felder an.
+	 * @param lv: Die Lehrveranstaltung
+	 */
+	public void setSelected(Lehrveranstaltung lv) {
+		if (lv != null) {
+			selectedLehrveranstaltung = lv;
 			showButtons();
 			setFields();
 		} else {
 			clearFields();
 		}
 	}
-
+	
+	/**
+	 * Setzt alle Felder auf den gewählten Wert beim editieren
+	 */
 	public void setFields() {
 		bezeichnungTextBox.setText(selectedLehrveranstaltung.getBezeichnung());
 		// Integer in String umwandeln
@@ -187,13 +189,19 @@ public class LehrveranstaltungForm extends VerticalPanel {
 
 		
 	}
-
+	
+	/**
+	 * Löscht den Inhalt alle Eingabe Felder
+	 */
 	public void clearFields() {
 		bezeichnungTextBox.setText("");
 		semesterTextBox.setText("");
 		idValueLabel.setText("");
 	}
-
+	
+	/**
+	 * Zeigt alle benötigten Buttons an.
+	 */
 	public void showButtons() {
 		// Nur wenn Dozent geändert wird, dann werden der modifizieren und
 		// löschen Button angezeigt
@@ -206,7 +214,10 @@ public class LehrveranstaltungForm extends VerticalPanel {
 
 		}
 	}
-
+	
+	/**
+	 * Ändert das ausgewählte Business Objekt im Editiermodus 
+	 */
 	public void modifizierenSelectedLehrveranstaltung() {
 		if (this.selectedLehrveranstaltung != null) {
 			selectedLehrveranstaltung.setBezeichnung(bezeichnungTextBox
@@ -245,7 +256,10 @@ public class LehrveranstaltungForm extends VerticalPanel {
 					});
 		}
 	}
-
+	
+	/**
+	 * Löscht das ausgewählte Business Objekt im Editiermodus
+	 */
 	public void loeschenSelectedLehrveranstaltung() {
 		if (this.selectedLehrveranstaltung != null) {
 			// Ruft Serverseitige Methode auf
@@ -271,7 +285,10 @@ public class LehrveranstaltungForm extends VerticalPanel {
 					});
 		}
 	}
-
+	
+	/**
+	 * Legt das  das ausgewählte Business Objekt an
+	 */
 	public void anlegenLehrveranstaltung() {
 		String bezeichnung = bezeichnungTextBox.getText();
 		int semester = Integer.valueOf(semesterTextBox.getText());

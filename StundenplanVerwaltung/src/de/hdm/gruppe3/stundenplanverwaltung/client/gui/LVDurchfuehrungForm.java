@@ -30,10 +30,12 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.*;
 
 
 /**
+ * *Enthält alle Elemente und nötigen Methoden für das Durchführungs Formular
  * @author Yasemin Karakoc, Jan Plank
  *
  */
 public class LVDurchfuehrungForm extends VerticalPanel{
+	//Gui Elemente
 	ListBox lbLehrveranstaltung = new ListBox();
 	ListBox lbRaum = new ListBox();
 	ListBox lbSemesterverband = new ListBox();
@@ -45,10 +47,9 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 
 	StundenplanVerwaltungServiceAsync stundenplanVerwaltung = GWT.create(StundenplanVerwaltungService.class);
 	LVDurchfuehrung selectedLVDurchfuehrung = null;
-	StundenplanVerwaltungTreeViewModel treeModel = null;
 
 	/**
-	 * Formular f�r die Darstellung des selektierten Kunden
+	 * *Das Formular wird immer bei Konstruktoraufruf aufgerufen und zeigt alle GUI Elemente an.
 	 */
 	public LVDurchfuehrungForm() {
 		Grid customerGrid = new Grid(5, 2);
@@ -126,7 +127,9 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 
 
 
-	
+	/**
+	 * Fügt alle Elemente in die entsprechende List Box
+	 */
 	private void setLehrveranstaltungListBox() {
 		stundenplanVerwaltung.getAllLV(new AsyncCallback<Vector<Lehrveranstaltung>>() {
 
@@ -159,6 +162,10 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 			}
 		});
 	}
+	
+	/**
+	 * Fügt alle Elemente in die entsprechende List Box
+	 */
 	private void setRaumListBox(){
 		stundenplanVerwaltung.getAllRaeume(new AsyncCallback<Vector<Raum>>() {
 
@@ -190,6 +197,9 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 		});
 	}
 	
+	/**
+	 * Fügt alle Elemente in die entsprechende List Box
+	 */
 	private void setSemesterverbandListBox(){
 		stundenplanVerwaltung.getAllSemesterverband(new AsyncCallback<Vector<Semesterverband>>() {
 
@@ -325,7 +335,11 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 
 
 
-
+	/**
+	 * Setzt das gewählte Element zum editieren in die Instanz Variable und
+	 * zeigt Buttons und Felder an.
+	 * @param lvd: Die LVDurchfuehrung
+	 */
 	public void setSelected(LVDurchfuehrung lvd) {
 		if (lvd != null) {
 			selectedLVDurchfuehrung = lvd;
@@ -335,6 +349,9 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 		}
 	}
 	
+	/**
+	 * Setzt alle Felder auf den gewählten Wert beim editieren
+	 */
 	public void setFields() {
 		//richten Eintrag in den Eingabefeldern wählen wenn eine Lehrveranstaltung existiert
 		if(selectedLVDurchfuehrung != null) {
@@ -350,6 +367,9 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 		}
 	}
 	
+	/**
+	 * Löscht den Inhalt alle Eingabe Felder
+	 */
 	public void clearFields() {
 //		lbLehrveranstaltung.setItemSelected(0, true);
 //		lbRaum.setItemSelected(0, true);
@@ -360,6 +380,9 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 //		idValueLabel.setText("");
 	}
 	
+	/**
+	 * Ändert das ausgewählte Business Objekt im Editiermodus 
+	 */
 	public void modifizierenSelectedLVDurchfuehrung() {
 		//Die ausgew�hlten Id des gew�hlten Elementes ausw�hlen und am ende and die entsprechende Async Methode schicken.
 		
@@ -413,6 +436,9 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 		});
 	}
 	
+	/**
+	 * Löscht das ausgewählte Business Objekt im Editiermodus 
+	 */
 	public void loeschenSelectedLVDurchfuehrung() {
 		if(this.selectedLVDurchfuehrung != null) {
 			//Ruft Serverseitige Methode auf
@@ -434,6 +460,9 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 		}
 	}
 	
+	/**
+	 * Legt das  das ausgewählte Business Objekt an
+	 */
 	public void anlegenLVDurchfuehrung() {
 		//Die ausgew�hlten Id des gew�hlten Elementes ausw�hlen und am ende and die entsprechende Async Methode schicken.
 		

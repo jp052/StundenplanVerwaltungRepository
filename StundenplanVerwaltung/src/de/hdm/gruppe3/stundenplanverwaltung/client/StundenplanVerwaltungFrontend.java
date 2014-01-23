@@ -27,7 +27,7 @@ import de.hdm.gruppe3.stundenplanverwaltung.client.gui.SemesterverbandForm;
 import de.hdm.gruppe3.stundenplanverwaltung.client.gui.SemesterverbandTabelle;
 
 /**
- * 
+ * Enthält das Menü und dazugehörige Methoden.
  * @author Denis Fürst, Daniel Krakow
  * 
  * 
@@ -52,7 +52,7 @@ public class StundenplanVerwaltungFrontend{
 
 	/**
 	 * 
-	 * This is the entry point method.
+	 * Zeigt das gesammte Menü an.
 	 */
 
 	public void showMenue() {

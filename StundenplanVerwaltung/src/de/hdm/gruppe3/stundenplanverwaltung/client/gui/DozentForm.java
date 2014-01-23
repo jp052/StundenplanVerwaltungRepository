@@ -15,12 +15,13 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.*;
 
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Dozent;
 
-/**
+/**Enthält alle Elemente und nötigen Methoden für das Dozenten Formular
  * @author Yasemin Karakoc, Jan Plank
  * 
  */
 public class DozentForm extends VerticalPanel {
 	
+	//Gui Elemente
 	TextBox vornameTextBox = new TextBox();
 	TextBox nachnameTextBox = new TextBox();
 	Label idValueLabel = new Label();
@@ -33,11 +34,10 @@ public class DozentForm extends VerticalPanel {
 
 	StundenplanVerwaltungServiceAsync stundenplanVerwaltung = GWT
 			.create(StundenplanVerwaltungService.class);
-	Dozent shownDozent = null;
-	StundenplanVerwaltungTreeViewModel treeModel = null;
+	Dozent selectedDozent = null;
 
 	/**
-	 * Formular f�r die Darstellung des selektierten Kunden
+	 * Das Formular wird immer bei Konstruktoraufruf aufgerufen und zeigt alle GUI Elemente an.
 	 */
 	public DozentForm() {
 		Grid customerGrid = new Grid(3, 2);
@@ -52,7 +52,7 @@ public class DozentForm extends VerticalPanel {
 		customerGrid.setWidget(1, 1, nachnameTextBox);
 
 		// Nur wenn Dozent geändert wird, dann wird das ID Feld angezeigt
-		if (shownDozent != null) {
+		if (selectedDozent != null) {
 			Label idLabel = new Label("ID");
 			customerGrid.setWidget(2, 0, idLabel);
 			customerGrid.setWidget(2, 1, idValueLabel);
@@ -71,8 +71,8 @@ public class DozentForm extends VerticalPanel {
 		loeschenButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				stundenplanVerwaltung.loeschenDozent(shownDozent,
-						new LoeschenDozentCallback(shownDozent));
+				stundenplanVerwaltung.loeschenDozent(selectedDozent,
+						new LoeschenDozentCallback(selectedDozent));
 			}
 		});
 
@@ -90,26 +90,33 @@ public class DozentForm extends VerticalPanel {
 		showButtons();
 		
 	}
-
-	public void setCatvm(StundenplanVerwaltungTreeViewModel treeModel) {
-		this.treeModel = treeModel;
-	}
-
+	
+	/**
+	 * Setzt den Inhalt aller Eingabe Felder auf den gewählten Wert beim editieren
+	 */
 	void setFields() {
-		vornameTextBox.setText(shownDozent.getVorname());
-		nachnameTextBox.setText(shownDozent.getNachname());
-		idValueLabel.setText(Integer.toString(shownDozent.getId()));
+		vornameTextBox.setText(selectedDozent.getVorname());
+		nachnameTextBox.setText(selectedDozent.getNachname());
+		idValueLabel.setText(Integer.toString(selectedDozent.getId()));
 	}
-
+	
+	/**
+	 * Löscht den Inhalt alle Eingabe Felder
+	 */
 	public void clearFields() {
 		vornameTextBox.setText("");
 		nachnameTextBox.setText("");
 		idValueLabel.setText("");
 	}
-
+	
+	/**
+	 * Setzt das gewählte Element zum editieren in die Instanz Variable und
+	 * zeigt Buttons und Felder an.
+	 * @param d Dozent
+	 */
 	public void setSelected(Dozent d) {		
 		if (d != null) {
-			shownDozent = d;
+			selectedDozent = d;
 			showButtons();
 			setFields();
 		} else {
@@ -117,10 +124,13 @@ public class DozentForm extends VerticalPanel {
 		}
 	}
 	
+	/**
+	 * Zeigt alle benötigten Buttons an.
+	 */
 	public void showButtons(){
 		// Nur wenn Dozent geändert wird, dann werden der modifizieren und
 				// löschen Button angezeigt
-				if (shownDozent != null) {
+				if (selectedDozent != null) {
 					dozentButtonsPanel.add(modifizierenButton);
 					dozentButtonsPanel.add(loeschenButton);
 					dozentButtonsPanel.remove(neuButton);
@@ -130,12 +140,15 @@ public class DozentForm extends VerticalPanel {
 				}
 				
 	}
-
+	
+	/**
+	 * Ändert das ausgewählte Objekt im Editiermodus 
+	 */
 	public void modifizierenSelectedDozent() {
-		if (this.shownDozent != null) {
-			shownDozent.setVorname(vornameTextBox.getText());
-			shownDozent.setNachname(nachnameTextBox.getText());
-			stundenplanVerwaltung.modifizierenDozent(shownDozent,
+		if (this.selectedDozent != null) {
+			selectedDozent.setVorname(vornameTextBox.getText());
+			selectedDozent.setNachname(nachnameTextBox.getText());
+			stundenplanVerwaltung.modifizierenDozent(selectedDozent,
 					new AsyncCallback<Dozent>() {
 
 						@Override
@@ -153,8 +166,13 @@ public class DozentForm extends VerticalPanel {
 					});
 		}
 	}
-
-	class LoeschenDozentCallback implements AsyncCallback<Dozent> {
+	
+	
+	//TODO: eigene Methode wie überall schreiben und keine eigene Klasse
+	/**
+	 * Löscht das ausgewählte Objekt im Editiermodus 
+	 */
+	public class LoeschenDozentCallback implements AsyncCallback<Dozent> {
 
 		Dozent dozent = null;
 
@@ -178,8 +196,12 @@ public class DozentForm extends VerticalPanel {
 		}
 
 	}
-
-	class AnlegenDozentCallback implements AsyncCallback<Dozent> {
+	
+	//TODO: eigene Methode wie überall schreiben und keine eigene Klasse
+	/**
+	 * Legt das  das ausgewählte Business Objekt an
+	 */
+	public class AnlegenDozentCallback implements AsyncCallback<Dozent> {
 
 		@Override
 		public void onFailure(Throwable caught) {
