@@ -115,4 +115,6 @@ public interface StundenplanVerwaltungServiceAsync {
 
 	void getRaumByBezeichnung(String r, AsyncCallback<Raum> callback);
 
+	void getAllDurchfuehrungen(AsyncCallback<Vector<LVDurchfuehrung>> callback);
+
 }
