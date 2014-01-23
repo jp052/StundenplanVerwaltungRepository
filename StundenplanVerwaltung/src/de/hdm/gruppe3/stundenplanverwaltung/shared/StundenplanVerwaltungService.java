@@ -82,6 +82,8 @@ public interface StundenplanVerwaltungService extends RemoteService {
 			Zeitslot zeitslot) throws RaumBelegtException;
 
 	LVDurchfuehrung loeschenDurchfuehrung(LVDurchfuehrung d);
+	
+	public Vector<LVDurchfuehrung> getAllDurchfuehrungen() throws Exception;
 
 	// public LVDurchfuehrung getDurchfuehrungByNummer (int nr);
 
@@ -110,5 +112,14 @@ public interface StundenplanVerwaltungService extends RemoteService {
 	Raum modifizierenRaum(Raum r);
 	
 	Vector<Lehrveranstaltung> getAllLV();
+
+	Vector<Lehrveranstaltung> getLVBySV(int sv);
+	
+	
+	// Report 
+	public Vector<Lehrveranstaltung> reportLVbyDozent(int dozentID);
+	public Vector<Lehrveranstaltung> reportLVbyRaum(String bez);
+
+	Raum getRaumByBezeichnung(String r);
 
 }

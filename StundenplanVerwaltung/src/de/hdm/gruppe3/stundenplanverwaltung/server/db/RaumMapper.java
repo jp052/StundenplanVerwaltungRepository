@@ -171,6 +171,41 @@ public class RaumMapper {
 		return null;
 	}
 
+	public Raum findeName(String r) {
+		// DB-Verbindung holen
+		Connection con = DBVerbindung.connection();
+
+		try {
+			// Leeres SQL-Statement (JDBC) anlegen
+			Statement stmt = con.createStatement();
+
+			// Statement ausfÃ¼llen und als Query an die DB schicken
+			ResultSet rs = stmt
+					.executeQuery("SELECT RaumNr, Bezeichnung, Kapazitaet FROM raum "
+							+ "WHERE Bezeichnung="
+							+ "'"+r+"'"
+							+ " ORDER BY Bezeichnung");
+
+			/*
+			 * Da raum PrimÃ¤rschlÃ¼ssel ist, kann raumx. nur ein Tupel
+			 * zurÃ¼ckgegeben werden. PrÃ¼fe, ob ein Ergebnis vorliegt.
+			 */
+			if (rs.next()) {
+				// Ergebnis-Tupel in Objekt umwandeln
+				Raum raum = new Raum();
+				raum.setId(rs.getInt("RaumNr"));
+				raum.setBezeichnung(rs.getString("Bezeichnung"));
+				raum.setKapazitaet(rs.getInt("Kapazitaet"));
+
+				return raum;
+			}
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+			return null;
+		}
+
+		return null;
+	}
 	public Raum findeId(int i) {
 		// DB-Verbindung holen
 		Connection con = DBVerbindung.connection();
@@ -216,7 +251,7 @@ public class RaumMapper {
 			ResultSet rs = stmt
 					.executeQuery("SELECT RaumNr, Bezeichnung, Kapazitaet FROM raum ORDER BY RaumNr");
 
-			// Für jeden Eintrag im Suchergebnis wird nun ein Account-Objekt
+			// Fï¿½r jeden Eintrag im Suchergebnis wird nun ein Account-Objekt
 			// erstellt.
 			while (rs.next()) {
 				Raum r = new Raum();
@@ -226,22 +261,22 @@ public class RaumMapper {
 				r.setBezeichnung(rs.getString("Bezeichnung"));
 				r.setKapazitaet(rs.getInt("Kapazitaet")); 
 
-				// Hinzufügen des neuen Objekts zum Ergebnisvektor
+				// Hinzufï¿½gen des neuen Objekts zum Ergebnisvektor
 				result.addElement(r);
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
 
-		// Ergebnisvektor zurückgeben
+		// Ergebnisvektor zurï¿½ckgeben
 		return result;
 	}
 
 	public Lehrveranstaltung findeVL(Raum raum) {
 		/*
 		 * Wir bedienen uns hier einfach des CustomerMapper. Diesem geben wir
-		 * einfach den in dem Account-Objekt enthaltenen Fremdschlüssel für den
-		 * Kontoinhaber. Der CustomerMapper lässt uns dann diese ID in ein
+		 * einfach den in dem Account-Objekt enthaltenen Fremdschlï¿½ssel fï¿½r den
+		 * Kontoinhaber. Der CustomerMapper lï¿½sst uns dann diese ID in ein
 		 * Objekt auf.
 		 */
 		return LehrveranstaltungMapper.lvMapper().findeId(raum.getId());
@@ -250,8 +285,8 @@ public class RaumMapper {
 	public Zeitslot belegt(Raum raum) {
 		/*
 		 * Wir bedienen uns hier einfach des CustomerMapper. Diesem geben wir
-		 * einfach den in dem Account-Objekt enthaltenen Fremdschlüssel für den
-		 * Kontoinhaber. Der CustomerMapper lässt uns dann diese ID in ein
+		 * einfach den in dem Account-Objekt enthaltenen Fremdschlï¿½ssel fï¿½r den
+		 * Kontoinhaber. Der CustomerMapper lï¿½sst uns dann diese ID in ein
 		 * Objekt auf.
 		 */
 		return ZeitslotMapper.zeitslotMapper().findeId(raum.getId());

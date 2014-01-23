@@ -66,6 +66,7 @@ public class LehrveranstaltungForm extends VerticalPanel {
 
 		// dozentenListBox f�llen
 		setDozentenListBox();
+//		dozentenListBox.setSelectedIndex(2);
 
 		if (selectedLehrveranstaltung != null) {
 			Label idLabel = new Label("ID");
@@ -109,7 +110,8 @@ public class LehrveranstaltungForm extends VerticalPanel {
 	 * Dozenten.
 	 * 
 	 */
-	private void setDozentenListBox() {
+	public void setDozentenListBox() {
+		
 		stundenplanVerwaltung
 				.getAllDozenten(new AsyncCallback<Vector<Dozent>>() {
 
@@ -120,28 +122,51 @@ public class LehrveranstaltungForm extends VerticalPanel {
 
 					@Override
 					public void onSuccess(Vector<Dozent> result) {
-						int valueIndex = 1; // Bei 1 angangen, da 0 der
-											// "Bitte wählen" Text ist.
-						// dozentenListBox.addItem("Bitte, value);
+						//Listbox leeren falls schon alte Werte drin sind
+						dozentenListBox.clear();
+
+						dozentenListBox.addItem("--Bitte wählen--", "0");
 						for (Dozent d : result) {
 							// Der zweite Parameter von addItem ist die gew�hlte
 							// Dozenten Id welche beim anlegen der
 							// Lehrveranstaltung
 							// ben�tigt wird.
-							dozentenListBox.addItem(d.toString(),
-									String.valueOf(d.getId()));
+							dozentenListBox.addItem(d.toString(), String.valueOf(d.getId()));
+							
 							// dozentenListBox.addItem(d.toString(),
 							// String.valueOf(valueIndex));
 							// dozentenListBox.setValue(valueIndex,
 							// String.valueOf(d.getId()));
-							valueIndex++;
+//							valueIndex++;
 
 						}
 
-						dozentenListBox.setSelectedIndex(2);
+						selectCurrentDozent();
 
 					}
 				});
+	}
+	
+	/**
+	 * Wählt den aktuellen dozent aus wenn man im editier modus ist.
+	 */
+	private void selectCurrentDozent() {
+		if (selectedLehrveranstaltung != null) {
+					
+					int dozentId = selectedLehrveranstaltung.getDozent().getId();	
+					
+					for(int pos = 0; pos < dozentenListBox.getItemCount(); pos++){
+						// Erzeugt einen int aus der value in der listbox
+						//Holt die dozentId der gewählten Lehrveranstaltung
+						//Wenn die beiden Werte gleich sind, dann soll die Position in der Select
+						
+						int currentValue = Integer.valueOf(dozentenListBox.getValue(pos)); 		
+									
+						if(currentValue == dozentId) {
+							dozentenListBox.setSelectedIndex(currentValue);
+						}
+					}
+				}
 	}
 
 	public void setSelected(Lehrveranstaltung s) {
@@ -161,13 +186,32 @@ public class LehrveranstaltungForm extends VerticalPanel {
 				.getSemester()));
 		umfangTextBox.setText(Integer.toString(selectedLehrveranstaltung
 				.getUmfang()));
+		
+		//Die Listbox mit dem aktuelle Dozent setzen.
+		this.setDozentenListBox();
+		
+//		dozentenListBox.setSelectedIndex(2);
 
 		// richten Eintrag in der ListBox w�hlen wenn eine Lehrveranstaltung
 		// existiert
 		// dozentenListBox.setSelectedIndex(2);
-		if (selectedLehrveranstaltung != null) {
-			// dozentenListBox.setSelectedIndex(2);
-		}
+//		if (selectedLehrveranstaltung != null) {
+//			
+//			int dozentId = selectedLehrveranstaltung.getDozent().getId();	
+//			
+//			for(int pos = 0; pos < dozentenListBox.getItemCount(); pos++){
+//				// Erzeugt einen int aus der value in der listbox
+//				//Holt die dozentId der gewählten Lehrveranstaltung
+//				//Wenn die beiden Werte gleich sind, dann soll die Position in der Select
+//				
+//				int currentValue = Integer.getInteger(dozentenListBox.getValue(pos)); 		
+//							
+//				if(currentValue == dozentId) {
+//					
+//				}
+//			}
+//			// dozentenListBox.setSelectedIndex(2);
+//		}
 
 		idValueLabel
 				.setText(Integer.toString(selectedLehrveranstaltung.getId()));

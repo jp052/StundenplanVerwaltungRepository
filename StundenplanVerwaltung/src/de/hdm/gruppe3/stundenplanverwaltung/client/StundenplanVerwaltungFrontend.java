@@ -17,11 +17,14 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungServiceAsync;
 import de.hdm.gruppe3.stundenplanverwaltung.client.gui.DozentForm;
 import de.hdm.gruppe3.stundenplanverwaltung.client.gui.DozentTabelle;
+import de.hdm.gruppe3.stundenplanverwaltung.client.gui.LVDurchfuehrungForm;
+import de.hdm.gruppe3.stundenplanverwaltung.client.gui.LVDurchfuehrungTabelle;
 import de.hdm.gruppe3.stundenplanverwaltung.client.gui.LehrveranstaltungForm;
 import de.hdm.gruppe3.stundenplanverwaltung.client.gui.LehrveranstaltungTabelle;
 import de.hdm.gruppe3.stundenplanverwaltung.client.gui.RaumForm;
 import de.hdm.gruppe3.stundenplanverwaltung.client.gui.RaumTabelle;
 import de.hdm.gruppe3.stundenplanverwaltung.client.gui.SemesterverbandForm;
+import de.hdm.gruppe3.stundenplanverwaltung.client.gui.SemesterverbandTabelle;
 
 /**
  * 
@@ -95,8 +98,8 @@ public class StundenplanVerwaltungFrontend{
 			public void execute() {
 				right.clear();
 				right.add(new HTML("<h3>" + "Anlegen einer Durchführung" + "</h3>"));
-				LehrveranstaltungForm vorl = new LehrveranstaltungForm();
-				right.add(vorl);
+				LVDurchfuehrungForm lvdForm = new LVDurchfuehrungForm();
+				right.add(lvdForm);
 			}
 		};
 		
@@ -134,13 +137,13 @@ public class StundenplanVerwaltungFrontend{
 		};
 		
 		
-		//SEM TABELLE
+		//Semeserverband TABELLE
 		Command showSemesterverband = new Command() {
 			public void execute() {
 				right.clear();
 				right.add(new HTML("<h3>" + "Liste der Semesterverbände" + "</h3>"));
-				DozentTabelle dozTest = new DozentTabelle();
-				right.add(dozTest);
+				SemesterverbandTabelle svTabelle = new SemesterverbandTabelle();
+				right.add(svTabelle.zeigeTabelle());
 			}
 		};		
 		
@@ -149,8 +152,8 @@ public class StundenplanVerwaltungFrontend{
 			public void execute() {
 				right.clear();
 				right.add(new HTML("<h3>" + "Liste der Durchführungen" + "</h3>"));
-				DozentTabelle dozTest = new DozentTabelle();
-				right.add(dozTest);
+				LVDurchfuehrungTabelle lvdTAbelle = new LVDurchfuehrungTabelle();
+				right.add(lvdTAbelle.zeigeTabelle());
 			}
 		};		
 
@@ -170,8 +173,8 @@ public class StundenplanVerwaltungFrontend{
 		lvMenu.addItem("Lehrveranstaltung anlegen", createLehrveranstaltung);
 		semMenu.addItem("Semesterverband anzeigen", showSemesterverband);
 		semMenu.addItem("Semesterverband anlegen", createSemesterverband);
-		durchfuer.addItem("Vorlesung anzeigen", showDurchfuehrung);
-		durchfuer.addItem("Vorlesung anlegen", createDurchfuerhung);
+		durchfuer.addItem("Durchführung anzeigen", showDurchfuehrung);
+		durchfuer.addItem("Durchführung anlegen", createDurchfuerhung);
 		
 		//HIER NOCH DIE WEITEREN COMMANDS EINFÜGEN
 		repoMenu.addItem("Dozentreport", createDurchfuerhung);
