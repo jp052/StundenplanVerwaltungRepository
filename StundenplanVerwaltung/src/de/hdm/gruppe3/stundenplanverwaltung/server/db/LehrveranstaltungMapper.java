@@ -191,27 +191,31 @@ public class LehrveranstaltungMapper {
 			      Statement stmt = con.createStatement();
 
 			ResultSet rs = stmt
-					.executeQuery("SELECT Lehrveranstaltung.LVNr, Lehrveranstaltung.Bezeichnung, Lehrveranstaltung.Umfang, Lehrveranstaltung.Semester, Dozent.nachname FROM Lehrveranstaltung INNER JOIN Dozent ON Lehrveranstaltung.personalNr = Dozent.personalNr ");
+					.executeQuery("SELECT * FROM Lehrveranstaltung INNER JOIN Dozent ON Lehrveranstaltung.personalNr = Dozent.personalNr ");
 
 			// F�r jeden Eintrag im Suchergebnis wird nun ein Account-Objekt
 			// erstellt.
 			while (rs.next()) {
 				Lehrveranstaltung lv = new Lehrveranstaltung();
+				Dozent dozent = new Dozent();
+				
+				//Dozent füllen
+				dozent.setId(rs.getInt("Dozent.PersonalNr"));
+				dozent.setVorname(rs.getString("Dozent.Vorname"));
+				dozent.setNachname(rs.getString("Dozent.Nachname"));
+				
+				//Lv füllen
 				lv.setId(rs.getInt("Lehrveranstaltung.LVNr"));
 				lv.setBezeichnung(rs.getString("Lehrveranstaltung.Bezeichnung"));
 				lv.setUmfang(rs.getInt("Lehrveranstaltung.Umfang"));
 				lv.setSemester(rs.getInt("Lehrveranstaltung.Semester"));
 				lv.setDozentName(rs.getString("dozent.nachname"));
+				lv.setDozent(dozent);
 				
-//				Dozent d = new Dozent();
-//				d.setId(rs.getInt("Dozent.PersonalNr"));
-//				d.setVorname(rs.getString("Dozent.Vorname"));
-//				d.setNachname(rs.getString("Dozent.Nachname"));
-//				lv.setDozent(d);
 
 				// Hinzuf¸gen des neuen Objekts zum Ergebnisvektor
 				result.addElement(lv);
-				}
+			}
 			   }
 			    catch (SQLException e2) {
 			      e2.printStackTrace();
@@ -230,6 +234,16 @@ public class LehrveranstaltungMapper {
 		     */
 		    return DozentMapper.dozentMapper().findeId(lv.getId());
 		  }
+		
+		/**
+		 * Findet alle Lehrveranstaltungen von einem Dozent
+		 * @param dozentId
+		 * @return
+		 */
+		public Vector<Lehrveranstaltung> findeByDozent(int dozentId) {
+			//TODO: mit logik füllen
+			return null;
+		}
 		  
 		  public Zeitslot findeTermin(Lehrveranstaltung lv) {
 		    /*
