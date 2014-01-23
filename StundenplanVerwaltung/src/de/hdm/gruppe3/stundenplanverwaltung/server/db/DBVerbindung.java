@@ -10,9 +10,9 @@ import com.google.appengine.api.rdbms.AppEngineDriver;
  * <b>Nachteil:</b> Durch die Singleton-Eigenschaft der Klasse kann nur auf eine
  * fest vorgegebene Datenbank zugegriffen werden.<p>
  * In der Praxis kommen die meisten Anwendungen mit einer einzigen Datenbank 
- * aus. Eine flexiblere Variante für mehrere gleichzeitige Datenbank-Verbindungen
- * wäre sicherlich leistungsfähiger. Dies würde allerdings den Rahmen dieses 
- * Projekts sprengen bzw. die Software unnötig verkomplizieren, da dies für diesen
+ * aus. Eine flexiblere Variante fï¿½r mehrere gleichzeitige Datenbank-Verbindungen
+ * wï¿½re sicherlich leistungsfï¿½higer. Dies wï¿½rde allerdings den Rahmen dieses 
+ * Projekts sprengen bzw. die Software unnï¿½tig verkomplizieren, da dies fï¿½r diesen
  * Anwendungsfall nicht erforderlich ist.
  * 
  * @author Thies
@@ -22,8 +22,8 @@ public class DBVerbindung {
 	/**
 	 * Die Klasse DBConnection wird nur einmal instantiiert. Man spricht hierbei
 	 * von einem sogenannten <b>Singleton</b>.<p>
-	 * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal für
-	 * sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
+	 * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal fï¿½r
+	 * sï¿½mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
 	 * einzige Instanz dieser Klasse.
 	 * 
 	 * @see AccountMapper.accountMapper()
@@ -33,55 +33,89 @@ public class DBVerbindung {
 	
 	/**
 	 * Die URL, mit deren Hilfe die Datenbank angesprochen wird. In einer 
-	 * professionellen Applikation würde diese Zeichenkette aus einer 
-	 * Konfigurationsdatei eingelesen oder über einen Parameter von außen 
-	 * mitgegeben, um bei einer Veränderung dieser URL nicht die gesamte 
-	 * Software neu komilieren zu müssen.
+	 * professionellen Applikation wï¿½rde diese Zeichenkette aus einer 
+	 * Konfigurationsdatei eingelesen oder ï¿½ber einen Parameter von auï¿½en 
+	 * mitgegeben, um bei einer Verï¿½nderung dieser URL nicht die gesamte 
+	 * Software neu komilieren zu mï¿½ssen.
 	 */
 
-	private static String url = "jdbc:mysql://127.0.0.1:3306/stundenplanverwaltung?user=root&password=";
+//	private static String url = "jdbc:google:rdbms://itprojectgruppe3:group3/stundenplanverwaltung?user=root";
+//	private static String url = "jdbc:google:rdbms://itprojectgruppe3:group3/stundenplanverwaltung?user=itgruppe3";
+	private static String url = "jdbc:google:rdbms://itprojectgruppe3:group3two/stundenplanverwaltung?user=root&";
+//	private static String url = "jdbc:google:rdbms://itprojectgruppe3:group3/stundenplanverwaltung?user=root&password";
+//	private static String url = "jdbc:google:rdbms://itprojectgruppe3:group3/stundenplanverwaltung?user=root&password=";
+
 	
 	/**
 	 * Diese statische Methode kann aufgrufen werden durch 
 	 * <code>DBConnection.connection()</code>. Sie stellt die 
-	 * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine einzige
+	 * Singleton-Eigenschaft sicher, indem Sie dafï¿½r sorgt, dass nur eine einzige
 	 * Instanz von <code>DBConnection</code> existiert.<p>
 	 * 
 	 * <b>Fazit:</b> DBConnection sollte nicht mittels <code>new</code> 
 	 * instantiiert werden, sondern stets durch Aufruf dieser statischen Methode.<p>
 	 * 
 	 * <b>Nachteil:</b> Bei Zusammenbruch der Verbindung zur Datenbank - dies kann
-	 * z.B. durch ein unbeabsichtigtes Herunterfahren der Datenbank ausgelöst 
+	 * z.B. durch ein unbeabsichtigtes Herunterfahren der Datenbank ausgelï¿½st 
 	 * werden - wird keine neue Verbindung aufgebaut, so dass die in einem solchen
-	 * Fall die gesamte Software neu zu starten ist. In einer robusten Lösung 
-	 * würde man hier die Klasse dahingehend modifizieren, dass bei einer nicht
-	 * mehr funktionsfähigen Verbindung stets versucht würde, eine neue Verbindung
-	 * aufzubauen. Dies würde allerdings ebenfalls den Rahmen dieses Projekts 
+	 * Fall die gesamte Software neu zu starten ist. In einer robusten Lï¿½sung 
+	 * wï¿½rde man hier die Klasse dahingehend modifizieren, dass bei einer nicht
+	 * mehr funktionsfï¿½higen Verbindung stets versucht wï¿½rde, eine neue Verbindung
+	 * aufzubauen. Dies wï¿½rde allerdings ebenfalls den Rahmen dieses Projekts 
 	 * sprengen.
 	 * 
 	 * @return DAS <code>DBConncetion</code>-Objekt.
+	 * @throws ClassNotFoundException 
 	 * @see con
 	 */
-	public static Connection connection() {
+//	public static Connection connection() {
+//		// Wenn es bisher keine Conncetion zur DB gab, ... 
+//		if ( con == null ) {
+//			try {
+//				// Ersteinmal muss der passende DB-Treiber geladen werden
+////				DriverManager.registerDriver(new AppEngineDriver());
+//				try {
+//					Class.forName("com.mysql.jdbc.Driver");
+//				} catch (ClassNotFoundException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//
+//				/*
+//				 * Dann erst kann uns der DriverManager eine Verbindung mit den oben
+//				 * in der Variable url angegebenen Verbindungsinformationen aufbauen.
+//				 * 
+//				 * Diese Verbindung wird dann in der statischen Variable con 
+//				 * abgespeichert und fortan verwendet.
+//				 */
+//				con = DriverManager.getConnection(url);
+//			} 
+//			catch (SQLException e1) {
+//				con = null;
+//				e1.printStackTrace();
+//			}
+//		}
+	
+	
+	
+	
+	//GOOGLE CONNECTION
+	
+	public static Connection connection()  {
 		// Wenn es bisher keine Conncetion zur DB gab, ... 
 		if ( con == null ) {
 			try {
 				// Ersteinmal muss der passende DB-Treiber geladen werden
-//				DriverManager.registerDriver(new AppEngineDriver());
-				try {
-					Class.forName("com.mysql.jdbc.Driver");
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				DriverManager.registerDriver(new AppEngineDriver());
 
-				/*
+				/**
 				 * Dann erst kann uns der DriverManager eine Verbindung mit den oben
 				 * in der Variable url angegebenen Verbindungsinformationen aufbauen.
 				 * 
 				 * Diese Verbindung wird dann in der statischen Variable con 
 				 * abgespeichert und fortan verwendet.
 				 */
+				
 				con = DriverManager.getConnection(url);
 			} 
 			catch (SQLException e1) {
@@ -90,7 +124,7 @@ public class DBVerbindung {
 			}
 		}
 		
-		// Zurückgegeben der Verbindung
+		// Zurï¿½ckgegeben der Verbindung
 		return con;
 	}
 
