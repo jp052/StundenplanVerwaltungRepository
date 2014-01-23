@@ -33,8 +33,8 @@ VerticalPanel mainPanel = new VerticalPanel();
 	StundenplanVerwaltungServiceAsync stundenplanVerwaltung = GWT
 			.create(StundenplanVerwaltungService.class);
 	
-	ReportGeneratorAsync r = ClientsideSettings.getReportGenerator();
-	ReportGeneratorAsync report = GWT.create(ReportGenerator.class);
+//	ReportGeneratorAsync r = ClientsideSettings.getReportGenerator();
+//	ReportGeneratorAsync report = GWT.create(ReportGenerator.class);
 	Dozent shownDozent = null;
 	
 	public DozentReport(){}
@@ -153,47 +153,47 @@ VerticalPanel mainPanel = new VerticalPanel();
 
 
 		// dann irgendwann aufruf der methode von Stundenplanverwaltung
-		report.reportLVbyDozent(d, new AsyncCallback<Vector<Lehrveranstaltung>>(){
-
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("Ein Fehler ist aufgetreten! Kein Report verfügbar - " + caught);				
-			}
-
-			@Override
-			public void onSuccess(Vector<Lehrveranstaltung> result) {
-				Window.alert("Es wurden " + result.size()
-						+ " Eintraege gefunden");
-				int i = 1;
-				for (final Lehrveranstaltung lv : result) {
-
-					final TextBox tbN = new TextBox();
-					final TextBox tbV = new TextBox();
-					
-					String bezeichnung, semester, umfang, dozent;
-					
-					bezeichnung = lv.getBezeichnung();
-					semester = String.valueOf(lv.getSemester());
-					umfang = String.valueOf(lv.getUmfang());
-					dozent = lv.getDozentName();
-					
-					
-				    Label lBez = new Label(bezeichnung);
-				    Label lSem = new Label(semester);
-				    Label lUmfang = new Label(umfang);
-				    Label lDozent = new Label(dozent);
-				    
-					t.setText(i, 0, String.valueOf(lv.getId()));
-					t.setWidget(i, 1, lBez);
-					t.setWidget(i, 2, lSem);
-					t.setWidget(i, 3, lUmfang);
-				}
-				i++;
-			}
-		});
-	
-		mainPanel.add(t);
-//		return mainPanel;
-		 RootPanel.get("starter").add(mainPanel);
+//		report.reportLVbyDozent(d, new AsyncCallback<Vector<Lehrveranstaltung>>(){
+//
+//			@Override
+//			public void onFailure(Throwable caught) {
+//				Window.alert("Ein Fehler ist aufgetreten! Kein Report verfügbar - " + caught);				
+//			}
+//
+//			@Override
+//			public void onSuccess(Vector<Lehrveranstaltung> result) {
+//				Window.alert("Es wurden " + result.size()
+//						+ " Eintraege gefunden");
+//				int i = 1;
+//				for (final Lehrveranstaltung lv : result) {
+//
+//					final TextBox tbN = new TextBox();
+//					final TextBox tbV = new TextBox();
+//					
+//					String bezeichnung, semester, umfang, dozent;
+//					
+//					bezeichnung = lv.getBezeichnung();
+//					semester = String.valueOf(lv.getSemester());
+//					umfang = String.valueOf(lv.getUmfang());
+//					dozent = lv.getDozentName();
+//					
+//					
+//				    Label lBez = new Label(bezeichnung);
+//				    Label lSem = new Label(semester);
+//				    Label lUmfang = new Label(umfang);
+//				    Label lDozent = new Label(dozent);
+//				    
+//					t.setText(i, 0, String.valueOf(lv.getId()));
+//					t.setWidget(i, 1, lBez);
+//					t.setWidget(i, 2, lSem);
+//					t.setWidget(i, 3, lUmfang);
+//				}
+//				i++;
+//			}
+//		});
+//	
+//		mainPanel.add(t);
+////		return mainPanel;
+//		 RootPanel.get("starter").add(mainPanel);
 	}
 }
