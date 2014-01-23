@@ -180,11 +180,16 @@ public class DozentMapper {
          * werden. Prüfe, ob ein Ergebnis vorliegt.
          */
         if (rs.next()) {
+          LehrveranstaltungMapper lvMapper = LehrveranstaltungMapper.lvMapper();
           // Ergebnis-Tupel in Objekt umwandeln
           Dozent dozent = new Dozent();
+//          Lehrveranstaltung lv = new Lehrveranstaltung();
+//          lv = lvMapper.findeId(rs.getInt("LVNr"));
+          
           dozent.setId(rs.getInt("PersonalNr"));
           dozent.setNachname(rs.getString("Nachname"));
           dozent.setVorname(rs.getString("Vorname"));
+          //TODO: Dozent mit Lehveranstaltung Vector füllen lvMapper.findeByDozent
 
           return dozent;
         }
