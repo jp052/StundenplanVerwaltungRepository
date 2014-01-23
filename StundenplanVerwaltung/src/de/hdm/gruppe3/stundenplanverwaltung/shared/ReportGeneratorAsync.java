@@ -2,10 +2,6 @@ package de.hdm.gruppe3.stundenplanverwaltung.shared;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import de.hdm.thies.bankProjekt.shared.bo.Bank;
-import de.hdm.thies.bankProjekt.shared.bo.Customer;
-import de.hdm.thies.bankProjekt.shared.report.AllAccountsOfAllCustomersReport;
-import de.hdm.thies.bankProjekt.shared.report.AllAccountsOfCustomerReport;
 
 /**
  * Das asynchrone Gegenstück des Interface {@link ReportGenerator}. Es wird
@@ -16,15 +12,15 @@ import de.hdm.thies.bankProjekt.shared.report.AllAccountsOfCustomerReport;
  * @author thies
  */
 public interface ReportGeneratorAsync {
-
-  void createAllAccountsOfAllCustomersReport(
-      AsyncCallback<AllAccountsOfAllCustomersReport> callback);
-
-  void createAllAccountsOfCustomerReport(Customer c,
-      AsyncCallback<AllAccountsOfCustomerReport> callback);
-
-  void init(AsyncCallback<Void> callback);
-
-  void setBank(Bank b, AsyncCallback<Void> callback);
+//
+//  void createAllAccountsOfAllCustomersReport(
+//      AsyncCallback<AllAccountsOfAllCustomersReport> callback);
+//
+//  void createAllAccountsOfCustomerReport(Customer c,
+//      AsyncCallback<AllAccountsOfCustomerReport> callback);
+//
+//  void init(AsyncCallback<Void> callback);
+//
+//  void setBank(Bank b, AsyncCallback<Void> callback);
 
 }

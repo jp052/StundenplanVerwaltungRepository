@@ -1,11 +1,5 @@
 package de.hdm.gruppe3.stundenplanverwaltung.shared;
 
-import de.hdm.thies.bankProjekt.shared.bo.Bank;
-import de.hdm.thies.bankProjekt.shared.bo.Customer;
-import de.hdm.thies.bankProjekt.shared.report.AllAccountsOfAllCustomersReport;
-import de.hdm.thies.bankProjekt.shared.report.AllAccountsOfCustomerReport;
-
-import 
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -41,45 +35,45 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("reportgenerator")
 public interface ReportGenerator extends RemoteService {
 
-  /**
-   * Initialisierung des Objekts. Diese Methode ist vor dem Hintergrund von GWT
-   * RPC zusätzlich zum No Argument Constructor der implementierenden Klasse
-   *BankAdministrationImpltungImpl} notwendig. Bitte diese Methode direkt nach der
-   * Instantiierung aufrufen.
-   * 
-   * @throws IllegalArgumentException
-   */
-  public void init() throws IllegalArgumentException;
-
-  /**
-   * Setzen der zugeordneten Bank.
-   * 
-   * @para Bank-Objekt
-   * @throws IllegalArgumentException
-   */
-  public void setBank(Bank b) throws IllegalArgumentException;
-
-  /**
-   * Erstellen eines <code>AllAccountsOfCustomerReport</code>-Reports. Dieser
-   * Report-Typ stellt sämtliche Konten eines Kunden dar.
-   * 
-   * @param c eine Referenz auf das Kundenobjekt bzgl. dessen der Report
-   *          erstellt werden soll.
-   * @return das fertige Reportobjekt
-   * @throws IllegalArgumentException
-   * @see AllAccountsOfCustomerReport
-   */
-  public abstract AllAccountsOfCustomerReport createAllAccountsOfCustomerReport(
-      Customer c) throws IllegalArgumentException;
-
-  /**
-   * Erstellen eines <code>AllAccountsOfAllCustomersReport</code>-Reports.
-   * Dieser Report-Typ stellt sämtliche Konten aller Kunden dar.
-   * 
-   * @return das fertige Reportobjekt
-   * @throws IllegalArgumentException
-   * @see AllAccountsOfAllCustomersReport
-   */
-  public abstract AllAccountsOfAllCustomersReport createAllAccountsOfAllCustomersReport()
-      throws IllegalArgumentException;
+//  /**
+//   * Initialisierung des Objekts. Diese Methode ist vor dem Hintergrund von GWT
+//   * RPC zusätzlich zum No Argument Constructor der implementierenden Klasse
+//   *BankAdministrationImpltungImpl} notwendig. Bitte diese Methode direkt nach der
+//   * Instantiierung aufrufen.
+//   * 
+//   * @throws IllegalArgumentException
+//   */
+//  public void init() throws IllegalArgumentException;
+//
+//  /**
+//   * Setzen der zugeordneten Bank.
+//   * 
+//   * @para Bank-Objekt
+//   * @throws IllegalArgumentException
+//   */
+//  public void setBank(Bank b) throws IllegalArgumentException;
+//
+//  /**
+//   * Erstellen eines <code>AllAccountsOfCustomerReport</code>-Reports. Dieser
+//   * Report-Typ stellt sämtliche Konten eines Kunden dar.
+//   * 
+//   * @param c eine Referenz auf das Kundenobjekt bzgl. dessen der Report
+//   *          erstellt werden soll.
+//   * @return das fertige Reportobjekt
+//   * @throws IllegalArgumentException
+//   * @see AllAccountsOfCustomerReport
+//   */
+//  public abstract AllAccountsOfCustomerReport createAllAccountsOfCustomerReport(
+//      Customer c) throws IllegalArgumentException;
+//
+//  /**
+//   * Erstellen eines <code>AllAccountsOfAllCustomersReport</code>-Reports.
+//   * Dieser Report-Typ stellt sämtliche Konten aller Kunden dar.
+//   * 
+//   * @return das fertige Reportobjekt
+//   * @throws IllegalArgumentException
+//   * @see AllAccountsOfAllCustomersReport
+//   */
+//  public abstract AllAccountsOfAllCustomersReport createAllAccountsOfAllCustomersReport()
+//      throws IllegalArgumentException;
 }
