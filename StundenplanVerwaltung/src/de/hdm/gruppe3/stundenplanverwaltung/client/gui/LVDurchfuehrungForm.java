@@ -137,14 +137,25 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 
 			@Override
 			public void onSuccess(Vector<Lehrveranstaltung> result) {
-//				Erster Eintrag soll leer sein bzw. Bitte wählen enthalten
+				//Listbox leeren falls schon alte Werte drin sind
+				lbLehrveranstaltung.clear();
+				
+				//Erster Eintrag soll leer sein bzw. Bitte wählen enthalten
 				lbLehrveranstaltung.addItem("--Bitte wählen--", "0");
 				
 				for(Lehrveranstaltung lv : result) {					
 					//Der zweite Parameter von addItem ist die gew�hlte Lehrveranstatlungs Id welche beim anlegen der Durchführung 
 					//benötigt wird.
 					lbLehrveranstaltung.addItem(lv.getBezeichnung(), String.valueOf(lv.getId()));
-				}				
+				}		
+				
+				//Listbox setzen wenn im editier Modus
+				if(selectedLVDurchfuehrung != null) {
+					int lehrveranstaltungId = selectedLVDurchfuehrung.getLehrveranstaltung().getId();
+					selectListenAuswahl(lbLehrveranstaltung, lehrveranstaltungId);
+				}
+				
+				
 			}
 		});
 	}
@@ -158,6 +169,9 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 
 			@Override
 			public void onSuccess(Vector<Raum> result) {
+				//Listbox leeren falls schon alte Werte drin sind
+				lbRaum.clear();
+				
 				//Erster Eintrag soll leer sein bzw. Bitte wählen enthalten
 				lbRaum.addItem("--Bitte wählen--", "0");
 				
@@ -165,7 +179,13 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 					//Der zweite Parameter von addItem ist die gew�hlte Raum Id welche beim anlegen der Durchführung 
 					//v wird.
 					lbRaum.addItem(r.getBezeichnung(), String.valueOf(r.getId()));
-				}				
+				}			
+				
+				//Listbox setzen wenn im editier Modus
+				if(selectedLVDurchfuehrung != null) {
+					int raumId = selectedLVDurchfuehrung.getRaum().getId();
+					selectListenAuswahl(lbRaum, raumId);
+				}
 			}
 		});
 	}
@@ -181,35 +201,24 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 
 			@Override
 			public void onSuccess(Vector<Semesterverband> result) {
+				//Listbox leeren falls schon alte Werte drin sind
+				lbSemesterverband.clear();
+
+				
 				//Erster Eintrag soll leer sein bzw. Bitte wählen enthalten
 				lbSemesterverband.addItem("--Bitte wählen--", "0");
 				
 				for(Semesterverband sv : result) {
-					StringBuilder listBoxItem = new StringBuilder();
-					
-					//Vorraussetzung ist, dass sich Studenten nur zum Wintersemester einschreiben können!
-					//Ansonsten stimmt die Logik zur bestimmung ob ein Semester im Winter Semester (WS) oder dem Sommersemester (SS) nicht.
-					//ist die Semesterzahl ungerade ist das Semester im WS, ansonste SS.
-					//Der Modulo Operator(%) mit der Zahl 2 liefert  bei einer ungeraden Zahl einne 1 und bei einer geraden Zahl eine 0 zurück.
-					String halbjahr = "SS";
-					int semester = sv.getSemester();
-					if(semester % 2 == 1) {						
-						halbjahr = "WS";
-					} 
-					
-					//Beispiel des Stings der in der ListBox angezeigt werden wird:
-					//WS 2013-Semester 3
-					listBoxItem.append(halbjahr); //WS oder SS
-					listBoxItem.append(" "); //Abstand
-					listBoxItem.append(sv.getJahrgang()); //Jahr z.B. 2013
-					listBoxItem.append("-"); //Trennung mit Minus#
-					listBoxItem.append("Semester " + semester); //Aktuelles Semester z.B. Semester 3
-					
-					//Der erste Prameter von addItem enthält den anzeige String, er wird vom StringBuffer in einen normalen String umgewandelt.
+					//Der erste Prameter von addItem enthält den anzeige String, er wird in der toString methode zu einem lesbaren String umgewandelt.
 					//Der zweite Parameter von addItem ist die gewählte Semesterverband Id welche beim anlegen der Durchführung 
 					//benögtigt wird.
-					lbSemesterverband.addItem(listBoxItem.toString(), String.valueOf(sv.getId()));
-//					lbSemesterverband.setValue(index, value);
+					lbSemesterverband.addItem(sv.toString(), String.valueOf(sv.getId()));
+				}
+				
+				//Listbox setzen wenn im editier Modus
+				if(selectedLVDurchfuehrung != null) {
+					int semesterverbandId = selectedLVDurchfuehrung.getSemesterverband().getId();
+					selectListenAuswahl(lbSemesterverband, semesterverbandId);
 				}
 				
 			}
@@ -220,6 +229,10 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 	 * Füllt anfangszeit und endzeit ListBox
 	 */
 	private void setZeitListBox() {
+		//Listbox leeren falls schon alte Werte drin sind
+		lbAnfangszeit.clear();
+		lbEndzeit.clear();
+		
 		//Erster Eintrag soll leer sein bzw. Bitte wählen enthalten
 		lbAnfangszeit.addItem("--Bitte wählen--", "0");
 		lbEndzeit.addItem("--Bitte wählen--", "0");
@@ -228,6 +241,14 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 			//Vorher int in String umwandeln mit String.valueOf
 			lbAnfangszeit.addItem(String.valueOf(zeit));
 			lbEndzeit.addItem(String.valueOf(zeit));
+		}
+		
+		if(selectedLVDurchfuehrung != null) {
+			int anfangZeit = selectedLVDurchfuehrung.getZeitslot().getAnfangszeit();
+			int endZeit = selectedLVDurchfuehrung.getZeitslot().getEndzeit();
+			selectListenAuswahl(lbAnfangszeit, anfangZeit);
+			selectListenAuswahl(lbEndzeit, endZeit);
+			
 		}
 	}
 	
@@ -242,7 +263,66 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 		for(String tag : ConstantsStdpln.WOCHENTAGE) {
 			lbWochentag.addItem(tag);
 		}
+		
+		if(selectedLVDurchfuehrung != null) {
+			String wochentag = selectedLVDurchfuehrung.getZeitslot().getWochentag();
+			selectListenAuswahl(lbWochentag, wochentag);
+		}
 	}
+	
+
+	
+	/**
+	 * Setzt beim editieren den richtigen Eintrag.
+	 * In GWT können die Felder nur nach einem Index gesetzt werden. Der Index unterscheidet sich von der Value der HTML SelectBox welches die
+	 * Id des gewählten Business Objektes ist. Diese Objekt Id wird beim modifizieren benötigt damit sie mit dem Datensatz in der
+	 * Datenbank in verbindung gebracht werden kann. Id ist gleich Primärschlüssel.
+	 * @param listBox: Die zu setzende Listbox
+	 * @param zuSetzendeValue: die Value die ausgewählt werden soll
+	 */
+	private void selectListenAuswahl(ListBox listBox, int zuSetzendeValue) {
+		//Nur ausführen wenn selected Objekt gefüllt ist und die Objekt Id vorhanden ist, sonst gibt es Fehler.
+		if (selectedLVDurchfuehrung != null && zuSetzendeValue > 0) {								
+					for(int pos = 0; pos < listBox.getItemCount(); pos++){
+						// Erzeugt einen int aus der value in der listbox
+						//Holt die dozentId der gewählten Lehrveranstaltung
+						//Wenn die beiden Werte gleich sind, dann soll die Position in der Select
+						
+						int currentValue = Integer.valueOf(listBox.getValue(pos)); 		
+									
+						if(currentValue == zuSetzendeValue) {
+							//Wenn die Vaulue gleich die zuSetzendeValue ist muss der listbox eintrag an der aktuellen Position gewählt werden.
+							listBox.setSelectedIndex(pos);
+						}
+					}
+				}
+	}
+	
+	/**
+	 * Das gleiche wie {@link #selectListenAuswahl(ListBox, int)}, nur für die Zeit und Wochentage.
+	 * Da dort Strings und keine Integer als Value verwendet werden ist eine extra Methode nötig.
+	 * @param listBox
+	 * @param zuSetzendeValue
+	 */
+	private void selectListenAuswahl(ListBox listBox, String zuSetzendeValue) {
+		//Nur ausführen wenn selected Objekt gefüllt ist und die Objekt Id vorhanden ist, sonst gibt es Fehler.
+		if (selectedLVDurchfuehrung != null && zuSetzendeValue != null) {								
+					for(int listBoxPos = 0; listBoxPos < listBox.getItemCount(); listBoxPos++){
+						// Erzeugt einen int aus der value in der listbox
+						//Holt die dozentId der gewählten Lehrveranstaltung
+						//Wenn die beiden Werte gleich sind, dann soll die Position in der Select
+						
+						String currentValue = listBox.getValue(listBoxPos); 		
+									
+						if(currentValue.equals(zuSetzendeValue)) {
+							//Wenn die Vaulue gleich zuSetzendeValuet Id ist muss der listbox eintrag an der aktuellen Position gewählt werden.
+							listBox.setSelectedIndex(listBoxPos);
+						}
+					}
+				}
+	}
+	
+
 
 
 
@@ -255,18 +335,18 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 		}
 	}
 	
-	void setFields() {
-	
-		//richten Eintrag in der ListBox w�hlen wenn eine Lehrveranstaltung existiert
+	public void setFields() {
+		//richten Eintrag in den Eingabefeldern wählen wenn eine Lehrveranstaltung existiert
 		if(selectedLVDurchfuehrung != null) {
-			lbWochentag.setSelectedIndex(3);
-			lbRaum.setSelectedIndex(2);
-			lbAnfangszeit.setSelectedIndex(4);
 			lbIdValue.setText(String.valueOf(selectedLVDurchfuehrung.getId()));
-//			lbLehrveranstatlung.setSelectedIndex(selectedLVDurchfuehrung.getLehrveranstaltung().getId());
-//			lbLehrveranstaltung.setSelectedIndex(1);
-//			lbRaum.setSelectedIndex(1);
-//			lbZeitslotBis.setSelectedIndex(selectedLehrveranstaltung.getDozent().getId());
+			
+			//Richtiger wert in den Listboxen wählen
+			setLehrveranstaltungListBox();
+			setRaumListBox();
+			setSemesterverbandListBox();
+			setZeitListBox();
+			setWochentagListBox();
+			
 		}
 	}
 	

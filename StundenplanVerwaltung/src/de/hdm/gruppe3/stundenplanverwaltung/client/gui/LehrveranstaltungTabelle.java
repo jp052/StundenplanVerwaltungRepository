@@ -60,6 +60,8 @@ public class LehrveranstaltungTabelle extends VerticalPanel{
 
 			@Override
 			public void onSuccess(Vector<Lehrveranstaltung> result) {
+//				Window.alert("Es wurden " + result.size()
+//				+ " Eintraege gefunden");
 				int i = 1;
 				for (final Lehrveranstaltung lv : result) {
 //					Button l = new Button("X");
@@ -97,7 +99,6 @@ public class LehrveranstaltungTabelle extends VerticalPanel{
 							lehrveranstaltungForm.setSelected(lv);
 							mainPanel.clear();
 							mainPanel.add(lehrveranstaltungForm);		
-//							lehrveranstaltungForm.setSelected(lv);
 						}
 					});
 					

@@ -53,8 +53,8 @@ public class DozentTabelle extends VerticalPanel{
 
 			@Override
 			public void onSuccess(Vector<Dozent> result) {
-				Window.alert("Es wurden " + result.size()
-						+ " Eintraege gefunden");
+//				Window.alert("Es wurden " + result.size()
+//						+ " Eintraege gefunden");
 				int i = 1;
 				for (final Dozent d : result) {
 					

@@ -66,13 +66,10 @@ public class LehrveranstaltungForm extends VerticalPanel {
 
 		// dozentenListBox f�llen
 		setDozentenListBox();
-//		dozentenListBox.setSelectedIndex(2);
 
-		if (selectedLehrveranstaltung != null) {
-			Label idLabel = new Label("ID");
-			customerGrid.setWidget(4, 0, idLabel);
-			customerGrid.setWidget(4, 1, idValueLabel);
-		}
+		Label idLabel = new Label("ID");
+		customerGrid.setWidget(4, 0, idLabel);
+		customerGrid.setWidget(4, 1, idValueLabel);
 
 		this.add(LehrveranstaltungsButtonsPanel);
 
@@ -101,9 +98,6 @@ public class LehrveranstaltungForm extends VerticalPanel {
 
 	}
 
-	public void setCatvm(StundenplanVerwaltungTreeViewModel treeModel) {
-		this.treeModel = treeModel;
-	}
 
 	/**
 	 * F�llt die dozentenListBox mit allen in der Datenbank vorhandenen
@@ -140,7 +134,8 @@ public class LehrveranstaltungForm extends VerticalPanel {
 //							valueIndex++;
 
 						}
-
+						
+						//ListBox fürs editieren setzen.
 						selectCurrentDozent();
 
 					}
@@ -151,8 +146,7 @@ public class LehrveranstaltungForm extends VerticalPanel {
 	 * Wählt den aktuellen dozent aus wenn man im editier modus ist.
 	 */
 	private void selectCurrentDozent() {
-		if (selectedLehrveranstaltung != null) {
-					
+		if (selectedLehrveranstaltung != null) {				
 					int dozentId = selectedLehrveranstaltung.getDozent().getId();	
 					
 					for(int pos = 0; pos < dozentenListBox.getItemCount(); pos++){
@@ -163,7 +157,7 @@ public class LehrveranstaltungForm extends VerticalPanel {
 						int currentValue = Integer.valueOf(dozentenListBox.getValue(pos)); 		
 									
 						if(currentValue == dozentId) {
-							dozentenListBox.setSelectedIndex(currentValue);
+							dozentenListBox.setSelectedIndex(pos);
 						}
 					}
 				}
@@ -186,35 +180,12 @@ public class LehrveranstaltungForm extends VerticalPanel {
 				.getSemester()));
 		umfangTextBox.setText(Integer.toString(selectedLehrveranstaltung
 				.getUmfang()));
+		idValueLabel.setText(Integer.toString(selectedLehrveranstaltung.getId()));
 		
 		//Die Listbox mit dem aktuelle Dozent setzen.
 		this.setDozentenListBox();
+
 		
-//		dozentenListBox.setSelectedIndex(2);
-
-		// richten Eintrag in der ListBox w�hlen wenn eine Lehrveranstaltung
-		// existiert
-		// dozentenListBox.setSelectedIndex(2);
-//		if (selectedLehrveranstaltung != null) {
-//			
-//			int dozentId = selectedLehrveranstaltung.getDozent().getId();	
-//			
-//			for(int pos = 0; pos < dozentenListBox.getItemCount(); pos++){
-//				// Erzeugt einen int aus der value in der listbox
-//				//Holt die dozentId der gewählten Lehrveranstaltung
-//				//Wenn die beiden Werte gleich sind, dann soll die Position in der Select
-//				
-//				int currentValue = Integer.getInteger(dozentenListBox.getValue(pos)); 		
-//							
-//				if(currentValue == dozentId) {
-//					
-//				}
-//			}
-//			// dozentenListBox.setSelectedIndex(2);
-//		}
-
-		idValueLabel
-				.setText(Integer.toString(selectedLehrveranstaltung.getId()));
 	}
 
 	public void clearFields() {

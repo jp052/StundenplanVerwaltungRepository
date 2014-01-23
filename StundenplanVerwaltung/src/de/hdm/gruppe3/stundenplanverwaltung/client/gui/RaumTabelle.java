@@ -56,8 +56,8 @@ public class RaumTabelle extends VerticalPanel{
 
 			@Override
 			public void onSuccess(Vector<Raum> result) {
-				Window.alert("Es wurden " + result.size()
-						+ " Eintraege gefunden");
+//				Window.alert("Es wurden " + result.size()
+//						+ " Eintraege gefunden");
 				int i = 1;
 				for (final Raum r : result) {
 //					Button l = new Button("X");
