@@ -25,6 +25,8 @@ import de.hdm.gruppe3.stundenplanverwaltung.client.gui.RaumForm;
 import de.hdm.gruppe3.stundenplanverwaltung.client.gui.RaumTabelle;
 import de.hdm.gruppe3.stundenplanverwaltung.client.gui.SemesterverbandForm;
 import de.hdm.gruppe3.stundenplanverwaltung.client.gui.SemesterverbandTabelle;
+import de.hdm.gruppe3.stundenplanverwaltung.client.report.DozentReport;
+import de.hdm.gruppe3.stundenplanverwaltung.client.report.Raumbelegung;
 
 /**
  * 
@@ -156,6 +158,26 @@ public class StundenplanVerwaltungFrontend{
 				right.add(lvdTAbelle.zeigeTabelle());
 			}
 		};		
+		
+		//Command für den Raumbelegung
+		Command showRaumReport = new Command() {
+			public void execute() {
+				right.clear();
+				right.add(new HTML("<h3>" + "Raumbelegung" + "</h3>"));
+				Raumbelegung raumReport = new Raumbelegung();
+				right.add(raumReport.reportRaumbelegung());
+			}
+		};	
+		
+		//Command für den Dozent Report
+		Command showDozentReport = new Command() {
+			public void execute() {
+				right.clear();
+				right.add(new HTML("<h3>" + "Dozent Report" + "</h3>"));
+				DozentReport dReport = new DozentReport();
+				right.add(dReport.reportDozent());
+			}
+		};	
 
 		mainPanel.add(vertpan);
 		mainPanel.add(hor1);
@@ -177,9 +199,9 @@ public class StundenplanVerwaltungFrontend{
 		durchfuer.addItem("Durchführung anlegen", createDurchfuerhung);
 		
 		//HIER NOCH DIE WEITEREN COMMANDS EINFÜGEN
-		repoMenu.addItem("Dozentreport", createDurchfuerhung);
-		repoMenu.addItem("Stundenplanreport", createDurchfuerhung);
-		repoMenu.addItem("Raumreport", createDurchfuerhung);
+		repoMenu.addItem("Dozentreport", showDozentReport);
+		repoMenu.addItem("Stundenplan für Semesterverband", createDurchfuerhung);
+		repoMenu.addItem("Raumreport", showRaumReport);
 		
 		MenuBar menu = new MenuBar();
 		menu.addItem("Dozent", dozMenu);

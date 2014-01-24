@@ -18,6 +18,16 @@ public class Lehrveranstaltung extends BusinessObject {
 	private String dozentString;
 	private String raumWochentag;
 	private int raumZeit;
+	private int raumZeitEnde;
+	
+	public int getRaumZeitEnde() {
+		return raumZeitEnde;
+	}
+
+	public void setRaumZeitEnde(int raumZeitEnde) {
+		this.raumZeitEnde = raumZeitEnde;
+	}
+
 	public String getRaumWochentag() {
 		return raumWochentag;
 	}
