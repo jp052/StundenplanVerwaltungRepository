@@ -390,6 +390,11 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 	public void modifizierenSelectedLVDurchfuehrung() {
 		//Die ausgew�hlten Id des gew�hlten Elementes ausw�hlen und am ende and die entsprechende Async Methode schicken.
 		
+		//Schauen ob der Benutzer alles richtig eingegeben hat, wenn false zurück kommt wird mit return abgebrochen und die Fehlermeldung angezeit.
+		if(!validiereBenutzerEingabe()) {
+			return;
+		}
+		
 		//Werte f�r Zeitslot Objekt aus Listbox auslesen
 		int anfangsZeit = Integer.valueOf(lbAnfangszeit.getValue(lbAnfangszeit.getSelectedIndex()));
 		int endZeit = Integer.valueOf(lbEndzeit.getValue(lbEndzeit.getSelectedIndex()));

@@ -3,6 +3,7 @@ package de.hdm.gruppe3.stundenplanverwaltung.client.gui;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Grid;
@@ -12,7 +13,6 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.gruppe3.stundenplanverwaltung.shared.*;
-
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Dozent;
 
 /**Enthält alle Elemente und nötigen Methoden für das Dozenten Formular
@@ -71,8 +71,7 @@ public class DozentForm extends VerticalPanel {
 		loeschenButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				stundenplanVerwaltung.loeschenDozent(selectedDozent,
-						new LoeschenDozentCallback(selectedDozent));
+				loeschenDozent();
 			}
 		});
 
@@ -80,10 +79,7 @@ public class DozentForm extends VerticalPanel {
 		neuButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				String vorname = vornameTextBox.getText();
-				String nachname = nachnameTextBox.getText();
-				stundenplanVerwaltung.anlegenDozent(vorname, nachname,
-						new AnlegenDozentCallback());
+				anlegenDozent();
 			}
 		});
 		
@@ -168,53 +164,80 @@ public class DozentForm extends VerticalPanel {
 	}
 	
 	
-	//TODO: eigene Methode wie überall schreiben und keine eigene Klasse
+	/**
+	 * Legt das  das eingegebene Business Objekt an
+	 */
+	public void anlegenDozent() {
+		//Schauen ob der Benutzer alles richtig eingegeben hat, wenn false zurück kommt wird mit return abgebrochen und die Fehlermeldung angezeit.
+		if(!validiereBenutzerEingabe()) {
+			return;
+		}
+		
+		String vorname = vornameTextBox.getText();
+		String nachname = nachnameTextBox.getText();
+		
+		stundenplanVerwaltung.anlegenDozent(vorname, nachname, new AsyncCallback<Dozent>() {
+			@Override
+			public void onFailure(Throwable caught) {
+				System.out.println("Dozent fehler");
+			}
+
+			public void onSuccess(Dozent dozent) {
+				if (dozent != null) {
+					UserInformation.popup("Dozent angelegt");
+					//Felder Leeren, damit gleich der nächste angelegt werden kann
+					clearFields();
+				}
+			}
+		});
+		
+	}
+	
 	/**
 	 * Löscht das ausgewählte Objekt im Editiermodus 
 	 */
-	public class LoeschenDozentCallback implements AsyncCallback<Dozent> {
+	public void loeschenDozent() {
+		stundenplanVerwaltung.loeschenDozent(selectedDozent, new AsyncCallback<Dozent>() {
+			@Override
+			public void onFailure(Throwable caught) {
 
-		Dozent dozent = null;
-
-		// Konstruktor um callback mit Parameter aufzurufen
-		LoeschenDozentCallback(Dozent d) {
-			dozent = d;
-		}
-
-		@Override
-		public void onFailure(Throwable caught) {
-
-		}
-
-		@Override
-		public void onSuccess(Dozent result) {
-			if (dozent != null) {
-				System.out.println("Dozent gel�scht");
-				setSelected(null);
-				// treeModel.loeschenDozent(dozent);
 			}
-		}
 
+			@Override
+			public void onSuccess(Dozent result) {
+				if (result != null) {
+					System.out.println("Dozent gel�scht");
+					setSelected(null);
+					// treeModel.loeschenDozent(dozent);
+				}
+			}
+		});	
 	}
 	
-	//TODO: eigene Methode wie überall schreiben und keine eigene Klasse
 	/**
-	 * Legt das  das ausgewählte Business Objekt an
+	 * Zeigt eine Fehlermeldung wenn der Benutzer etwas falsches eingegeben hat.
+	 * 
+	 * @return true wenn alles ok ist
 	 */
-	public class AnlegenDozentCallback implements AsyncCallback<Dozent> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			System.out.println("Dozent fehler");
+	private boolean validiereBenutzerEingabe() {
+		boolean isValid = true;
+		// Die indexs der ListBox auslesen um zu schauen ob überall etwas
+		// gewählt wurde.
+		String vorname = vornameTextBox.getText();
+		String nachname = nachnameTextBox.getText();
+		
+		//Per Regular Expression schauen ob der Name gültig ist
+		//Erklärung:
+		//^ = Start derzeile
+		//[A-Za-z] = Erlaubt nur Buchstaben von A-Z groß oder klein geschrieben
+		//* = Erlaubt beliebing viele Buchstaben von A-Z
+		//$ = Ende der Zeile
+		if (!vorname.matches("^[A-Za-z]*$") || !nachname.matches("^[A-Za-z]*$")) {
+			Window.alert("Vorname und Nachname dürfen nur Buchstaben von a-z enthalten!");
+			isValid = false;
 		}
-
-		public void onSuccess(Dozent dozent) {
-			if (dozent != null) {
-				UserInformation.popup("Dozent angelegt");
-				//Felder Leeren, damit gleich der nächste angelegt werden kann
-				clearFields();
-			}
-		}
+			
+		return isValid;
 	}
 
 }
