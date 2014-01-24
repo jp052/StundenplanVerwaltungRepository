@@ -3,6 +3,7 @@ package de.hdm.gruppe3.stundenplanverwaltung.client.gui;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Grid;
@@ -14,7 +15,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.ConstantsStdpln;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungServiceAsync;
-import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.*;
+import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Raum;
 
 
 
@@ -81,7 +82,7 @@ public class RaumForm extends VerticalPanel{
 		neuButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				anlegenSelectedRaum();
+				anlegenRaum();
 				
 			}
 		});
@@ -146,6 +147,11 @@ public class RaumForm extends VerticalPanel{
 	 */
 	public void modifizierenSelectedRaum() {
 		if (this.selectedRaum!=null){
+			//Schauen ob der Benutzer alles richtig eingegeben hat, wenn false zurück kommt wird mit return abgebrochen und die Fehlermeldung angezeit.
+			if(!validiereBenutzerEingabe()) {
+				return;
+			}
+			
 			selectedRaum.setBezeichnung(bezeichnungTextBox.getText());
 			//String in Integer umwandeln
 			selectedRaum.setKapazitaet(Integer.valueOf(kapazitaetTextBox.getText()));
@@ -199,7 +205,12 @@ public class RaumForm extends VerticalPanel{
 	/**
 	 * Legt das  das eingegebene Business Objekt an
 	 */
-	public void anlegenSelectedRaum() {
+	public void anlegenRaum() {
+		//Schauen ob der Benutzer alles richtig eingegeben hat, wenn false zurück kommt wird mit return abgebrochen und die Fehlermeldung angezeit.
+		if(!validiereBenutzerEingabe()) {
+			return;
+		}
+
 		String bezeichnung = bezeichnungTextBox.getText();
 		int kapazitaet = Integer.valueOf(kapazitaetTextBox.getText());
 		//Ruft Serverseitige Methode auf
@@ -221,6 +232,38 @@ public class RaumForm extends VerticalPanel{
 			
 		});
 		
+	}
+	
+	/**
+	 * Zeigt eine Fehlermeldung wenn der Benutzer etwas falsches eingegeben hat.
+	 * 
+	 * @return true wenn alles ok ist
+	 */
+	private boolean validiereBenutzerEingabe() {
+		boolean isValid = true;
+		// Die indexs der ListBox auslesen um zu schauen ob überall etwas
+		// gewählt wurde.
+		String bezeichnung = bezeichnungTextBox.getText();
+		
+		String kapazitaet = kapazitaetTextBox.getText();
+			
+		//Per Regular Expression schauen ob der Name gültig ist
+		//Erklärung:
+		//^ = Start derzeile
+		//[A-Za-z] = Erlaubt nur Buchstaben von A-Z groß oder klein geschrieben
+		//* = Erlaubt beliebing viele Buchstaben von A-Z
+		//$ = Ende der Zeile
+		//Dann wird geschaut
+		if (!bezeichnung.matches("^[A-Za-z ]+$")) {
+			Window.alert("Bezeichnung darf nur Buchstaben von a-z enthalten und darf nicht leer sein!");
+			isValid = false;
+		}
+		if(!kapazitaet.matches("^[0-9]+$")) {
+			Window.alert("Kapazität muss eine Zahl größer als 0 sein!");
+			isValid = false;
+		} 
+			
+		return isValid;
 	}
 
 }

@@ -230,10 +230,10 @@ public class DozentForm extends VerticalPanel {
 		//Erklärung:
 		//^ = Start derzeile
 		//[A-Za-z] = Erlaubt nur Buchstaben von A-Z groß oder klein geschrieben
-		//* = Erlaubt beliebing viele Buchstaben von A-Z
+		//+ = Erlaubt beliebing viele Buchstaben von A-Z, aber mindestens einer muss vorhanden sein
 		//$ = Ende der Zeile
-		if (!vorname.matches("^[A-Za-z]*$") || !nachname.matches("^[A-Za-z]*$")) {
-			Window.alert("Vorname und Nachname dürfen nur Buchstaben von a-z enthalten!");
+		if (!vorname.matches("^[A-Za-z]+$") || !nachname.matches("^[A-Za-z]+$")) {
+			Window.alert("Vorname und Nachname dürfen nur Buchstaben von a-z enthalten und dürfen nicht leer sein!");
 			isValid = false;
 		}
 			

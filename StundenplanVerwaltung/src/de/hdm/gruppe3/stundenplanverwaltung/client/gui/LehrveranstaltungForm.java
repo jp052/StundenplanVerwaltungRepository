@@ -5,6 +5,7 @@ import java.util.Vector;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Grid;
@@ -95,7 +96,9 @@ public class LehrveranstaltungForm extends VerticalPanel {
 
 			}
 		});
-
+		
+//		Buttons anzeigen
+		showButtons();
 	}
 
 
@@ -220,6 +223,11 @@ public class LehrveranstaltungForm extends VerticalPanel {
 	 */
 	public void modifizierenSelectedLehrveranstaltung() {
 		if (this.selectedLehrveranstaltung != null) {
+			//Schauen ob der Benutzer alles richtig eingegeben hat, wenn false zurück kommt wird mit return abgebrochen und die Fehlermeldung angezeit.
+			if(!validiereBenutzerEingabe()) {
+				return;
+			}
+			
 			selectedLehrveranstaltung.setBezeichnung(bezeichnungTextBox
 					.getText());
 			// String in Integer umwandeln
@@ -290,6 +298,11 @@ public class LehrveranstaltungForm extends VerticalPanel {
 	 * Legt das  das ausgewählte Business Objekt an
 	 */
 	public void anlegenLehrveranstaltung() {
+		//Schauen ob der Benutzer alles richtig eingegeben hat, wenn false zurück kommt wird mit return abgebrochen und die Fehlermeldung angezeit.
+		if(!validiereBenutzerEingabe()) {
+			return;
+		}
+		
 		String bezeichnung = bezeichnungTextBox.getText();
 		int semester = Integer.valueOf(semesterTextBox.getText());
 		int umfang = Integer.valueOf(umfangTextBox.getText());
@@ -315,6 +328,48 @@ public class LehrveranstaltungForm extends VerticalPanel {
 
 				});
 
+	}
+	
+	/**
+	 * Zeigt eine Fehlermeldung wenn der Benutzer etwas falsches eingegeben hat.
+	 * 
+	 * @return true wenn alles ok ist
+	 */
+	private boolean validiereBenutzerEingabe() {
+		boolean isValid = true;
+		// Die indexs der ListBox auslesen um zu schauen ob überall etwas
+		// gewählt wurde.
+		String bezeichnung = bezeichnungTextBox.getText();	
+		String semester = semesterTextBox.getText();
+		String umfang = umfangTextBox.getText();
+		int indexDozent = dozentenListBox.getSelectedIndex();
+			
+		//Per Regular Expression schauen ob der Name gültig ist
+		//Erklärung:
+		//^ = Start derzeile
+		//[A-Za-z] = Erlaubt nur Buchstaben von A-Z groß oder klein geschrieben
+		//* = Erlaubt beliebing viele Buchstaben von A-Z
+		//$ = Ende der Zeile
+		//{1} = Darf nur 1 mal vorkommen
+		//Dann wird geschaut
+		if (!bezeichnung.matches("^[A-Za-z ]+$")) {
+			Window.alert("Bezeichnung darf nur Buchstaben von a-z enthalten und darf nicht leer sein!");
+			isValid = false;
+		}
+		if (!semester.matches("^[1-7]{1}$")) {
+			Window.alert("Semester muss zwischen 1 und 7 sein!");
+			isValid = false;
+		}
+		if(!umfang.matches("^[1-9][0-9]*$")) {
+			Window.alert("Umfang muss 1 oder mehr sein!");
+			isValid = false;
+		} 
+		if(indexDozent < 1) {
+			Window.alert("Ein Dozent muss gewählt sein!");
+			isValid = false;
+		}
+			
+		return isValid;
 	}
 
 }
