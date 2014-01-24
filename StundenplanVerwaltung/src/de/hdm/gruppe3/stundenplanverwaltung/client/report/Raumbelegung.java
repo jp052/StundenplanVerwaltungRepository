@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLTable;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -21,6 +22,7 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungServiceAsync;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Lehrveranstaltung;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Raum;
+import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Semesterverband;
 
 /**
  * @author Selim Karazehir, Julia Hammerer
@@ -29,6 +31,7 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Raum;
 public class Raumbelegung {
 	
 	VerticalPanel mainPanel = new VerticalPanel();
+	ListBox raumListBox = new ListBox();
 	
 	StundenplanVerwaltungServiceAsync stundenplanVerwaltung = GWT
 			.create(StundenplanVerwaltungService.class);
@@ -50,11 +53,12 @@ public class Raumbelegung {
 			public void onClick(ClickEvent event) {
 
 				mainPanel.clear();
-				zeigeRaumbelegung(t.getText());
+				zeigeRaumbelegung(raumListBox.getValue(raumListBox.getSelectedIndex()));
 				
 			}
 		});
-		flexRaum.setWidget(0, 0, t);
+		setRaumListBox();
+		flexRaum.setWidget(0, 0, raumListBox);
 		flexRaum.setWidget(0, 1, d); 	
 		mainPanel.clear();
 		mainPanel.add(flexRaum);
@@ -67,15 +71,17 @@ public class Raumbelegung {
 	 * @see reportRaumbelegung()
 	 * dann wird ein FlexTable rt instanziiert um die Tabelle für die Raumbezeichnung zu gestalten. In der onSuccess()
 	 * Methode wird der Raum rausgelesen und in die nullte Zeile, erste Spalte reingeschrieben. 
-	 * @param bez
+	 * @param raumID
 	 */
-	public void zeigeRaumbelegung(final String bez){
+	public void zeigeRaumbelegung(final String id){
 		
 		final FlexTable rt = new FlexTable();
+		final int raumID;
+		raumID = Integer.parseInt(id);
 		mainPanel.clear();
 		rt.setText(0,0, "Raum: ");
 		
-		stundenplanVerwaltung.getRaumByBezeichnung(bez, new AsyncCallback<Raum>(){
+		stundenplanVerwaltung.getRaumbyNummer(raumID, new AsyncCallback<Raum>(){
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -88,7 +94,7 @@ public class Raumbelegung {
 				Window.alert("Klappt");
 				rt.setText(0, 1, result.getBezeichnung());
 				mainPanel.add(rt);
-				zeigeTabelle(bez); 
+				zeigeTabelle(raumID); 
 			}
 			
 		});
@@ -105,8 +111,9 @@ public class Raumbelegung {
 	 * @param bez
 	 * 
 	 */
-	public void zeigeTabelle(String bez){
+	public void zeigeTabelle(int raumID){
 		final FlexTable t = new FlexTable();
+		RootPanel.get("starter").clear();
 		//
 		t.setText(0, 0, "Zeit");
 		t.setText(0, 1, "Montag");
@@ -126,7 +133,7 @@ public class Raumbelegung {
 		t.setText(9, 0, "16-17");
 		t.setText(10, 0, "17-18");
 		
-		stundenplanVerwaltung.reportLVbyRaum(bez, new AsyncCallback<Vector<Lehrveranstaltung>>(){
+		stundenplanVerwaltung.reportLVbyRaum(raumID, new AsyncCallback<Vector<Lehrveranstaltung>>(){
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -201,4 +208,33 @@ public class Raumbelegung {
 		mainPanel.add(refresh);
 		RootPanel.get().add(mainPanel);
 	}	
+	
+	public void setRaumListBox() {
+		
+		stundenplanVerwaltung
+				.getAllRaeume(new AsyncCallback<Vector<Raum>>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// ClientsideSettings.getLogger().severe("Bef�llen der DozentenListBox fehlgeschlagen");
+					}
+
+					@Override
+					public void onSuccess(Vector<Raum> result) {
+
+						raumListBox.addItem("--Bitte wählen--", "0");
+						for (Raum r : result) {
+							// Der zweite Parameter von addItem ist die gewählte
+							// Semesterverband Id welche beim anlegen der
+							// Lehrveranstaltung
+							// ben�tigt wird.
+							raumListBox.addItem(r.getBezeichnung(), String.valueOf(r.getId()));							
+
+						}
+
+
+					}
+				});
+	}
+	
 }

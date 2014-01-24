@@ -118,7 +118,7 @@ public interface StundenplanVerwaltungService extends RemoteService {
 	
 	// Report 
 	public Vector<Lehrveranstaltung> reportLVbyDozent(int dozentID);
-	public Vector<Lehrveranstaltung> reportLVbyRaum(String bez);
+	public Vector<Lehrveranstaltung> reportLVbyRaum(int raumID);
 
 	Raum getRaumByBezeichnung(String r);
 

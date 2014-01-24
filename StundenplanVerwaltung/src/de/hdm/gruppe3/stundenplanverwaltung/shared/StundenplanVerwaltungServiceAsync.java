@@ -111,7 +111,8 @@ public interface StundenplanVerwaltungServiceAsync {
 
 	void reportLVbyDozent(int dozentID, AsyncCallback<Vector<Lehrveranstaltung>> callback);
 
-	void reportLVbyRaum(String bez, AsyncCallback<Vector<Lehrveranstaltung>> callback);
+	void reportLVbyRaum(int raumID,
+			AsyncCallback<Vector<Lehrveranstaltung>> callback);
 	
 	void reportLVbySV(int sv, AsyncCallback<Vector<Lehrveranstaltung>> callback);
 

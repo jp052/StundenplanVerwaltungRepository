@@ -12,6 +12,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -20,6 +21,7 @@ import com.google.gwt.user.client.ui.Widget;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.ConstantsStdpln;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungServiceAsync;
+import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Dozent;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Lehrveranstaltung;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Raum;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Semesterverband;
@@ -31,14 +33,17 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Semesterverband;
 public class SVReport {
 
 	VerticalPanel mainPanel = new VerticalPanel();
-	
+	ListBox svListBox = new ListBox();
 	StundenplanVerwaltungServiceAsync stundenplanVerwaltung = GWT
 			.create(StundenplanVerwaltungService.class);
 	
+	/**
+	 * reportSemesterverband() ist die Maske, die man unter der Menuleiste Report/Stundenplan für Semesterverband.
+	 * @return mainPanel
+	 */
 	public Widget reportSemesterverband(){
-		FlexTable flexRaum = new FlexTable();
+		FlexTable flexSV = new FlexTable();
 		Button d = new Button("Report");
-		final TextBox t = new TextBox();
 	
 		d.addClickHandler(new ClickHandler() {
 			
@@ -46,16 +51,23 @@ public class SVReport {
 			public void onClick(ClickEvent event) {
 
 				mainPanel.clear();
-				zeigeSVReport(Integer.parseInt(t.getText()));
+				zeigeSVReport(Integer.parseInt(svListBox.getValue(svListBox.getSelectedIndex())));
 				
 			}
 		});
-		flexRaum.setWidget(0, 0, t);
-		flexRaum.setWidget(0, 1, d); 	
+		
+		setSVListBox();
+		flexSV.setWidget(0, 0, svListBox);
+		flexSV.setWidget(0, 1, d); 	
 		mainPanel.clear();
-		mainPanel.add(flexRaum);
+		mainPanel.add(flexSV);
 		return mainPanel;
 	}
+	
+	/**
+	 * Mit dieser Methode können wir den Report rauslesen.
+	 * @param sv
+	 */
 	
 	public void zeigeSVReport(final int sv){
 		
@@ -73,18 +85,26 @@ public class SVReport {
 
 //			@Override
 //			public void onSuccess(Semesterverband result) {
-				Window.alert("Klappt");
-				rt.setText(0, 1, String.valueOf(sv));
-				mainPanel.add(rt);
-				zeigeTabelle(sv); 
+
+			//Window.alert("Klappt");
+			rt.setText(0, 1, String.valueOf(svListBox.getValue(svListBox.getSelectedIndex())));
+			mainPanel.add(rt);
+			zeigeTabelle(sv); 
 //			}
 			
 //		});
 	
 	}
 	
+	/**
+	 * Diese Methode wird in der Methode zeigeSVReport aufgerufen. 
+	 * @param sv
+	 * @return mainPanel
+	 */
 	public void zeigeTabelle(int sv){
 		final FlexTable t = new FlexTable();
+		RootPanel.get("starter").clear();
+		
 		//
 		t.setText(0, 0, "Zeit");
 		t.setText(0, 1, "Montag");
@@ -179,5 +199,33 @@ public class SVReport {
 		mainPanel.add(refresh);
 		RootPanel.get().add(mainPanel);
 	}	
+	
+	public void setSVListBox() {
+		
+		stundenplanVerwaltung
+				.getAllSemesterverband(new AsyncCallback<Vector<Semesterverband>>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// ClientsideSettings.getLogger().severe("Bef�llen der DozentenListBox fehlgeschlagen");
+					}
+
+					@Override
+					public void onSuccess(Vector<Semesterverband> result) {
+
+						svListBox.addItem("--Bitte wählen--", "0");
+						for (Semesterverband sv : result) {
+							// Der zweite Parameter von addItem ist die gewählte
+							// Semesterverband Id welche beim anlegen der
+							// Lehrveranstaltung
+							// ben�tigt wird.
+							svListBox.addItem(sv.toString(), String.valueOf(sv.getId()));							
+
+						}
+
+
+					}
+				});
+	}
 	
 }
