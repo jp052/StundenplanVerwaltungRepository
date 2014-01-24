@@ -8,6 +8,7 @@ import sun.awt.CausedFocusEvent.Cause;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
@@ -69,8 +70,11 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 		
 		
 		HorizontalPanel hPanelZeitslot = new HorizontalPanel();
+		hPanelZeitslot.add(new Label("Anfangszeit:"));
 		hPanelZeitslot.add(lbAnfangszeit);
+		hPanelZeitslot.add(new Label("Endzeit:"));
 		hPanelZeitslot.add(lbEndzeit);
+		hPanelZeitslot.add(new Label("Wochentag:"));
 		hPanelZeitslot.add(lbWochentag);
 		
 		Label lZeitslot = new Label("Zeitslot");
@@ -466,6 +470,12 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 	public void anlegenLVDurchfuehrung() {
 		//Die ausgew�hlten Id des gew�hlten Elementes ausw�hlen und am ende and die entsprechende Async Methode schicken.
 		
+		//Schauen ob der Benutzer alles richtig eingegeben hat, wenn false zurück kommt wird mit return abgebrochen und die Fehlermeldung angezeit.
+		if(!validiereBenutzerEingabe()) {
+			return;
+		}
+		
+		
 		//Werte f�r Zeitslot Objekt aus Listbox auslesen
 		int anfangsZeit = Integer.valueOf(lbAnfangszeit.getValue(lbAnfangszeit.getSelectedIndex()));
 		int endZeit = Integer.valueOf(lbEndzeit.getValue(lbEndzeit.getSelectedIndex()));
@@ -513,6 +523,33 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 			}
 			
 		});
+		
+	}
+
+
+	/**
+	 * Zeigt eine Fehlermeldung wenn der Benutzer etwas falsches eingegeben hat.
+	 * @return true wenn alles ok ist
+	 */
+	private boolean validiereBenutzerEingabe() {
+		boolean isValid = true;
+		//Die indexs der ListBox auslesen um zu schauen ob überall etwas gewählt wurde.
+		int indexLV = lbLehrveranstaltung.getSelectedIndex();
+		int indexRaum = lbRaum.getSelectedIndex();
+		int indexSV = lbSemesterverband.getSelectedIndex();
+		int indexAnfangsZeit = lbAnfangszeit.getSelectedIndex();
+		int indexEndZeit = lbEndzeit.getSelectedIndex();
+		int indexWochentag = lbWochentag.getSelectedIndex();
+		
+		if(indexLV < 1 || indexRaum < 1 || indexSV < 1|| indexAnfangsZeit < 1 || indexEndZeit < 1 || indexWochentag < 1 ) {
+			Window.alert("Alle Eingeabefelder müssen augefüllt werden!");
+			isValid = false;
+		} else if(indexAnfangsZeit > indexEndZeit) {
+			Window.alert("Die Anfangszeit darf nicht vor der Enzeit liegen!");
+			isValid = false;
+		}
+		
+		return isValid;	
 		
 	}
 	
