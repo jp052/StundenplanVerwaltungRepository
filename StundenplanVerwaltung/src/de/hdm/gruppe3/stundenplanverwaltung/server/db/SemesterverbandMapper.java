@@ -8,9 +8,10 @@ import java.util.Vector;
 
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.*;
 
-//Import Impl Klasse Dozent
-//Import bo Dozent
-
+/**
+ * @author Selim Karazehir, Julia Hammerer
+ *
+ */
 public class SemesterverbandMapper {
 	/**
 	   * Die Klasse SemesterverbandMapper wird nur einsvl instantiiert. Man spricht hierbei
@@ -160,6 +161,42 @@ public class SemesterverbandMapper {
 		      return null;
 		    } 
 		    return null;
+		}
+		
+		public Semesterverband findeSVHalbjahr(int svHalbjahr) {
+			// DB-Verbindung holen
+			Connection con = DBVerbindung.connection();
+
+			try {
+				// Leeres SQL-Statement (JDBC) anlegen
+				Statement stmt = con.createStatement();
+
+				// Statement ausfüllen und als Query an die DB schicken
+				ResultSet rs = stmt
+						.executeQuery("SELECT * FROM raum "
+								+ "WHERE semesterHalbjahr="
+								+ "'"+svHalbjahr+"'");
+
+				/*
+				 * Da raum Primärschlüssel ist, kann raumx. nur ein Tupel
+				 * zurückgegeben werden. Prüfe, ob ein Ergebnis vorliegt.
+				 */
+			if (rs.next()) {
+			    // Ergebnis-Tupel in Objekt umwandeln
+			   	Semesterverband sv = new Semesterverband();
+			    sv.setId(rs.getInt("SVNr"));
+			    sv.setAnzahlStudenten(rs.getInt("AnzahlStudierende"));
+			    sv.setSemester(rs.getInt("SemesterHalbjahr"));
+				sv.setJahrgang(rs.getInt("Jahrgang"));
+
+				        return sv;
+				      }
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+				return null;
+			}
+
+			return null;
 		}
 		
 		
