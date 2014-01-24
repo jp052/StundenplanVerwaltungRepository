@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 import de.hdm.gruppe3.stundenplanverwaltung.client.ClientsideSettings;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.ConstantsStdpln;
@@ -39,10 +40,18 @@ VerticalPanel mainPanel = new VerticalPanel();
 	
 	public DozentReport(){}
 	
-	public void reportDozent(){
+	
+	/**
+	 * Die Button und die Listbox wird hier in die eine FlexTable reingeschrieben.
+	 * Wenn der Button betätigt wird dann läuft die onClick Methode und löscht den vorherigen
+	 * mainPanel. Danach wird die Methode zeigen() durchgeführt und die Werte vom Listbox übergeben.
+	 * @return mainPanel
+	 */
+	public Widget reportDozent(){
+		FlexTable flexDozent = new FlexTable();
 		Button d = new Button("Report");
 		final TextBox t = new TextBox();
-		
+		mainPanel.clear();
 		d.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -53,11 +62,21 @@ VerticalPanel mainPanel = new VerticalPanel();
 				
 			}
 		});
-		mainPanel.add(d);
-		mainPanel.add(t);
-		RootPanel.get().add(mainPanel);
+
+		flexDozent.setWidget(0, 0, t);
+		flexDozent.setWidget(0, 1, t);
+		mainPanel.add(flexDozent);
+		return mainPanel;
 	}
 	
+	/**
+	 * Um die Lehrveranstaltungen in die den Report zu schreiben, benötigt diese Methode den Parameter d, die sie 
+	 * erst von der Methode reportDozent() übergeben wird. 
+	 * @see reportDozent()
+	 * dann wird ein FlexTable dt instanziiert um die Tabelle für den Dozenten zu gestalten. In der onSuccess()
+	 * Methode wird die Lehrveranstaltung rausgelesen und in die FlexTable t reingeschrieben. 
+	 * @param d
+	 */
 	public void zeigen(int d){
 	
 		final FlexTable dt = new FlexTable();
@@ -73,7 +92,7 @@ VerticalPanel mainPanel = new VerticalPanel();
 
 			@Override
 			public void onSuccess(Dozent result) {
-				dt.setText(0, 1, result.getNachname()+",");
+				dt.setText(0, 1, result.getNachname()+", ");
 				dt.setText(0, 2, result.getVorname());
 				
 			}
@@ -140,19 +159,19 @@ VerticalPanel mainPanel = new VerticalPanel();
 		 RootPanel.get("starter").add(mainPanel);
 	}
 	
-	public void zeigeReport() {
-
-		int d = 1;
-		
-		final FlexTable t = new FlexTable();
-		//
-		t.setText(0, 0, "Lehrveranstaltung");
-		t.setText(0, 1, "Semester");
-		t.setText(0, 2, "Anzahl der Studierende");
-
-
-
-		// dann irgendwann aufruf der methode von Stundenplanverwaltung
+//	public void zeigeReport() {
+//
+//		int d = 1;
+//		
+//		final FlexTable t = new FlexTable();
+//		//
+//		t.setText(0, 0, "Lehrveranstaltung");
+//		t.setText(0, 1, "Semester");
+//		t.setText(0, 2, "Anzahl der Studierende");
+//
+//
+//
+//		// dann irgendwann aufruf der methode von Stundenplanverwaltung
 //		report.reportLVbyDozent(d, new AsyncCallback<Vector<Lehrveranstaltung>>(){
 //
 //			@Override
@@ -196,4 +215,4 @@ VerticalPanel mainPanel = new VerticalPanel();
 ////		return mainPanel;
 //		 RootPanel.get("starter").add(mainPanel);
 	}
-}
+

@@ -316,7 +316,7 @@ public class LehrveranstaltungMapper {
 				      
 				      //String sql = "SELECT * FROM Raum LEFT JOIN Lehrveranstaltung ON raum.bezeichnung = " + bez;
 
-				      String sql = "SELECT zeitslot.Wochentag, zeitslot.Anfangszeit, raum.Bezeichnung, lehrveranstaltung.bezeichnung "
+				      String sql = "SELECT zeitslot.Wochentag, zeitslot.Anfangszeit, raum.Bezeichnung, zeitslot.Endzeit, lehrveranstaltung.bezeichnung "
 				      		+ " FROM durchfuehrung "
 				      		+ " JOIN raum ON raum.RaumNr = durchfuehrung.RaumNr "
 				      		+ " JOIN zeitslot ON zeitslot.ZeitNr = durchfuehrung.ZeitNr "
@@ -331,6 +331,7 @@ public class LehrveranstaltungMapper {
 				    	    lv.setRaumWochentag(rs.getString("zeitslot.Wochentag"));
 							lv.setBezeichnung(rs.getString("Lehrveranstaltung.Bezeichnung"));
 							lv.setRaumZeit(rs.getInt("zeitslot.Anfangszeit"));
+							lv.setRaumZeitEnde(rs.getInt("zeitslot.Endzeit"));
 
 				        
 				        result.addElement(lv);
