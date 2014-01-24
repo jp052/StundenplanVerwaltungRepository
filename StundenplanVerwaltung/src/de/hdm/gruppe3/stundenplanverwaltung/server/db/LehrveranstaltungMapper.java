@@ -285,7 +285,7 @@ public class LehrveranstaltungMapper {
 				    try {
 				      Statement stmt = con.createStatement();
 				      
-				      String sql = "SELECT * FROM Dozent LEFT JOIN Lehrveranstaltung ON dozent.personalNr = " + dozentID;
+				      String sql = "SELECT * FROM Dozent JOIN Lehrveranstaltung  ON lehrveranstaltung.personalNr = dozent.personalNr WHERE dozent.personalNr = " + dozentID;
 
 				      ResultSet rs = stmt.executeQuery(sql);
 
@@ -296,7 +296,6 @@ public class LehrveranstaltungMapper {
 							lv.setBezeichnung(rs.getString("Lehrveranstaltung.Bezeichnung"));
 							lv.setUmfang(rs.getInt("Lehrveranstaltung.Umfang"));
 							lv.setSemester(rs.getInt("Lehrveranstaltung.Semester"));
-
 				        
 				        result.addElement(lv);
 				      }
@@ -309,7 +308,7 @@ public class LehrveranstaltungMapper {
 				 return result;
 			}
 			
-			public Vector<Lehrveranstaltung> findeLVbyRaum(String bez){
+			public Vector<Lehrveranstaltung> findeLVbyRaum(int bez){
 				 Connection con = DBVerbindung.connection();
 
 				    //Vector mit angeforderten Objekten
@@ -325,7 +324,7 @@ public class LehrveranstaltungMapper {
 				      		+ " JOIN raum ON raum.RaumNr = durchfuehrung.RaumNr "
 				      		+ " JOIN zeitslot ON zeitslot.ZeitNr = durchfuehrung.ZeitNr "
 				      		+ " JOIN lehrveranstaltung ON lehrveranstaltung.LVNr = durchfuehrung.LVNr "
-				      		+ " WHERE (raum.bezeichnung = '"+bez+"')";
+				      		+ " WHERE (raum.RaumNr = '"+bez+"')";
 				      System.out.println(sql); 
 				      ResultSet rs = stmt.executeQuery(sql);
 

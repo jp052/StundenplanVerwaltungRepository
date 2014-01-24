@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -33,7 +34,7 @@ VerticalPanel mainPanel = new VerticalPanel();
 	
 	StundenplanVerwaltungServiceAsync stundenplanVerwaltung = GWT
 			.create(StundenplanVerwaltungService.class);
-	
+	ListBox dozentenListBox = new ListBox();
 //	ReportGeneratorAsync r = ClientsideSettings.getReportGenerator();
 //	ReportGeneratorAsync report = GWT.create(ReportGenerator.class);
 	Dozent shownDozent = null;
@@ -50,7 +51,7 @@ VerticalPanel mainPanel = new VerticalPanel();
 	public Widget reportDozent(){
 		FlexTable flexDozent = new FlexTable();
 		Button d = new Button("Report");
-		final TextBox t = new TextBox();
+		
 		mainPanel.clear();
 		d.addClickHandler(new ClickHandler() {
 			
@@ -58,13 +59,14 @@ VerticalPanel mainPanel = new VerticalPanel();
 			public void onClick(ClickEvent event) {
 
 				mainPanel.clear();
-				zeigen(Integer.parseInt(t.getText()));
+				zeigen(Integer.parseInt(dozentenListBox.getValue(dozentenListBox.getSelectedIndex())));
 				
 			}
 		});
-
-		flexDozent.setWidget(0, 0, t);
-		flexDozent.setWidget(0, 1, t);
+		
+		setDozentenListBox();
+		flexDozent.setWidget(0, 0, dozentenListBox);
+		flexDozent.setWidget(0, 1, d);
 		mainPanel.add(flexDozent);
 		return mainPanel;
 	}
@@ -81,7 +83,7 @@ VerticalPanel mainPanel = new VerticalPanel();
 	
 		final FlexTable dt = new FlexTable();
 		dt.setText(0, 0, "Dozent:");
-		
+		RootPanel.get("starter").clear();
 		stundenplanVerwaltung.getDozentByNummer(d,new AsyncCallback<Dozent>(){
 
 			@Override
@@ -159,60 +161,34 @@ VerticalPanel mainPanel = new VerticalPanel();
 		 RootPanel.get("starter").add(mainPanel);
 	}
 	
-//	public void zeigeReport() {
-//
-//		int d = 1;
-//		
-//		final FlexTable t = new FlexTable();
-//		//
-//		t.setText(0, 0, "Lehrveranstaltung");
-//		t.setText(0, 1, "Semester");
-//		t.setText(0, 2, "Anzahl der Studierende");
-//
-//
-//
-//		// dann irgendwann aufruf der methode von Stundenplanverwaltung
-//		report.reportLVbyDozent(d, new AsyncCallback<Vector<Lehrveranstaltung>>(){
-//
-//			@Override
-//			public void onFailure(Throwable caught) {
-//				Window.alert("Ein Fehler ist aufgetreten! Kein Report verfügbar - " + caught);				
-//			}
-//
-//			@Override
-//			public void onSuccess(Vector<Lehrveranstaltung> result) {
-//				Window.alert("Es wurden " + result.size()
-//						+ " Eintraege gefunden");
-//				int i = 1;
-//				for (final Lehrveranstaltung lv : result) {
-//
-//					final TextBox tbN = new TextBox();
-//					final TextBox tbV = new TextBox();
-//					
-//					String bezeichnung, semester, umfang, dozent;
-//					
-//					bezeichnung = lv.getBezeichnung();
-//					semester = String.valueOf(lv.getSemester());
-//					umfang = String.valueOf(lv.getUmfang());
-//					dozent = lv.getDozentName();
-//					
-//					
-//				    Label lBez = new Label(bezeichnung);
-//				    Label lSem = new Label(semester);
-//				    Label lUmfang = new Label(umfang);
-//				    Label lDozent = new Label(dozent);
-//				    
-//					t.setText(i, 0, String.valueOf(lv.getId()));
-//					t.setWidget(i, 1, lBez);
-//					t.setWidget(i, 2, lSem);
-//					t.setWidget(i, 3, lUmfang);
-//				}
-//				i++;
-//			}
-//		});
-//	
-//		mainPanel.add(t);
-////		return mainPanel;
-//		 RootPanel.get("starter").add(mainPanel);
+
+	public void setDozentenListBox() {
+		
+		stundenplanVerwaltung
+				.getAllDozenten(new AsyncCallback<Vector<Dozent>>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// ClientsideSettings.getLogger().severe("Bef�llen der DozentenListBox fehlgeschlagen");
+					}
+
+					@Override
+					public void onSuccess(Vector<Dozent> result) {
+
+						dozentenListBox.addItem("--Bitte wählen--", "0");
+						for (Dozent d : result) {
+							// Der zweite Parameter von addItem ist die gew�hlte
+							// Dozenten Id welche beim anlegen der
+							// Lehrveranstaltung
+							// ben�tigt wird.
+							dozentenListBox.addItem(d.toString(), String.valueOf(d.getId()));							
+
+						}
+
+
+					}
+				});
 	}
+
+}
 

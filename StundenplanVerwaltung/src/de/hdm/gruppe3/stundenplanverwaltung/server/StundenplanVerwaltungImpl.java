@@ -396,8 +396,8 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public Vector<Lehrveranstaltung> reportLVbyRaum(String bez) {
-		return lvMapper.findeLVbyRaum(bez);
+	public Vector<Lehrveranstaltung> reportLVbyRaum(int raumID) {
+		return lvMapper.findeLVbyRaum(raumID);
 	}
 
 	@Override
