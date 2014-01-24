@@ -319,9 +319,9 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 
 	@Override
 	public Semesterverband getSemesterverbandBySemesterHalbjahr(
-			String semesterHalbjahr) {
+			int sv) {
 		// TODO Auto-generated method stub
-		return null;
+		return svMapper.findeSVHalbjahr(sv);
 	}
 
 	@Override
@@ -398,6 +398,12 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 	@Override
 	public Vector<Lehrveranstaltung> reportLVbyRaum(String bez) {
 		return lvMapper.findeLVbyRaum(bez);
+	}
+
+	@Override
+	public Vector<Lehrveranstaltung> reportLVbySV(int sv) {
+		// TODO Auto-generated method stub
+		return lvMapper.findeLVbySV(sv);
 	}
 
 

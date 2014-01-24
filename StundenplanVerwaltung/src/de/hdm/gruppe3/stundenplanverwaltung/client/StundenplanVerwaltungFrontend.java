@@ -27,6 +27,7 @@ import de.hdm.gruppe3.stundenplanverwaltung.client.gui.SemesterverbandForm;
 import de.hdm.gruppe3.stundenplanverwaltung.client.gui.SemesterverbandTabelle;
 import de.hdm.gruppe3.stundenplanverwaltung.client.report.DozentReport;
 import de.hdm.gruppe3.stundenplanverwaltung.client.report.Raumbelegung;
+import de.hdm.gruppe3.stundenplanverwaltung.client.report.SVReport;
 
 /**
  * Enthält das Menü und dazugehörige Methoden.
@@ -178,6 +179,15 @@ public class StundenplanVerwaltungFrontend{
 				right.add(dReport.reportDozent());
 			}
 		};	
+		
+		Command showSemesterverbandReport = new Command() {
+			public void execute() {
+				right.clear();
+				right.add(new HTML("<h3>" + "Semesterverband Report" + "</h3>"));
+				SVReport svReport = new SVReport();
+				right.add(svReport.reportSemesterverband());
+			}
+		};
 
 		mainPanel.add(vertpan);
 		mainPanel.add(hor1);
@@ -200,7 +210,7 @@ public class StundenplanVerwaltungFrontend{
 		
 		//HIER NOCH DIE WEITEREN COMMANDS EINFÜGEN
 		repoMenu.addItem("Dozentreport", showDozentReport);
-		repoMenu.addItem("Stundenplan für Semesterverband", createDurchfuerhung);
+		repoMenu.addItem("Stundenplan für Semesterverband", showSemesterverbandReport);
 		repoMenu.addItem("Raumreport", showRaumReport);
 		
 		MenuBar menu = new MenuBar();

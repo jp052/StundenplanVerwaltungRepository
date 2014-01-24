@@ -64,7 +64,7 @@ public interface StundenplanVerwaltungServiceAsync {
 	void getSemesterverbandByNummer(int nr,
 			AsyncCallback<Semesterverband> callback);
 
-	void getSemesterverbandBySemesterHalbjahr(String semesterHalbjahr,
+	void getSemesterverbandBySemesterHalbjahr(int sv,
 			AsyncCallback<Semesterverband> callback);
 
 	void getZeitslotByNummer(int nr, AsyncCallback<Zeitslot> callback);
@@ -112,6 +112,8 @@ public interface StundenplanVerwaltungServiceAsync {
 	void reportLVbyDozent(int dozentID, AsyncCallback<Vector<Lehrveranstaltung>> callback);
 
 	void reportLVbyRaum(String bez, AsyncCallback<Vector<Lehrveranstaltung>> callback);
+	
+	void reportLVbySV(int sv, AsyncCallback<Vector<Lehrveranstaltung>> callback);
 
 	void getRaumByBezeichnung(String r, AsyncCallback<Raum> callback);
 

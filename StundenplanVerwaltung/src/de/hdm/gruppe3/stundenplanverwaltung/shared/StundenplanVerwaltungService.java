@@ -31,7 +31,7 @@ public interface StundenplanVerwaltungService extends RemoteService {
 	public Semesterverband getSemesterverbandByNummer(int nr);
 
 	public Semesterverband getSemesterverbandBySemesterHalbjahr(
-			String semesterHalbjahr);
+			int sv);
 
 	public Semesterverband loeschenSemesterverband(Semesterverband sv);
 
@@ -121,5 +121,7 @@ public interface StundenplanVerwaltungService extends RemoteService {
 	public Vector<Lehrveranstaltung> reportLVbyRaum(String bez);
 
 	Raum getRaumByBezeichnung(String r);
+
+	Vector<Lehrveranstaltung> reportLVbySV(int sv);
 
 }

@@ -13,6 +13,10 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.*;
 //Import Impl Klasse Dozent
 //Import bo Dozent
 
+/**
+ * @author Selim Karazehir, Julia Hammerer
+ *
+ */
 public class LehrveranstaltungMapper {
 	/**
 	   * Die Klasse LehrveranstaltungMapper wird nur einlvl instantiiert. Man spricht hierbei
@@ -322,6 +326,45 @@ public class LehrveranstaltungMapper {
 				      		+ " JOIN zeitslot ON zeitslot.ZeitNr = durchfuehrung.ZeitNr "
 				      		+ " JOIN lehrveranstaltung ON lehrveranstaltung.LVNr = durchfuehrung.LVNr "
 				      		+ " WHERE (raum.bezeichnung = '"+bez+"')";
+				      System.out.println(sql); 
+				      ResultSet rs = stmt.executeQuery(sql);
+
+				      
+				      while (rs.next()) {
+				    	  Lehrveranstaltung lv = new Lehrveranstaltung();
+				    	    lv.setRaumWochentag(rs.getString("zeitslot.Wochentag"));
+							lv.setBezeichnung(rs.getString("Lehrveranstaltung.Bezeichnung"));
+							lv.setRaumZeit(rs.getInt("zeitslot.Anfangszeit"));
+							lv.setRaumZeitEnde(rs.getInt("zeitslot.Endzeit"));
+
+				        
+				        result.addElement(lv);
+				      }
+				    }
+				    catch (SQLException e2) {
+				      e2.printStackTrace();
+				    }
+
+			
+				 return result;
+			}
+			
+			public Vector<Lehrveranstaltung> findeLVbySV(int sv){
+				 Connection con = DBVerbindung.connection();
+
+				    //Vector mit angeforderten Objekten
+				    Vector<Lehrveranstaltung> result = new Vector<Lehrveranstaltung>();
+
+				    try {
+				      Statement stmt = con.createStatement();
+				      
+				      //String sql = "SELECT * FROM Raum LEFT JOIN Lehrveranstaltung ON raum.bezeichnung = " + bez;
+
+				      String sql = "SELECT zeitslot.Wochentag, zeitslot.Anfangszeit, semesterverband.semesterHalbjahr, zeitslot.Endzeit, lehrveranstaltung.bezeichnung FROM durchfuehrung "
+				      		+ " JOIN semesterverband ON semesterverband.svnr = durchfuehrung.SVNr "
+				      		+ " JOIN zeitslot ON zeitslot.ZeitNr = durchfuehrung.ZeitNr  "
+				      		+ " JOIN lehrveranstaltung ON lehrveranstaltung.LVNr = durchfuehrung.LVNr  "
+				      		+ " WHERE (semesterverband.semesterHalbjahr = "+sv+")";
 				      System.out.println(sql); 
 				      ResultSet rs = stmt.executeQuery(sql);
 
