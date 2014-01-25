@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Vector;
 
+import de.hdm.gruppe3.stundenplanverwaltung.shared.RaumBelegtException;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.*;
 
 //Import Impl Klasse Dozent
@@ -178,12 +180,20 @@ public class ZeitslotMapper {
 		 * Gibt es jedoch ein Ergenisf aus der Abfrage ist der Raum zu der Zeit bereits belegt.
 		 * @param zeitslot, raumId
 		 * @return
+		 * @throws RaumBelegtException 
 		 */
-		public boolean checkVerfuegbarkeit(Zeitslot zeitslot, int raumId) {
+		public boolean checkVerfuegbarkeit(Zeitslot zeitslot, int raumId) throws RaumBelegtException {
 			Connection con = DBVerbindung.connection();
 			
-			//Verfügbarkeit standardmäßig auf false setzen.
+			//Verfügbarkeit standardmäßig auf true setzen.
 			boolean isVerfuegbar = true;
+			
+			//Der 
+			ArrayList<Boolean> belegungsArray = new ArrayList<Boolean>();
+			
+			for(int counter=8; counter < 18; counter++) {
+				belegungsArray.add(false);
+			}
 			
 			try {
 			      Statement stmt = con.createStatement();
@@ -191,17 +201,43 @@ public class ZeitslotMapper {
 			      //Join über 3 Tabellen, Zeitslot, Durchfuehrung und Raum
 			      String sql = "Select * From Zeitslot "
 			      				+ "Inner Join (Durchfuehrung Inner Join Raum on Durchfuehrung.RaumNr=Raum.RaumNr) on Zeitslot.ZeitNr=Durchfuehrung.ZeitNr "
-			      				+ "Where Raum.RaumNr=" + raumId + " and Wochentag=\"" + zeitslot.getWochentag() + "\"" + " and Anfangszeit=" + zeitslot.getAnfangszeit() + " and Endzeit=" + zeitslot.getEndzeit();
+			      				+ "Where Raum.RaumNr=" + raumId + " and Wochentag=\"" + zeitslot.getWochentag() + "\"";
 
 			      ResultSet rs = stmt.executeQuery(sql);
 			      
-			      if (rs.next()) {
+			      while (rs.next()) {
+			    	int belegteAnfangszeit = rs.getInt("Zeitslot.Anfangszeit");
+				    int belegteEndzeit = rs.getInt("Zeitslot.Endzeit");
+				    int belegtDauer = belegteEndzeit - belegteAnfangszeit;
+				    int arrayPos = belegteAnfangszeit - 8;
+				    
+				    for(int dauerCounter = 1; dauerCounter <= belegtDauer; dauerCounter++) {
+				    	belegungsArray.add(arrayPos, true);
+				    	arrayPos++;
+				    }
+				    
 			    	//Wenn das ResultSet ein erebnis lifert, isVerfuegbar auf false setzen.
-			    	isVerfuegbar = false;
+
 			      }
+
+			      int neueAnfangszeit = zeitslot.getAnfangszeit();
+			      int neueEndzeit = zeitslot.getEndzeit();
+			      int neuedauer = neueEndzeit - neueAnfangszeit;
+			      int arrayPos = neueAnfangszeit -8;
+			      for(int dauerCounter = 1; dauerCounter <= neuedauer; dauerCounter++) {
+				    	boolean isBelegt = belegungsArray.get(arrayPos);
+				    	if(isBelegt) {
+				    		isVerfuegbar = false;
+				    	}
+				    	arrayPos++;
+				    }
+
 			    }
 			    catch (SQLException e2) {
 			      e2.printStackTrace();
+			      isVerfuegbar = false;
+			      throw new RaumBelegtException();
+			      
 			    }
 
 			 return isVerfuegbar;

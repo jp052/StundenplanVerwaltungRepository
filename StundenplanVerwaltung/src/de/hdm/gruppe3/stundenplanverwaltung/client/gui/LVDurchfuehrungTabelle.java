@@ -41,9 +41,10 @@ public class LVDurchfuehrungTabelle extends VerticalPanel{
 		//Die Tabellen Überschrift
 		flexTable.setText(0, 0, "ID");
 		flexTable.setText(0, 1, "Zeit");
-		flexTable.setText(0, 2, "Semesterverband");
-		flexTable.setText(0, 3, "Raum");
-		flexTable.setText(0, 4, "Lehrveranstaltung");
+		flexTable.setText(0, 2, "Tag");
+		flexTable.setText(0, 3, "Semesterverband");
+		flexTable.setText(0, 4, "Raum");
+		flexTable.setText(0, 5, "Lehrveranstaltung");
 
 		
 
@@ -63,6 +64,7 @@ public class LVDurchfuehrungTabelle extends VerticalPanel{
 					Button bModifizieren = new Button(ConstantsStdpln.AENDERN);
 					
 					String zeitslot = lvd.getZeitslot().getAnfangszeit() + "-" + lvd.getZeitslot().getEndzeit();
+					String tag = lvd.getZeitslot().getWochentag();
 					String sv = lvd.getSemesterverband().toString();
 					String raum = lvd.getRaum().getBezeichnung();
 					String lv = lvd.getLehrveranstaltung().getBezeichnung();
@@ -71,6 +73,7 @@ public class LVDurchfuehrungTabelle extends VerticalPanel{
 					//Label mit Inhalt füllen
 					Label lId = new Label(String.valueOf(lvd.getId()));
 				    Label lZeitslot = new Label(zeitslot);
+				    Label lTag = new Label(tag);
 				    Label lSemesterverband = new Label(sv);
 				    Label lRaum = new Label(raum);
 				    Label lLehrveranstaltung = new Label(lv);
@@ -79,11 +82,12 @@ public class LVDurchfuehrungTabelle extends VerticalPanel{
 				    //Label der Tabelle hinzufügen
 					flexTable.setWidget(zeileCounter, 0, lId);
 					flexTable.setWidget(zeileCounter, 1, lZeitslot);
-					flexTable.setWidget(zeileCounter, 2, lSemesterverband);
-					flexTable.setWidget(zeileCounter, 3, lRaum);
-					flexTable.setWidget(zeileCounter, 4, lLehrveranstaltung);
+					flexTable.setWidget(zeileCounter, 2, lTag);
+					flexTable.setWidget(zeileCounter, 3, lSemesterverband);
+					flexTable.setWidget(zeileCounter, 4, lRaum);
+					flexTable.setWidget(zeileCounter, 5, lLehrveranstaltung);
 
-					flexTable.setWidget(zeileCounter, 5, bModifizieren);
+					flexTable.setWidget(zeileCounter, 6, bModifizieren);
 					
 
 					bModifizieren.addClickHandler(new ClickHandler() {
