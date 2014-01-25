@@ -181,16 +181,17 @@ public class SVReport {
 //											   break;
 												
 //											   Forschleife für die Anzahl der Lehrveranstaltungen
+												int n = 0; 
 											   for (int m = 1; m <=dif2; m++) {
-													int n = 1; 
-													t.setText(zeitAnf+n, anzahlTag, lv.getBezeichnung());
-//													n++;
 													
-													if ((zeitAnf+dif2) == zeitEnde) {
+													t.setText(zeitAnf+n, anzahlTag, lv.getBezeichnung());
+													n++;
+													
+													if ((zeitAnf+m) == zeitEnde) {
 														t.setText(zeitEnde-1, anzahlTag, lv.getBezeichnung());
 														break;
 													} 
-													n++;
+//													n++;
 //													else {
 //														int n = 0; 
 //														t.setText(zeitAnf+n, anzahlTag, lv.getBezeichnung());

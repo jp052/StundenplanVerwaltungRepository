@@ -146,7 +146,7 @@ public class Raumbelegung {
 				Window.alert("Klappt im zweiten Teil");
 				
 				int anzahlTag = 0;
-				int zeitAnzahl = 0;
+				int zeitAnf = 0;
 				int zeitEnde = 0;
 //				bezeichnung = lv.getBezeichnung();
 				String[] tage = ConstantsStdpln.WOCHENTAGE;
@@ -166,17 +166,38 @@ public class Raumbelegung {
 							   for (int k = 0; k < zeit.length; k++) {
 								   if (zeit[k] == raumzeit){ 
 									   System.out.println(raumzeit);
-									   zeitAnzahl = k+1;
+									   zeitAnf = k+1;
 //									   break;
 
 									   for(int l = 0; l< zeit.length; l++){
 										   if (zeit[l] == raumzeitEnde) {
 											zeitEnde = l+1;
-											if((zeitEnde - zeitAnzahl)>=1){
-												t.setText(zeitAnzahl, anzahlTag, lv.getBezeichnung());
-												 t.setText(zeitEnde-1, anzahlTag, lv.getBezeichnung());
-												zeitEnde -=zeitAnzahl;
-											   break;
+											
+											int dif2 = zeitEnde - zeitAnf;
+											if((zeitEnde - zeitAnf)>=1){
+//												t.setText(zeitAnzahl, anzahlTag, lv.getBezeichnung());
+//												 t.setText(zeitEnde-1, anzahlTag, lv.getBezeichnung());
+//												zeitEnde -=zeitAnzahl;
+//											   break;
+												
+//												   Forschleife für die Anzahl der Lehrveranstaltungen
+													int n = 0; 
+												   for (int m = 1; m <=dif2; m++) {
+														
+														t.setText(zeitAnf+n, anzahlTag, lv.getBezeichnung());
+														n++;
+														
+														if ((zeitAnf+m) == zeitEnde) {
+															t.setText(zeitEnde-1, anzahlTag, lv.getBezeichnung());
+															break;
+														} 
+//														n++;
+//														else {
+//															int n = 0; 
+//															t.setText(zeitAnf+n, anzahlTag, lv.getBezeichnung());
+//															n++;
+//													}
+												   }
 											}
 										}
 									   }
