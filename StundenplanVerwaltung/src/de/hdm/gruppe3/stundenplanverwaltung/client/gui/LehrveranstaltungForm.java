@@ -33,7 +33,7 @@ public class LehrveranstaltungForm extends VerticalPanel {
 	TextBox umfangTextBox = new TextBox();
 	ListBox dozentenListBox = new ListBox();
 	Label idValueLabel = new Label();
-	HorizontalPanel LehrveranstaltungsButtonsPanel = new HorizontalPanel();
+	HorizontalPanel lehrveranstaltungsButtonsPanel = new HorizontalPanel();
 	Button modifizierenButton = new Button(ConstantsStdpln.AENDERN);
 	Button neuButton = new Button(ConstantsStdpln.NEU);
 	Button loeschenButton = new Button(ConstantsStdpln.LOESCHEN);
@@ -72,7 +72,7 @@ public class LehrveranstaltungForm extends VerticalPanel {
 		customerGrid.setWidget(4, 0, idLabel);
 		customerGrid.setWidget(4, 1, idValueLabel);
 
-		this.add(LehrveranstaltungsButtonsPanel);
+		this.add(lehrveranstaltungsButtonsPanel);
 
 		modifizierenButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -209,11 +209,11 @@ public class LehrveranstaltungForm extends VerticalPanel {
 		// Nur wenn Dozent geändert wird, dann werden der modifizieren und
 		// löschen Button angezeigt
 		if (selectedLehrveranstaltung != null) {
-			LehrveranstaltungsButtonsPanel.add(modifizierenButton);
-			LehrveranstaltungsButtonsPanel.add(loeschenButton);
-			LehrveranstaltungsButtonsPanel.remove(neuButton);
+			lehrveranstaltungsButtonsPanel.add(modifizierenButton);
+			lehrveranstaltungsButtonsPanel.add(loeschenButton);
+			lehrveranstaltungsButtonsPanel.remove(neuButton);
 		} else {
-			LehrveranstaltungsButtonsPanel.add(neuButton);
+			lehrveranstaltungsButtonsPanel.add(neuButton);
 
 		}
 	}

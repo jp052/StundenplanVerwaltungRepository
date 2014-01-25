@@ -45,6 +45,10 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 	ListBox lbWochentag = new ListBox();
 	
 	Label lbIdValue = new Label();
+	HorizontalPanel hPanelLVDruchfuehrungButtons = new HorizontalPanel();
+	Button modifizierenButton = new Button(ConstantsStdpln.AENDERN);
+	Button loeschenButton = new Button(ConstantsStdpln.LOESCHEN);
+	Button neuButton = new Button(ConstantsStdpln.NEU);
 
 	StundenplanVerwaltungServiceAsync stundenplanVerwaltung = GWT.create(StundenplanVerwaltungService.class);
 	LVDurchfuehrung selectedLVDurchfuehrung = null;
@@ -92,21 +96,18 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 		Label idLabel = new Label("ID");
 		customerGrid.setWidget(4, 0, idLabel);
 		customerGrid.setWidget(4, 1, lbIdValue);
-
-		HorizontalPanel hPanelLVDruchfuehrungButtons = new HorizontalPanel();
+		
 		this.add(hPanelLVDruchfuehrungButtons);
 
-		Button modifizierenButton = new Button("Ändern");
+		
 		modifizierenButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				//l�st das �ndern aus
 				modifizierenSelectedLVDurchfuehrung();
 			}
-		});
-		hPanelLVDruchfuehrungButtons.add(modifizierenButton);
+		});		
 		
 		
-		Button loeschenButton = new Button(ConstantsStdpln.LOESCHEN);
 		loeschenButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -114,10 +115,7 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 				loeschenSelectedLVDurchfuehrung();
 			}
 		});
-		
-		hPanelLVDruchfuehrungButtons.add(loeschenButton);
-		
-		Button neuButton = new Button(ConstantsStdpln.NEU);
+				
 		neuButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -126,7 +124,8 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 			}
 		});
 		
-		hPanelLVDruchfuehrungButtons.add(neuButton);
+//		Buttons anzeigen
+		showButtons();
 	}
 
 
@@ -348,8 +347,25 @@ public class LVDurchfuehrungForm extends VerticalPanel{
 		if (lvd != null) {
 			selectedLVDurchfuehrung = lvd;
 			setFields();
+			showButtons();
 		} else {
 			clearFields();
+		}
+	}
+	
+	/**
+	 * Zeigt alle benötigten Buttons an.
+	 */
+	public void showButtons() {
+		// Nur wenn Business Objekt geändert wird, dann werden der modifizieren und
+		// löschen Button angezeigt
+		if (selectedLVDurchfuehrung != null) {
+			hPanelLVDruchfuehrungButtons.add(modifizierenButton);
+			hPanelLVDruchfuehrungButtons.add(loeschenButton);
+			hPanelLVDruchfuehrungButtons.remove(neuButton);
+		} else {
+			hPanelLVDruchfuehrungButtons.add(neuButton);
+
 		}
 	}
 	
