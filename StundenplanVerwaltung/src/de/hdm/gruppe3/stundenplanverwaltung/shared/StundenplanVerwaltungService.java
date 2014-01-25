@@ -39,9 +39,9 @@ public interface StundenplanVerwaltungService extends RemoteService {
 
 	// public Zeitslot modifizierenZeitslot (Zeitslot z);
 
-	public Zeitslot loeschenZeitslot(Zeitslot z);
+	public Zeitslot loeschenZeitslot(Zeitslot z) throws Exception;
 
-	public Zeitslot getZeitslotByNummer(int nr);
+	public Zeitslot getZeitslotByNummer(int nr) throws Exception;
 
 	public Raum anlegenRaum(String Bezeichnung, int Kapazitaet);// klein
 																// schreiben !
@@ -79,7 +79,7 @@ public interface StundenplanVerwaltungService extends RemoteService {
 			Zeitslot zeitslot) throws Exception;
 
 	LVDurchfuehrung modifizierenDurchfuehrung(int lvdId, int svId, int raumId, int lvId,
-			Zeitslot zeitslot) throws RaumBelegtException;
+			Zeitslot zeitslot) throws RaumBelegtException, Exception;
 
 	LVDurchfuehrung loeschenDurchfuehrung(LVDurchfuehrung d);
 	
@@ -95,7 +95,7 @@ public interface StundenplanVerwaltungService extends RemoteService {
 
 	Dozent getDozentByName(Dozent name);
 
-	LVDurchfuehrung getDurchfuehrungByNummer(int lvdNr);
+	LVDurchfuehrung getDurchfuehrungByNummer(int lvdNr) throws Exception;
 
 	Vector<Dozent> getAllDozenten();
 
@@ -103,9 +103,9 @@ public interface StundenplanVerwaltungService extends RemoteService {
 
 	Raum getRaumByBezeichnung(Raum r);
 
-	Zeitslot anlegenZeitslot(String wochentag);
+	Zeitslot anlegenZeitslot(String wochentag) throws Exception;
 
-	Zeitslot modifizierenZeitslot(String wochentag);
+	Zeitslot modifizierenZeitslot(String wochentag) throws Exception;
 
 	String test(String string);
 

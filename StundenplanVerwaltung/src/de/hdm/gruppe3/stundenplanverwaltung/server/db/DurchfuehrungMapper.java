@@ -121,7 +121,7 @@ public class DurchfuehrungMapper {
 		return lvd;
 	}
 
-	public LVDurchfuehrung findeId(int lvdNr) {
+	public LVDurchfuehrung findeId(int lvdNr) throws Exception {
 		// DB-Verbindung holen
 		Connection con = DBVerbindung.connection();
 		
