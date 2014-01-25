@@ -251,7 +251,7 @@ public class LehrveranstaltungMapper {
 			return null;
 		}
 		  
-		  public Zeitslot findeTermin(Lehrveranstaltung lv) {
+		  public Zeitslot findeTermin(Lehrveranstaltung lv) throws Exception {
 		    /*
 		     * Wir bedienen uns hier einfach des CustomerMapper. Diesem geben wir
 		     * einfach den in dem Account-Objekt enthaltenen Fremdschl¸ssel f¸r den

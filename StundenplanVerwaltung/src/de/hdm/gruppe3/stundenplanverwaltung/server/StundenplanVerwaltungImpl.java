@@ -107,7 +107,7 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 	// TODO Methoden Zeitslot, Zeitslot muss ver�ndert werden, da die Attribute
 	// noch nicht vollst�ndig sind
 	@Override
-	public Zeitslot anlegenZeitslot(String wochentag) { // Kleinschreibung
+	public Zeitslot anlegenZeitslot(String wochentag) throws Exception { // Kleinschreibung
 														// Diagramm �bernehmen,
 														// Aktuelle Attribute
 														// von der Klasse
@@ -120,7 +120,7 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public Zeitslot modifizierenZeitslot(String wochentag) { // wochentag in
+	public Zeitslot modifizierenZeitslot(String wochentag) throws Exception { // wochentag in
 																// Diagramm
 																// �bernehmen
 																// bzw. ersetzen
@@ -131,13 +131,13 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public Zeitslot loeschenZeitslot(Zeitslot z) {
+	public Zeitslot loeschenZeitslot(Zeitslot z) throws Exception {
 
 		return zMapper.loeschen(z);
 	}
 
 	@Override
-	public Zeitslot getZeitslotByNummer(int nr) {
+	public Zeitslot getZeitslotByNummer(int nr) throws Exception {
 
 		return zMapper.findeId(nr);
 	}
@@ -282,9 +282,10 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 
 	/**
 	 * Prüft zuerst ob der angegbene Raum verfügbar ist, legt den Zeitslot an und ändert dann die Durchführung.
+	 * @throws Exception 
 	 */
 	@Override
-	public LVDurchfuehrung modifizierenDurchfuehrung(int lvdId, int svId, int raumId, int lvId, Zeitslot zeitslot) throws RaumBelegtException {
+	public LVDurchfuehrung modifizierenDurchfuehrung(int lvdId, int svId, int raumId, int lvId, Zeitslot zeitslot) throws Exception {
 		//Erst prüfen ob der Raum zu dem Zeitunkt verfügbar ist
 		boolean isVerfuegbar = zMapper.checkVerfuegbarkeit(zeitslot, raumId);
 		
@@ -312,7 +313,7 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public LVDurchfuehrung getDurchfuehrungByNummer (int lvdNr){
+	public LVDurchfuehrung getDurchfuehrungByNummer (int lvdNr) throws Exception{
 
 		return dfMapper.findeId(lvdNr);
 		}

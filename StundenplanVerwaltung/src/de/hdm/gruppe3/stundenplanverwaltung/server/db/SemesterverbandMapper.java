@@ -14,13 +14,7 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.*;
  */
 public class SemesterverbandMapper {
 	/**
-	   * Die Klasse SemesterverbandMapper wird nur einsvl instantiiert. Man spricht hierbei
-	   * von einem sogenannten <b>Singleton</b>.
-	   * <p>
-	   * Diese Variable ist durch den Bezeichner <code>static</code> nur einsvl für
-	   * sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
-	   * einzige Instanz dieser Klasse.
-	   * 
+	   * damit sie in der statischen Methode svMapper() benützt werden kann muss es auch hier <code>static</code> sein
 	   * @see svMapper()
 	   */
 	  private static SemesterverbandMapper svMapper = null;
@@ -33,16 +27,8 @@ public class SemesterverbandMapper {
 	  }
 
 	  /**
-	   * Diese statische Methode kann aufgrufen werden durch
-	   * <code>SemesterverbandMapper.svMapper()</code>. Sie stellt die
-	   * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine einzige
-	   * Instanz von <code>SemesterverbandMapper</code> existiert.
-	   * <p>
-	   * 
-	   * <b>Fazit:</b> SemesterverbandMapper sollte nicht mittels <code>new</code>
-	   * instantiiert werden, sondern stets durch Aufruf dieser statischen Methode.
-	   * 
-	   * @return DAS <code>SemesterverbandMapper</code>-Objekt.
+	   * die svMapper() kann man mit der Klasse aufrufen. So kann man sicher gehen, dass nur ein
+	   * Objekt instanziiert wird.
 	   * @see svMapper
 	   */
 	  public static SemesterverbandMapper svMapper() {
@@ -52,30 +38,19 @@ public class SemesterverbandMapper {
 
 	    return svMapper;
 	  }
+	  
+	  /**
+	   * Methode um ein Semesterverband in die Datenbank anzulegen
+	   * @param sv
+	   * @return
+	   */
 	  public Semesterverband anlegen(Semesterverband sv ){
 			 Connection con = DBVerbindung.connection();
 
 			    try {
 			      Statement stmt = con.createStatement();
 
-//			      /*
-//			       * Zunächst schauen wir nach, welches der momentan höchste
-//			       * Primärschlüsselwert ist.
-//			       */
-//			      ResultSet rs = stmt.executeQuery("SELECT MAX(sv) AS svxsv "
-//			          + "FROM sv ");
-	//
-//			      // Wenn wir etwas zurückerhalten, kann dies nur einzeilig sein
-//			      if (rs.next()) {
-//			        /*
-//			         * a erhält den bisher svxsvozentlen, nun um 1 inkrementierten
-//			         * Primärschlüssel.
-//			         */
-//			        m.setId(rs.getInt("svxsv") + 1);
-	//
-//			        stmt = con.createStatement();
-
-			        // Jetzt erst erfolgt die tatsächliche Einfügeoperation
+			        // Hier findet die SQL Statement statt
 			        stmt.executeUpdate("INSERT INTO Semesterverband (SVNr, AnzahlStudierende, SemesterHalbjahr, Jahrgang) " + "VALUES ( "
 			        	+ "NULL,'" + sv.getAnzahlStudenten() + "','" + sv.getSemester() +"','" +sv.getJahrgang()+ "')");
 			      //}
@@ -84,19 +59,16 @@ public class SemesterverbandMapper {
 			      e2.printStackTrace();
 			    } 
 
-			    /*
-			     * Rückgabe, des evtl. korrigierten Accounts.
-			     * 
-			     * HINWEIS: Da in Java nur Referenzen auf Objekte und keine physischen
-			     * Objekte übergeben werden, wäre die Anpassung des Semesterverband-Objekts auch
-			     * ohne diese explizite Rückgabe au�erhalb dieser Methode sichtbar. Die
-			     * explizite Rückgabe von a ist eher ein Stilmittel, um zu signalisieren,
-			     * dass sich das Objekt evtl. im Laufe der Methode verändert hat.
-			     */
+
 			    return sv;
 			
 		}
-		
+	  
+		/**
+		 * Methode, mit dem man ein Datensatz verändern kann
+		 * @param sv
+		 * @return
+		 */
 		public Semesterverband modifizieren(Semesterverband sv){
 		    Connection con = DBVerbindung.connection();
 
@@ -110,9 +82,14 @@ public class SemesterverbandMapper {
 		      e2.printStackTrace();
 		    } 
 
-		    // Um Analogie zu insert(Semesterverband a) zu wahren, geben wir a zurück
 		    return sv;
 		}
+		
+		/**
+		 * Methode um einen Datensatz aus der Datenbank zu löschen
+		 * @param sv
+		 * @return
+		 */
 		
 		public Semesterverband loeschen(Semesterverband sv){
 		    Connection con = DBVerbindung.connection();
@@ -129,6 +106,11 @@ public class SemesterverbandMapper {
 			return sv; 
 		}	  
 
+		/**
+		 * Methode, mit dem man mittels der id den Semesterverband findet.
+		 * @param i
+		 * @return
+		 */
 		public Semesterverband findeId(int i){
 		    // DB-Verbindung holen
 		    Connection con = DBVerbindung.connection();
@@ -141,10 +123,6 @@ public class SemesterverbandMapper {
 		      ResultSet rs = stmt.executeQuery("SELECT SVNr, AnzahlStudierende, SemesterHalbjahr, Jahrgang FROM Semesterverband "
 		          + "WHERE SVNr=" + i + " ORDER BY SVNr");
 
-		      /*
-		       * Da sv Primärschlüssel ist, kann svx. nur ein Tupel zurückgegeben
-		       * werden. Prüfe, ob ein Ergebnis vorliegt.
-		       */
 		      if (rs.next()) {
 		        // Ergebnis-Tupel in Objekt umwandeln
 		    	Semesterverband sv = new Semesterverband();
@@ -163,6 +141,11 @@ public class SemesterverbandMapper {
 		    return null;
 		}
 		
+		/**
+		 * Mit dieser Methode kann man mit dem svHalbjahr den Semester aus der Datenbank finden.
+		 * @param svHalbjahr
+		 * @return
+		 */
 		public Semesterverband findeSVHalbjahr(int svHalbjahr) {
 			// DB-Verbindung holen
 			Connection con = DBVerbindung.connection();
@@ -199,7 +182,10 @@ public class SemesterverbandMapper {
 			return null;
 		}
 		
-		
+		/**
+		 * Alle Datensätze aus der Tabelle Semesterverband werden herausgelesen und in ein Objekt gespeichert.
+		 * @return
+		 */
 		public Vector<Semesterverband> findeAlle(){
 			 Connection con = DBVerbindung.connection();
 
@@ -235,13 +221,14 @@ public class SemesterverbandMapper {
 			      
 //			      String sql = "SELECT FROM Semesterverband LEFT JOIN Lehrveranstaltung ON semesterHalbjahr =4";
 	
+	
+		/**
+		 * Mit dieser Methode kann man die Vorlesung mit dem Semesterverband sv finden
+		 * @param sv
+		 * @return
+		 */
 		public Lehrveranstaltung findeVL(Semesterverband sv) {
-		    /*
-		     * Wir bedienen uns hier einfach des CustomerMapper. Diesem geben wir
-		     * einfach den in dem Account-Objekt enthaltenen Fremdschl¸ssel f¸r den
-		     * Kontoinhaber. Der CustomerMapper l‰sst uns dann diese ID in ein Objekt
-		     * auf.
-		     */
+
 		    return LehrveranstaltungMapper.lvMapper().findeId(sv.getId());
 		  }
 }

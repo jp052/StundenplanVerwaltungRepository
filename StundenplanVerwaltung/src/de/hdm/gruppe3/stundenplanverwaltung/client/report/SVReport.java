@@ -136,40 +136,39 @@ public class SVReport {
 			public void onSuccess(Vector<Lehrveranstaltung> result) {
 				Window.alert("Klappt im zweiten Teil");
 				
-				int anzahlTag = 0;
+				int spalteTag = 0;
 				int zeitAnf = 0;
 				int zeitEnde = 0;
-//				bezeichnung = lv.getBezeichnung();
 				String[] tage = ConstantsStdpln.WOCHENTAGE;
 			    int [] zeit = ConstantsStdpln.UHRZEITEN;
 //				die For Schleife um den Stundenplan zu bauen
 			    for (final Lehrveranstaltung lv : result) {
 					
-//					String bezeichnung;
 					//Variable für die Flextable position
 					String wochentag = lv.getRaumWochentag();
 					int raumzeit = lv.getRaumZeit();
 					int raumzeitEnde = lv.getRaumZeitEnde();
 					int dif = raumzeitEnde-raumzeit+1;
 //					die Erste For schleife sucht nach dem Tag
-				    for (int j = 0; j<= 4; j++) {
-						   if (tage[j].equals(wochentag)){ 
+				    for (int tagCounter = 0; tagCounter<= 4; tagCounter++) {
+						   if (tage[tagCounter].equals(wochentag)){ 
 							   System.out.println(wochentag); 
-							   anzahlTag = j+1;
-							   
-							   							   
+//							   hier erhält die Variable die aktuelle Array Index. Es wird auch noch um eins addiert
+//							   da das die Spalte der Tabelle ist.
+							   spalteTag = tagCounter+1;
+							   					   							   
 //							   Hier wird nach der Anfangszeit gesucht
-							   for (int k = 0; k < zeit.length; k++) {
-								   if (zeit[k] == raumzeit){ 
+							   for (int anfZeitCounter = 0; anfZeitCounter < zeit.length; anfZeitCounter++) {
+								   if (zeit[anfZeitCounter] == raumzeit){ 
 									   System.out.println(raumzeit);
-									   zeitAnf = k+1;
-//									   break;
+									   zeitAnf = anfZeitCounter+1;
 
 //									   Hier wird nach der Endzeit gesucht
-									   for(int l = 0; l< zeit.length; l++){
-										   if (zeit[l] == raumzeitEnde) {
-											zeitEnde = l+1;
+									   for(int endZeitCounter = 0; endZeitCounter< zeit.length; endZeitCounter++){
+										   if (zeit[endZeitCounter] == raumzeitEnde) {
+											zeitEnde = endZeitCounter+1;
 											
+//											Die dif enthält die Differenz von Endzeit und Anfangszeit.
 											int dif2 = zeitEnde - zeitAnf;
 											
 //											Hier wird geprüft ob die Endzeit nicht kleiner ist als die Anfangszeit
@@ -180,23 +179,18 @@ public class SVReport {
 //												zeitEnde -=zeitAnf;
 //											   break;
 												
-//											   Forschleife für die Anzahl der Lehrveranstaltungen
-												int n = 0; 
-											   for (int m = 1; m <=dif2; m++) {
+//												Diese Variable wird benötigt um die Zeilen bei mehreren Veranstaltungen zu ergänzen.
+												int zeileCounter = 0; 
+//												 Hier wird solange geloopt bis die Variable m kleiner gleich dif ist
+											   for (int anzahlZeile = 1; anzahlZeile <=dif2; anzahlZeile++) {
 													
-													t.setText(zeitAnf+n, anzahlTag, lv.getBezeichnung());
-													n++;
+													t.setText(zeitAnf+zeileCounter, spalteTag, lv.getBezeichnung());
+													zeileCounter++;
 													
-													if ((zeitAnf+m) == zeitEnde) {
-														t.setText(zeitEnde-1, anzahlTag, lv.getBezeichnung());
+													if ((zeitAnf+anzahlZeile) == zeitEnde) {
+														t.setText(zeitEnde-1, spalteTag, lv.getBezeichnung());
 														break;
 													} 
-//													n++;
-//													else {
-//														int n = 0; 
-//														t.setText(zeitAnf+n, anzahlTag, lv.getBezeichnung());
-//														n++;
-//												}
 											   }
 											   
 											}
