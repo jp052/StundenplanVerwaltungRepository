@@ -137,7 +137,7 @@ public class SVReport {
 				Window.alert("Klappt im zweiten Teil");
 				
 				int anzahlTag = 0;
-				int zeitAnzahl = 0;
+				int zeitAnf = 0;
 				int zeitEnde = 0;
 //				bezeichnung = lv.getBezeichnung();
 				String[] tage = ConstantsStdpln.WOCHENTAGE;
@@ -150,24 +150,54 @@ public class SVReport {
 					String wochentag = lv.getRaumWochentag();
 					int raumzeit = lv.getRaumZeit();
 					int raumzeitEnde = lv.getRaumZeitEnde();
+					int dif = raumzeitEnde-raumzeit+1;
+//					die Erste For schleife sucht nach dem Tag
 				    for (int j = 0; j<= 4; j++) {
 						   if (tage[j].equals(wochentag)){ 
 							   System.out.println(wochentag); 
 							   anzahlTag = j+1;
+							   
+							   							   
+//							   Hier wird nach der Anfangszeit gesucht
 							   for (int k = 0; k < zeit.length; k++) {
 								   if (zeit[k] == raumzeit){ 
 									   System.out.println(raumzeit);
-									   zeitAnzahl = k+1;
+									   zeitAnf = k+1;
 //									   break;
 
+//									   Hier wird nach der Endzeit gesucht
 									   for(int l = 0; l< zeit.length; l++){
 										   if (zeit[l] == raumzeitEnde) {
 											zeitEnde = l+1;
-											if((zeitEnde - zeitAnzahl)>=1){
-												t.setText(zeitAnzahl, anzahlTag, lv.getBezeichnung());
-												 t.setText(zeitEnde-1, anzahlTag, lv.getBezeichnung());
-												zeitEnde -=zeitAnzahl;
-											   break;
+											
+											int dif2 = zeitEnde - zeitAnf;
+											
+//											Hier wird geprüft ob die Endzeit nicht kleiner ist als die Anfangszeit
+											if((zeitEnde - zeitAnf)>=1){
+												
+//												t.setText(zeitAnf, anzahlTag, lv.getBezeichnung());
+//												 t.setText(zeitEnde-1, anzahlTag, lv.getBezeichnung());
+//												zeitEnde -=zeitAnf;
+//											   break;
+												
+//											   Forschleife für die Anzahl der Lehrveranstaltungen
+											   for (int m = 1; m <=dif2; m++) {
+													int n = 1; 
+													t.setText(zeitAnf+n, anzahlTag, lv.getBezeichnung());
+//													n++;
+													
+													if ((zeitAnf+dif2) == zeitEnde) {
+														t.setText(zeitEnde-1, anzahlTag, lv.getBezeichnung());
+														break;
+													} 
+													n++;
+//													else {
+//														int n = 0; 
+//														t.setText(zeitAnf+n, anzahlTag, lv.getBezeichnung());
+//														n++;
+//												}
+											   }
+											   
 											}
 										}
 									   }
