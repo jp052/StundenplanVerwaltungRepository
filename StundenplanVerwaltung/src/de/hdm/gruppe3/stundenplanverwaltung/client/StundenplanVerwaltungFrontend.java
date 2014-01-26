@@ -49,7 +49,6 @@ public class StundenplanVerwaltungFrontend{
 	TextBox NachnameTextBox = new TextBox();
 	Button addStockButton = new Button("Add");
 	Label lastUpdatedLabel = new Label();
-	private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
 	private final StundenplanVerwaltungServiceAsync stdplnVerwService = GWT.create(StundenplanVerwaltungService.class);
 	
 

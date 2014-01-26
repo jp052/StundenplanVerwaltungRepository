@@ -5,7 +5,7 @@
          version="2.5"
          xmlns="http://java.sun.com/xml/ns/javaee">
 
-  <!-- Servlets -->
+  <!-- Servlets 
   <servlet>
     <servlet-name>greetServlet</servlet-name>
     <servlet-class>de.hdm.gruppe3.stundenplanverwaltung.server.GreetingServiceImpl</servlet-class>
@@ -14,7 +14,7 @@
   <servlet-mapping>
     <servlet-name>greetServlet</servlet-name>
     <url-pattern>/stundenplanverwaltung/greet</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping>-->
   
   <!-- StundenplanVerwaltung -->
     <servlet>
