@@ -89,7 +89,6 @@ public class DozentMapper {
 					+ dozent.getNachname() + "\", Vorname=\""
 					+ dozent.getVorname() + "\" WHERE PersonalNr="
 					+ dozent.getId());
-			int i = 0;
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!");
@@ -188,8 +187,6 @@ public class DozentMapper {
 			 * zurückgegeben werden. Prüfe, ob ein Ergebnis vorliegt.
 			 */
 			if (rs.next()) {
-				LehrveranstaltungMapper lvMapper = LehrveranstaltungMapper
-						.lvMapper();
 				// Ergebnis-Tupel in Objekt umwandeln
 				Dozent dozent = new Dozent();
 				// Lehrveranstaltung lv = new Lehrveranstaltung();
@@ -198,9 +195,7 @@ public class DozentMapper {
 				dozent.setId(rs.getInt("PersonalNr"));
 				dozent.setNachname(rs.getString("Nachname"));
 				dozent.setVorname(rs.getString("Vorname"));
-				// TODO: Dozent mit Lehveranstaltung Vector füllen
-				// lvMapper.findeByDozent
-
+				
 				return dozent;
 			}
 		} catch (SQLException e2) {

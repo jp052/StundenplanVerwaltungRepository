@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
-import com.google.gwt.user.client.ui.RootPanel;
-
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.*;
 
 /**
@@ -289,16 +287,11 @@ public class LehrveranstaltungMapper {
 	}
 
 	/**
-	 * Findet alle Lehrveranstaltungen von einem Dozent
-	 * 
-	 * @param dozentId
+	 * Termin für eine Lehrveranstaltung finden
+	 * @param lv
 	 * @return
+	 * @throws Exception
 	 */
-	public Vector<Lehrveranstaltung> findeByDozent(int dozentId) {
-		// TODO: mit logik füllen
-		return null;
-	}
-
 	public Zeitslot findeTermin(Lehrveranstaltung lv) throws Exception {
 
 		return ZeitslotMapper.zeitslotMapper().findeId(lv.getId());

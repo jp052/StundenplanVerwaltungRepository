@@ -14,16 +14,13 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.hdm.gruppe3.stundenplanverwaltung.shared.ConstantsStdpln;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungServiceAsync;
-import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Dozent;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Lehrveranstaltung;
-import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Raum;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Semesterverband;
 
 /**
@@ -85,7 +82,6 @@ public class SVReport {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
 						Window.alert("Problem" + caught.getMessage());
 					}
 
@@ -136,7 +132,6 @@ public class SVReport {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
 
 					}
 
@@ -155,7 +150,6 @@ public class SVReport {
 							String wochentag = lv.getRaumWochentag();
 							int raumzeit = lv.getRaumZeit();
 							int raumzeitEnde = lv.getRaumZeitEnde();
-							int dif = raumzeitEnde - raumzeit + 1;
 							// die Erste For schleife sucht nach dem Tag
 							for (int tagCounter = 0; tagCounter <= 4; tagCounter++) {
 								if (tage[tagCounter].equals(wochentag)) {
@@ -181,7 +175,7 @@ public class SVReport {
 													// Die dif enthält die
 													// Differenz von Endzeit und
 													// Anfangszeit.
-													int dif2 = zeitEnde
+													int dif = zeitEnde
 															- zeitAnf;
 
 													// Hier wird geprüft ob die
@@ -208,7 +202,7 @@ public class SVReport {
 														// geloopt bis die
 														// Variable m kleiner
 														// gleich dif ist
-														for (int anzahlZeile = 1; anzahlZeile <= dif2; anzahlZeile++) {
+														for (int anzahlZeile = 1; anzahlZeile <= dif; anzahlZeile++) {
 
 															t.setText(
 																	zeitAnf

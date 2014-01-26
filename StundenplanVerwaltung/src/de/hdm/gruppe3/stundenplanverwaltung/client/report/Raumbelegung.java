@@ -9,11 +9,8 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HTMLTable;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -22,7 +19,6 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungServiceAsync;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Lehrveranstaltung;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Raum;
-import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Semesterverband;
 
 /**
  * @author Yasemin Karakoc, Jan Plank, Selim Karazehir, Julia Hammerer, Denis
@@ -48,7 +44,6 @@ public class Raumbelegung {
 	public Widget reportRaumbelegung() {
 		FlexTable flexRaum = new FlexTable();
 		Button d = new Button("Report");
-		final TextBox t = new TextBox();
 
 		d.addClickHandler(new ClickHandler() {
 
@@ -93,7 +88,6 @@ public class Raumbelegung {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
 						Window.alert("Problem" + caught.getMessage());
 					}
 
@@ -149,7 +143,6 @@ public class Raumbelegung {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
 
 					}
 

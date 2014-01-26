@@ -1,6 +1,5 @@
 package de.hdm.gruppe3.stundenplanverwaltung.shared;
 
-import java.sql.Time;
 import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -112,8 +111,6 @@ public interface StundenplanVerwaltungService extends RemoteService {
 	Zeitslot anlegenZeitslot(String wochentag) throws Exception;
 
 	Zeitslot modifizierenZeitslot(String wochentag) throws Exception;
-
-	String test(String string);
 
 	Raum modifizierenRaum(Raum r) throws Exception;
 

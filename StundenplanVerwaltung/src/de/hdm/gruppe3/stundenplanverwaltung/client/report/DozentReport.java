@@ -1,9 +1,6 @@
 package de.hdm.gruppe3.stundenplanverwaltung.client.report;
 
 import java.util.Vector;
-import java.sql.Connection;
-
-import sun.awt.HorizBagLayout;
 
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -12,18 +9,13 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import de.hdm.gruppe3.stundenplanverwaltung.client.ClientsideSettings;
-import de.hdm.gruppe3.stundenplanverwaltung.shared.ConstantsStdpln;
-import de.hdm.gruppe3.stundenplanverwaltung.shared.ReportGenerator;
-import de.hdm.gruppe3.stundenplanverwaltung.shared.ReportGeneratorAsync;
+
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungServiceAsync;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Dozent;
@@ -122,7 +114,7 @@ public class DozentReport {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
+
 
 					}
 

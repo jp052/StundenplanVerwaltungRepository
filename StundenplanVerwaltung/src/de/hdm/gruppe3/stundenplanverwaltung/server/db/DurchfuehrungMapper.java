@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
-import de.hdm.gruppe3.stundenplanverwaltung.shared.RaumBelegtException;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.*;
 
 /**
@@ -58,7 +57,7 @@ public class DurchfuehrungMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			// TODO Zeitslot zuerst anlgend und die Id auslesen
+			// Zeitslot zuerst anlgend und die Id auslesen
 			String sql = "INSERT INTO Durchfuehrung (ZeitNr, SVNr, RaumNr, LVNr) "
 					+ "VALUES ("
 					+ zeitslot.getId()
@@ -76,7 +75,7 @@ public class DurchfuehrungMapper {
 			throw new Exception("Datenbank fehler!");
 		}
 
-		// TODO Lehrveranstaltungs Objekt mit Daten f�llen!
+		// Lehrveranstaltungs Objekt mit Daten füllen!
 		return lvd;
 
 	}
@@ -117,7 +116,7 @@ public class DurchfuehrungMapper {
 		}
 
 		// Rückgabe des Objektes
-		// TODO Lehrveranstaltungs Objekt mit Daten f�llen!
+		// Lehrveranstaltungs Objekt mit Daten füllen!
 		return lvd;
 	}
 

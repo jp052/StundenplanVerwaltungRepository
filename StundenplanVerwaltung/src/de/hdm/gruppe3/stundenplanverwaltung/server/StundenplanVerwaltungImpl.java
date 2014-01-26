@@ -1,10 +1,5 @@
 package de.hdm.gruppe3.stundenplanverwaltung.server;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Time;
 import java.util.Vector;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -92,28 +87,8 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 		return svMapper.findeId(nr);
 	}
 
-	/*
-	 * public Semesterverband getSemesterverbandBySemesterHalbjahr (String
-	 * semesterHalbjahr){
-	 * 
-	 * return svMapper.ffindeSemester(semesterHalbjahr); }
-	 * 
-	 * 
-	 * public Semesterverband loeschenSemesterverband (Semesterverband sv){
-	 * 
-	 * return svMapper.loeschen(sv.getId()); }
-	 */
-	
-
-	// TODO Methoden Zeitslot, Zeitslot muss ver�ndert werden, da die Attribute
-	// noch nicht vollst�ndig sind
 	@Override
-	public Zeitslot anlegenZeitslot(String wochentag) throws Exception { // Kleinschreibung
-														// Diagramm �bernehmen,
-														// Aktuelle Attribute
-														// von der Klasse
-														// Zeitslot hier
-														// einf�gen
+	public Zeitslot anlegenZeitslot(String wochentag) throws Exception { 
 
 		Zeitslot z = new Zeitslot();
 		z.setWochentag(wochentag);
@@ -121,10 +96,7 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public Zeitslot modifizierenZeitslot(String wochentag) throws Exception { // wochentag in
-																// Diagramm
-																// �bernehmen
-																// bzw. ersetzen
+	public Zeitslot modifizierenZeitslot(String wochentag) throws Exception { 
 
 		Zeitslot z = new Zeitslot();
 		z.setWochentag(wochentag);
@@ -154,7 +126,7 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public Raum modifizierenRaum(Raum r) throws Exception { // Diagramm anpassen
+	public Raum modifizierenRaum(Raum r) throws Exception { 
 		return rMapper.modifizieren(r);
 	}
 
@@ -182,16 +154,13 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 		return rMapper.findeName(r);
 	}
 
-	// public Vector getAllRaeume () //Schleife einbauen??
-
 	// Methoden Lehrveranstaltung
 	@Override
 	public Lehrveranstaltung anlegenLehrveranstaltung(String bezeichnung,
-			int semester, int umfang, int dozentId) throws Exception { // Kleinschreibung
-														// Diagramm �bernehmen
-
-		// Erst Dozent mit der Id bef�llen damit er der Lehrveranstaltung
-		// hinzugef�gt werden kann
+			int semester, int umfang, int dozentId) throws Exception {
+		
+		// Erst Dozent mit der Id befüllen damit er der Lehrveranstaltung
+		// hinzugefügt werden kann
 		Dozent d = new Dozent();
 		d.setId(dozentId);
 
@@ -204,8 +173,7 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public Lehrveranstaltung modifizierenLehrveranstaltung(Lehrveranstaltung l) throws Exception { // Diagramm
-																					// anpassen
+	public Lehrveranstaltung modifizierenLehrveranstaltung(Lehrveranstaltung l) throws Exception { 
 
 		return lvMapper.modifizieren(l);
 	}
@@ -230,7 +198,7 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 
 	// Methoden Dozent
 	@Override
-	public Dozent anlegenDozent (String vorname, String nachname) throws Exception{ //Kleinschreibung Diagramm �bernehmen
+	public Dozent anlegenDozent (String vorname, String nachname) throws Exception{ 
 		Dozent d = new Dozent ();
 		d.setVorname (vorname);
 		d.setNachname (nachname);
@@ -338,34 +306,7 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 		return rMapper.findeAlle();
 	}
 
-	@Override
-	public String test(String test) {
-		// DB-Verbindung holen
-		Connection con = DBVerbindung.connection();
 
-		try {
-			// Leeres SQL-Statement (JDBC) anlegen
-			Statement stmt = con.createStatement();
-
-			// Statement ausfüllen und als Query an die DB schicken
-			ResultSet rs = stmt.executeQuery("SELECT * from dozent");
-
-			/*
-			 * Da dozent Primärschlüssel ist, kann dozentx. nur ein Tupel
-			 * zurückgegeben werden. Prüfe, ob ein Ergebnis vorliegt.
-			 */
-			if (rs.next()) {
-
-				test = rs.getString("vorname");
-
-				return test;
-			}
-		} catch (SQLException e2) {
-			e2.printStackTrace();
-			return test + " db test failed";
-		}
-		return test + " db test failed";
-	}
 
 	@Override
 	public Vector<Dozent> getAllDozenten() throws Exception {

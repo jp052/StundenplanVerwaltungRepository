@@ -3,7 +3,6 @@
  */
 package de.hdm.gruppe3.stundenplanverwaltung.shared;
 
-import java.sql.Time;
 import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -96,7 +95,6 @@ public interface StundenplanVerwaltungServiceAsync {
 
 	void modifizierenZeitslot(String wochentag, AsyncCallback<Zeitslot> callback);
 
-	void test(String string, AsyncCallback<String> asyncCallback);
 
 	void getAllDozenten(AsyncCallback<Vector<Dozent>> callback);
 
