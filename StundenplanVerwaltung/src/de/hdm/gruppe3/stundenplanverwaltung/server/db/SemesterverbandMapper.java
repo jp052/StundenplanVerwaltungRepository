@@ -175,8 +175,8 @@ public class SemesterverbandMapper {
 			Statement stmt = con.createStatement();
 
 			// Statement ausfüllen und als Query an die DB schicken
-			ResultSet rs = stmt.executeQuery("SELECT * FROM raum "
-					+ "WHERE semesterHalbjahr=" + "'" + svHalbjahr + "'");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM semesterverband "
+					+ "WHERE svnr=" + "'" + svHalbjahr + "'");
 
 			/*
 			 * Da raum Primärschlüssel ist, kann raumx. nur ein Tupel
@@ -216,7 +216,7 @@ public class SemesterverbandMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			String sql = "SELECT * FROM Semesterverband  ORDER BY SVNr";
+			String sql = "SELECT * FROM Semesterverband  ORDER BY SemesterHalbjahr";
 
 			ResultSet rs = stmt.executeQuery(sql);
 

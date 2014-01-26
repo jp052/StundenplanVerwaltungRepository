@@ -75,24 +75,24 @@ public class SVReport {
 		mainPanel.clear();
 		rt.setText(0,0, "Semesterverband: ");
 		
-//		stundenplanVerwaltung.getSemesterverbandBySemesterHalbjahr(sv, new AsyncCallback<Semesterverband>(){
+		stundenplanVerwaltung.getSemesterverbandBySemesterHalbjahr(sv, new AsyncCallback<Semesterverband>(){
 
-//			@Override
-//			public void onFailure(Throwable caught) {
-//				// TODO Auto-generated method stub
-//				Window.alert("Problem" +caught.getMessage());
-//			}
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				Window.alert("Problem" +caught.getMessage());
+			}
 
-//			@Override
-//			public void onSuccess(Semesterverband result) {
+			@Override
+			public void onSuccess(Semesterverband result) {
 
+		
 			//Window.alert("Klappt");
-			rt.setText(0, 1, String.valueOf(svListBox.getValue(svListBox.getSelectedIndex())));
+			rt.setText(0, 1, String.valueOf(svListBox.getItemText(svListBox.getSelectedIndex())));
 			mainPanel.add(rt);
 			zeigeTabelle(sv); 
-//			}
-			
-//		});
+			}
+		});
 	
 	}
 	
