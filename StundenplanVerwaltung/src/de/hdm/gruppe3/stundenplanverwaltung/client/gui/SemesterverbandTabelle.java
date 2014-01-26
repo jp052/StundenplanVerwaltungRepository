@@ -10,32 +10,36 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.hdm.gruppe3.stundenplanverwaltung.shared.ConstantsStdpln;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungServiceAsync;
-import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Dozent;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Semesterverband;
 
-
 /**
+ * Enthält die Tabelle um alle in der Datenbank verfügbaren Elemente anzuzeigen.
  * 
- * @author Selim Karazehir, Julia Hammerer
- *
+ * @author Yasemin Karakoc, Jan Plank, Selim Karazehir, Julia Hammerer, Denis
+ *         Fuerst, Daniel Krakow
+ *         In Anlehnung an Hr. Prof. Dr. Thies
  */
-public class SemesterverbandTabelle extends VerticalPanel{
+public class SemesterverbandTabelle {
 
 	VerticalPanel mainPanel = new VerticalPanel();
-	
+
 	StundenplanVerwaltungServiceAsync stundenplanVerwaltung = GWT
 			.create(StundenplanVerwaltungService.class);
-	
-	public Widget zeigeTabelle() {
 
+	/**
+	 * Stellt die Tabelle dar.
+	 * 
+	 * @return Das Panel mit der Tabelle
+	 */
+	public VerticalPanel zeigeTabelle() {
+		// Eine flexible Tabelle die sich je nach anzahl der vorhandenen
+		// Datensätze anpasst.
 		final FlexTable flexTable = new FlexTable();
 		//
 		flexTable.setText(0, 0, "ID");
@@ -43,71 +47,84 @@ public class SemesterverbandTabelle extends VerticalPanel{
 		flexTable.setText(0, 2, "Semesterhalbjahr");
 		flexTable.setText(0, 3, "Jahrgang");
 
-		// dann irgendwann aufruf der methode von Stundenplanverwaltung
+		// Liest alle Einträg aus der Datebank füllt sie in die Tabelle. Bei
+		// einem Fehler wird eine Meldung ausgegeben.
+		stundenplanVerwaltung
+				.getAllSemesterverband(new AsyncCallback<Vector<Semesterverband>>() {
 
-		stundenplanVerwaltung.getAllSemesterverband(new AsyncCallback<Vector<Semesterverband>>() {
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("Ein Fehler ist aufgetreten! - " + caught);
 
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("Ein Fehler ist aufgetreten! - " + caught);
+					}
 
-			}
+					@Override
+					public void onSuccess(Vector<Semesterverband> result) {
+						// Zählt die Zeilenanzahl
+						int zeileCounter = 1;
+						// läuft durch alle erhaltene Objekte
+						// Das aktuelle Objekt muss final sein, damit es in der
+						// Inner Class ClickHandler
+						// verwendet werden kann.
 
-			@Override
-			public void onSuccess(Vector<Semesterverband> result) {
-				int zeileCounter = 1;
-				for (final Semesterverband semesterverband : result) {
-					
-					Button bModifizieren = new Button(ConstantsStdpln.AENDERN);
+						for (final Semesterverband semesterverband : result) {
 
-//					final TextBox tbN = new TextBox();
-//					final TextBox tbV = new TextBox();
-					
-					int anzahlStudenten, semesterHalbjahr, jahrgang, id;
-					id = semesterverband.getId();
-					anzahlStudenten = semesterverband.getAnzahlStudenten();
-					semesterHalbjahr = semesterverband.getSemester();
-					jahrgang = semesterverband.getJahrgang();
-									
-					//Label mit Inhalt füllen
-				    Label lAnzahlStudenten = new Label(String.valueOf(anzahlStudenten));
-				    Label lSemesterHalbjahr = new Label(String.valueOf(semesterHalbjahr));
-				    Label lJahrgang = new Label(String.valueOf(jahrgang));
-				    Label lId = new Label(String.valueOf(id));
-					
+							Button bModifizieren = new Button(
+									ConstantsStdpln.AENDERN);
+							int anzahlStudenten, semesterHalbjahr, jahrgang, id;
+							id = semesterverband.getId();
+							anzahlStudenten = semesterverband
+									.getAnzahlStudenten();
+							semesterHalbjahr = semesterverband.getSemester();
+							jahrgang = semesterverband.getJahrgang();
 
-					flexTable.setWidget(zeileCounter, 0, lId);
-					flexTable.setWidget(zeileCounter, 1, lAnzahlStudenten);
-					flexTable.setWidget(zeileCounter, 2, lSemesterHalbjahr);
-					flexTable.setWidget(zeileCounter, 3, lJahrgang);
+							// Label mit Inhalt füllen
+							Label lAnzahlStudenten = new Label(String
+									.valueOf(anzahlStudenten));
+							Label lSemesterHalbjahr = new Label(String
+									.valueOf(semesterHalbjahr));
+							Label lJahrgang = new Label(String
+									.valueOf(jahrgang));
+							Label lId = new Label(String.valueOf(id));
 
-					flexTable.setWidget(zeileCounter, 4, bModifizieren);
-//					t.setWidget(i, 7, b);
-//					t.setWidget(i, 8, a); #
-					
-					// TODO Label in Textfeld �ndern.
-					bModifizieren.addClickHandler(new ClickHandler() {
-						
-						@Override
-						public void onClick(ClickEvent event) {
-							//setzt den click handler auf den Modifizieren Button und ruft dann das Form
-							//auf und setzt das in der for schleife aktuell durchlaufene Element in das Form. 
-							SemesterverbandForm svForm = new SemesterverbandForm();
-							svForm.setSelected(semesterverband);
-							//Panel leeren und das Formular dafür einfügen
-							mainPanel.clear();
-							mainPanel.add(svForm);							
-						}							
-					});
-					
-					zeileCounter++;
+							// Label in die die richtige Zeile und Spalte
+							// setzen.
+							flexTable.setWidget(zeileCounter, 0, lId);
+							flexTable.setWidget(zeileCounter, 1,
+									lAnzahlStudenten);
+							flexTable.setWidget(zeileCounter, 2,
+									lSemesterHalbjahr);
+							flexTable.setWidget(zeileCounter, 3, lJahrgang);
+
+							flexTable.setWidget(zeileCounter, 4, bModifizieren);
+
+							bModifizieren.addClickHandler(new ClickHandler() {
+
+								@Override
+								public void onClick(ClickEvent event) {
+									// setzt den click handler auf den
+									// Modifizieren Button und ruft dann das
+									// Form
+									// auf und setzt das in der for schleife
+									// aktuell durchlaufene Element in das Form.
+									SemesterverbandForm svForm = new SemesterverbandForm();
+									svForm.setSelected(semesterverband);
+									// Panel leeren und das Formular dafür
+									// einfügen
+									mainPanel.clear();
+									mainPanel.add(svForm);
+								}
+							});
+							
+							//Zeile hochzählen
+							zeileCounter++;
+						}
+					}
 				}
-			}
-		}
 
-		);
-		
-		//die Tabelle dem mainPanel hinzufügen und es zurück geben.
+				);
+
+		// die Tabelle dem mainPanel hinzufügen und es zurück geben.
 		mainPanel.add(flexTable);
 		return mainPanel;
 	}

@@ -10,42 +10,44 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.hdm.gruppe3.stundenplanverwaltung.shared.ConstantsStdpln;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungServiceAsync;
-import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Dozent;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Raum;
 
-
-
 /**
- * @author Selim Karazehir, Julia Hammerer
- *
+ * Enthält die Tabelle um alle in der Datenbank verfügbaren Elemente anzuzeigen.
+ * 
+ * @author Yasemin Karakoc, Jan Plank, Selim Karazehir, Julia Hammerer, Denis
+ *         Fuerst, Daniel Krakow
+ *         In Anlehnung an Hr. Prof. Dr. Thies
  */
+public class RaumTabelle {
 
-public class RaumTabelle extends VerticalPanel{
-	
 	VerticalPanel mainPanel = new VerticalPanel();
-	
+
 	StundenplanVerwaltungServiceAsync stundenplanVerwaltung = GWT
 			.create(StundenplanVerwaltungService.class);
+
 	
-	public RaumTabelle(){}
-
+	/**
+	 * Stellt die Tabelle dar.
+	 * 
+	 * @return Das Panel mit der Tabelle
+	 */
 	public Widget zeigeTabelle() {
+		// Eine flexible Tabelle die sich je nach anzahl der vorhandenen
+		// Datensätze anpasst.
+		final FlexTable flexTable = new FlexTable();
+		flexTable.setText(0, 0, "ID");
+		flexTable.setText(0, 1, "Raum");
+		flexTable.setText(0, 2, "Kapazität");
 
-		final FlexTable t = new FlexTable();
-		//
-		t.setText(0, 0, "ID");
-		t.setText(0, 1, "Raum");
-		t.setText(0, 2, "Kapazität");
-
-		// dann irgendwann aufruf der methode von Stundenplanverwaltung
+		// Liest alle Einträg aus der Datebank füllt sie in die Tabelle. Bei
+		// einem Fehler wird eine Meldung ausgegeben.
 		stundenplanVerwaltung.getAllRaeume(new AsyncCallback<Vector<Raum>>() {
 
 			@Override
@@ -56,124 +58,56 @@ public class RaumTabelle extends VerticalPanel{
 
 			@Override
 			public void onSuccess(Vector<Raum> result) {
-//				Window.alert("Es wurden " + result.size()
-//						+ " Eintraege gefunden");
-				int i = 1;
+				// Zählt die Zeilenanzahl
+				int zeileCounter = 1;
+				
+				// läuft durch alle erhaltene Objekte
+				// Das aktuelle Objekt muss final sein, damit es in der
+				// Inner Class ClickHandler
+				// verwendet werden kann.
 				for (final Raum r : result) {
-//					Button l = new Button("X");
-//					Button b = new Button("Speichern");
 					Button a = new Button(ConstantsStdpln.AENDERN);
 
-					final TextBox tbN = new TextBox();
-					final TextBox tbV = new TextBox();
-					
 					String raumNr, bezeichnung, kapa;
-					
+
 					bezeichnung = r.getBezeichnung();
 					raumNr = String.valueOf(r.getId());
 					kapa = String.valueOf(r.getKapazitaet());
-					//dozent = lv.getDozentName();
 					
+					// Label mit Inhalt füllen
+					Label lBez = new Label(bezeichnung);
+					Label lRaumnr = new Label(raumNr);
+					Label lKapa = new Label(kapa);
 					
-				    Label lBez = new Label(bezeichnung);
-				    Label lRaumnr = new Label(raumNr);
-				    Label lKapa = new Label(kapa);
-				    //Label lDozent = new Label(dozent);
-				    
-					
-//					tbN.setReadOnly(true);
-//					tbV.setReadOnly(true);
-//					
-//					tbN.setText(d.getNachname());
-//				    tbV.setText(d.getVorname());
+					// Label in die die richtige Zeile und Spalte
+					// setzen.
+					flexTable.setText(zeileCounter, 0, String.valueOf(r.getId()));
+					flexTable.setWidget(zeileCounter, 1, lBez);
+					flexTable.setWidget(zeileCounter, 2, lKapa);
 
-					t.setText(i, 0, String.valueOf(r.getId()));
-					t.setWidget(i, 1, lBez);
-					t.setWidget(i, 2, lKapa);
-//					t.setWidget(i, 3, lKapa);
-//					t.setWidget(i, 4, lDozent);
 
-					t.setWidget(i, 6, a);
-//					t.setWidget(i, 7, b);
-//					t.setWidget(i, 8, a); 
-					// ------------------------------------------------------------------------------------
-					// L�schen Button
-//					l.addClickHandler(new ClickHandler() {
-//
-//						@Override
-//						public void onClick(ClickEvent event) {
-//							// TODO hier bei der "loeschenDozent" Methode
-//							// br�uchte man evt. ein Int statt Object im ersten
-//							// Argument!
-//							stundenplanVerwaltung.loeschenRaum(r,
-//									new AsyncCallback<Raum>() {
-//
-//										@Override
-//										public void onFailure(Throwable caught) {
-//
-//											Window.alert("Fehler beim loeschen");
-//											Window.Location.reload();
-//										}
-//
-//										@Override
-//										public void onSuccess(Raum result) {
-//
-//											t.clear();
-//
-//											Window.alert("Loeschen erfolgreich!");
-//											Window.Location.reload();
-//										}
-//									});
-//						}
-//					});
+					flexTable.setWidget(zeileCounter, 6, a);
 
-					// Bearbeiten Button
-//					b.addClickHandler(new ClickHandler() {
-//
-//						@Override
-//						public void onClick(ClickEvent event) {
-//							// TODO k�nnte mehr Argumente als ein Objekt
-//							// brauchen.
-//							
-////							stundenplanVerwaltung.modifizierenRaum(r,
-////									new AsyncCallback<Lehrveranstaltung>() {
-////
-////										@Override
-////										public void onFailure(Throwable caught) {
-////											Window.alert("Fehler beim aendern "
-////													+ caught);
-////											Window.Location.reload();
-////										}
-////
-////										@Override
-////										public void onSuccess(Lehrveranstaltung result) {
-////
-////											Window.alert("Aendern erfolgreich! "
-////													+ tbN.getText()
-////													+ tbV.getText());
-////											Window.Location.reload();
-////
-////										}
-////									});
-//
-//						}
-//					});
-					
-					// TODO Label in Textfeld �ndern.
+					// setzt den click handler auf den
+					// Modifizieren Button und ruft dann das
+					// Form
+					// auf und setzt das in der for schleife
+					// aktuell durchlaufene Element in das Form.
 					a.addClickHandler(new ClickHandler() {
-						
+
 						@Override
 						public void onClick(ClickEvent event) {
 							RaumForm raumForm = new RaumForm();
 							raumForm.setSelected(r);
+							// Panel leeren und das Formular dafür
+							// einfügen
 							mainPanel.clear();
 							mainPanel.add(raumForm);
-							
-							
+
 						}
 					});
-					
-					i++;
+					//Zeile hochzählen
+					zeileCounter++;
 				}
 
 			}
@@ -181,10 +115,9 @@ public class RaumTabelle extends VerticalPanel{
 		}
 
 		);
-		mainPanel.add(t);
+		
+		// die Tabelle dem mainPanel hinzufügen und es zurück geben.
+		mainPanel.add(flexTable);
 		return mainPanel;
-//		 RootPanel.get("starter").add(mainPanel);
-
-		// return t;
 	}
 }

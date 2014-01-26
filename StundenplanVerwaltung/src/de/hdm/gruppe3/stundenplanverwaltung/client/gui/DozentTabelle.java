@@ -20,161 +20,104 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungServiceAsync;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Dozent;
 
-
 /**
+ * Enthält die Tabelle um alle in der Datenbank verfügbaren Elemente anzuzeigen.
  * 
- * @author Selim Karazehir, Julia Hammerer
- *
+ * @author Yasemin Karakoc, Jan Plank, Selim Karazehir, Julia Hammerer, Denis
+ *         Fuerst, Daniel Krakow In Anlehnung an Hr. Prof. Dr. Thies
  */
-public class DozentTabelle extends VerticalPanel{
+public class DozentTabelle {
 
 	VerticalPanel mainPanel = new VerticalPanel();
-	
+
 	StundenplanVerwaltungServiceAsync stundenplanVerwaltung = GWT
 			.create(StundenplanVerwaltungService.class);
-	
+
+	/**
+	 * Stellt die Tabelle dar.
+	 * 
+	 * @return Das Panel mit der Tabelle
+	 */
 	public Widget zeigeTabelle() {
-
-		final FlexTable t = new FlexTable();
+		// Eine flexible Tabelle die sich je nach anzahl der vorhandenen
+		// Datensätze anpasst.
+		final FlexTable flexTable = new FlexTable();
 		//
-		t.setText(0, 0, "ID");
-		t.setText(0, 1, "Name");
-		t.setText(0, 2, "Vorname");
+		flexTable.setText(0, 0, "ID");
+		flexTable.setText(0, 1, "Name");
+		flexTable.setText(0, 2, "Vorname");
 
-		// dann irgendwann aufruf der methode von Stundenplanverwaltung
+		// Liest alle Einträg aus der Datebank füllt sie in die Tabelle. Bei
+		// einem Fehler wird eine Meldung ausgegeben.
+		stundenplanVerwaltung
+				.getAllDozenten(new AsyncCallback<Vector<Dozent>>() {
 
-		stundenplanVerwaltung.getAllDozenten(new AsyncCallback<Vector<Dozent>>() {
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("Ein Fehler ist aufgetreten! - " + caught);
 
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("Ein Fehler ist aufgetreten! - " + caught);
+					}
 
-			}
+					@Override
+					public void onSuccess(Vector<Dozent> result) {
+						// Zählt die Zeilenanzahl
+						int zeileCounter = 1;
 
-			@Override
-			public void onSuccess(Vector<Dozent> result) {
-//				Window.alert("Es wurden " + result.size()
-//						+ " Eintraege gefunden");
-				int i = 1;
-				for (final Dozent d : result) {
-					
-					Button a = new Button(ConstantsStdpln.AENDERN);
+						// läuft durch alle erhaltene Objekte
+						// Das aktuelle Objekt muss final sein, damit es in der
+						// Inner Class ClickHandler
+						// verwendet werden kann.
+						for (final Dozent d : result) {
 
-					final TextBox tbN = new TextBox();
-					final TextBox tbV = new TextBox();
-					
-					String nachname, vorname;
-					nachname = d.getNachname();
-					vorname = d.getVorname();
-					
-				    Label lN = new Label(nachname);
-				    Label lV = new Label(vorname);
-					
-//					tbN.setReadOnly(true);
-//					tbV.setReadOnly(true);
-//					
-//					tbN.setText(d.getNachname());
-//				    tbV.setText(d.getVorname());
+							Button a = new Button(ConstantsStdpln.AENDERN);
 
-					t.setText(i, 0, String.valueOf(d.getId()));
-					t.setWidget(i, 1, lN);
-					t.setWidget(i, 2, lV);
-
-					t.setWidget(i, 6, a);
-//					t.setWidget(i, 7, b);
-//					t.setWidget(i, 8, a); #
-					
-					// TODO Label in Textfeld �ndern.
-					a.addClickHandler(new ClickHandler() {
-						
-						@Override
-						public void onClick(ClickEvent event) {
-							DozentForm dozForm = new DozentForm();
-							dozForm.setSelected(d);
-							mainPanel.clear();
-							mainPanel.add(dozForm);
+							String nachname, vorname;
+							nachname = d.getNachname();
+							vorname = d.getVorname();
 							
+							// Label mit Inhalt füllen
+							Label lN = new Label(nachname);
+							Label lV = new Label(vorname);
 							
+							// Label in die die richtige Zeile und Spalte
+							// setzen.
+							flexTable.setText(zeileCounter, 0, String.valueOf(d.getId()));
+							flexTable.setWidget(zeileCounter, 1, lN);
+							flexTable.setWidget(zeileCounter, 2, lV);
+
+							flexTable.setWidget(zeileCounter, 6, a);
+
+							a.addClickHandler(new ClickHandler() {
+
+								@Override
+								public void onClick(ClickEvent event) {
+									// setzt den click handler auf den
+									// Modifizieren Button und ruft dann das
+									// Form
+									// auf und setzt das in der for schleife
+									// aktuell durchlaufene Element in das Form.
+									DozentForm dozForm = new DozentForm();
+									dozForm.setSelected(d);
+									// Panel leeren und das Formular dafür
+									// einfügen
+									mainPanel.clear();
+									mainPanel.add(dozForm);
+
+								}
+
+							});
+
+							//Zeile hochzählen
+							zeileCounter++;
 						}
-							
-					});
-					
-					// ------------------------------------------------------------------------------------
-					// L�schen Button
-//					l.addClickHandler(new ClickHandler() {
-//
-//						@Override
-//						public void onClick(ClickEvent event) {
-//							// TODO hier bei der "loeschenDozent" Methode
-//							// br�uchte man evt. ein Int statt Object im ersten
-//							// Argument!
-//							stundenplanVerwaltung.loeschenDozent(d,
-//									new AsyncCallback<Dozent>() {
-//
-//										@Override
-//										public void onFailure(Throwable caught) {
-//
-//											Window.alert("Fehler beim loeschen");
-//											Window.Location.reload();
-//										}
-//
-//										@Override
-//										public void onSuccess(Dozent result) {
-//
-//											t.clear();
-//
-//											Window.alert("Loeschen erfolgreich!");
-//											Window.Location.reload();
-//										}
-//									});
-//						}
-//					});
-//
-//					// Bearbeiten Button
-//					b.addClickHandler(new ClickHandler() {
-//
-//						@Override
-//						public void onClick(ClickEvent event) {
-//							// TODO k�nnte mehr Argumente als ein Objekt
-//							// brauchen.
-//							
-//							stundenplanVerwaltung.modifizierenDozent(d,
-//									new AsyncCallback<Dozent>() {
-//
-//										@Override
-//										public void onFailure(Throwable caught) {
-//											Window.alert("Fehler beim aendern "
-//													+ caught);
-//											Window.Location.reload();
-//										}
-//
-//										@Override
-//										public void onSuccess(Dozent result) {
-//
-//											Window.alert("Aendern erfolgreich! "
-//													+ tbN.getText()
-//													+ tbV.getText());
-//											Window.Location.reload();
-//
-//										}
-//									});
-//
-//						}
-//					});
-					
 
-					
-					i++;
+					}
+
 				}
 
-			}
-
-		}
-
-		);
-		mainPanel.add(t);
+				);
+		mainPanel.add(flexTable);
+		// die Tabelle dem mainPanel hinzufügen und es zurück geben.
 		return mainPanel;
-//		RootPanel.get("starter").add(mainPanel);
-		// return t;
 	}
 }

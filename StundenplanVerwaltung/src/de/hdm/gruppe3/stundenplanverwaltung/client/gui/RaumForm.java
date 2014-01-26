@@ -17,15 +17,14 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungServiceAsync;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Raum;
 
-
-
 /**
  * Enthält alle Elemente und nötigen Methoden für das Raum Formular
- * @author Yasemin Karakoc, Jan Plank
- *
+ * 
+ * @author Yasemin Karakoc, Jan Plank, Selim Karazehir, Julia Hammerer, Denis Fuerst, Daniel Krakow
+ *In Anlehnung an Hr. Prof. Dr. Thies
  */
-public class RaumForm extends VerticalPanel{
-	//Gui Elemente
+public class RaumForm extends VerticalPanel {
+	// Gui Elemente
 	TextBox bezeichnungTextBox = new TextBox();
 	TextBox kapazitaetTextBox = new TextBox();
 	Label idValueLabel = new Label();
@@ -34,12 +33,13 @@ public class RaumForm extends VerticalPanel{
 	Button loeschenButton = new Button(ConstantsStdpln.LOESCHEN);
 	Button neuButton = new Button(ConstantsStdpln.NEU);
 
-
-	StundenplanVerwaltungServiceAsync stundenplanVerwaltung = GWT.create(StundenplanVerwaltungService.class);
+	StundenplanVerwaltungServiceAsync stundenplanVerwaltung = GWT
+			.create(StundenplanVerwaltungService.class);
 	Raum selectedRaum = null;
 
 	/**
-	 * Das Formular wird immer bei Konstruktoraufruf aufgerufen und zeigt alle GUI Elemente an.
+	 * Das Formular wird immer bei Konstruktoraufruf aufgerufen und zeigt alle
+	 * GUI Elemente an.
 	 */
 	public RaumForm() {
 		Grid customerGrid = new Grid(3, 2);
@@ -53,12 +53,10 @@ public class RaumForm extends VerticalPanel{
 		customerGrid.setWidget(1, 0, kapazitaetLabel);
 		customerGrid.setWidget(1, 1, kapazitaetTextBox);
 
-		
-		
-		if(selectedRaum != null){
+		if (selectedRaum != null) {
 			Label idLabel = new Label("ID");
 			customerGrid.setWidget(2, 0, idLabel);
-			customerGrid.setWidget(2, 1, idValueLabel);			
+			customerGrid.setWidget(2, 1, idValueLabel);
 		}
 
 		this.add(raumButtonsPanel);
@@ -68,27 +66,25 @@ public class RaumForm extends VerticalPanel{
 				modifizierenSelectedRaum();
 			}
 		});
-		
-		
+
 		loeschenButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				//l�st das l�schen aus
+				// l�st das l�schen aus
 				loeschenSelectedRaum();
 			}
 		});
-		
-		
+
 		neuButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
 				anlegenRaum();
-				
+
 			}
 		});
-		
-	showButtons();
-		
+
+		showButtons();
+
 	}
 
 	/**
@@ -96,11 +92,12 @@ public class RaumForm extends VerticalPanel{
 	 */
 	void setFields() {
 		bezeichnungTextBox.setText(selectedRaum.getBezeichnung());
-//		Integer in String umwandeln
-		kapazitaetTextBox.setText(Integer.toString(selectedRaum.getKapazitaet()));
+		// Integer in String umwandeln
+		kapazitaetTextBox
+				.setText(Integer.toString(selectedRaum.getKapazitaet()));
 		idValueLabel.setText(Integer.toString(selectedRaum.getId()));
 	}
-	
+
 	/**
 	 * Löscht den Inhalt alle Eingabe Felder
 	 */
@@ -109,12 +106,14 @@ public class RaumForm extends VerticalPanel{
 		kapazitaetTextBox.setText("");
 		idValueLabel.setText("");
 	}
-	
+
 	/**
-	* Setzt das gewählte Element zum editieren in die Instanz Variable und
-	* zeigt Buttons und Felder an.
-	* @param d Dozent
-	*/
+	 * Setzt das gewählte Element zum editieren in die Instanz Variable und
+	 * zeigt Buttons und Felder an.
+	 * 
+	 * @param d
+	 *            Dozent
+	 */
 	public void setSelected(Raum r) {
 		if (r != null) {
 			selectedRaum = r;
@@ -124,7 +123,7 @@ public class RaumForm extends VerticalPanel{
 			clearFields();
 		}
 	}
-	
+
 	/**
 	 * Zeigt alle benötigten Buttons an.
 	 */
@@ -135,105 +134,113 @@ public class RaumForm extends VerticalPanel{
 			raumButtonsPanel.remove(neuButton);
 			raumButtonsPanel.add(loeschenButton);
 			raumButtonsPanel.add(modifizierenButton);
-		}else {
+		} else {
 			raumButtonsPanel.add(neuButton);
 
 		}
-		
+
 	}
-	
+
 	/**
-	 * Ändert das ausgewählte Business Objekt im Editiermodus 
+	 * Ändert das ausgewählte Business Objekt im Editiermodus
 	 */
 	public void modifizierenSelectedRaum() {
-		if (this.selectedRaum!=null){
-			//Schauen ob der Benutzer alles richtig eingegeben hat, wenn false zurück kommt wird mit return abgebrochen und die Fehlermeldung angezeit.
-			if(!validiereBenutzerEingabe()) {
+		if (this.selectedRaum != null) {
+			// Schauen ob der Benutzer alles richtig eingegeben hat, wenn false
+			// zurück kommt wird mit return abgebrochen und die Fehlermeldung
+			// angezeit.
+			if (!validiereBenutzerEingabe()) {
 				return;
 			}
-			
+
 			selectedRaum.setBezeichnung(bezeichnungTextBox.getText());
-			//String in Integer umwandeln
-			selectedRaum.setKapazitaet(Integer.valueOf(kapazitaetTextBox.getText()));
-			//Ruft Serverseitige Methode auf
-			stundenplanVerwaltung.modifizierenRaum(selectedRaum, new AsyncCallback<Raum>() {
+			// String in Integer umwandeln
+			selectedRaum.setKapazitaet(Integer.valueOf(kapazitaetTextBox
+					.getText()));
+			// Ruft Serverseitige Methode auf
+			stundenplanVerwaltung.modifizierenRaum(selectedRaum,
+					new AsyncCallback<Raum>() {
 
-				@Override
-				public void onFailure(Throwable caught) {
-					// TODO Auto-generated method stub
-					
-				}
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
 
-				@Override
-				public void onSuccess(Raum result) {
-					System.out.println("Raum ge�ndert");
-//					treeModel.updateDozent(shownDozent);
-					
-				}
-			});
+						}
+
+						@Override
+						public void onSuccess(Raum result) {
+							System.out.println("Raum ge�ndert");
+							// treeModel.updateDozent(shownDozent);
+
+						}
+					});
 		}
 	}
-	
+
 	/**
-	 * Löscht das ausgewählte Business Objekt im Editiermodus 
+	 * Löscht das ausgewählte Business Objekt im Editiermodus
 	 */
 	public void loeschenSelectedRaum() {
-		if(this.selectedRaum != null) {
-			//Ruft Serverseitige Methode auf
-			stundenplanVerwaltung.loeschenRaum(selectedRaum, new AsyncCallback<Raum>() {
+		if (this.selectedRaum != null) {
+			// Ruft Serverseitige Methode auf
+			stundenplanVerwaltung.loeschenRaum(selectedRaum,
+					new AsyncCallback<Raum>() {
 
-				@Override
-				public void onFailure(Throwable caught) {
-					// TODO Auto-generated method stub
-					
-				}
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
 
-				@Override
-				public void onSuccess(Raum result) {
-					if (result != null) {
-						System.out.println("Raum gel�scht");
-						setSelected(null);
-						//TODO: Liste oder Tree aktualisieren
-					}
-					
-				}
-				
-			});
+						}
+
+						@Override
+						public void onSuccess(Raum result) {
+							if (result != null) {
+								System.out.println("Raum gel�scht");
+								setSelected(null);
+								// TODO: Liste oder Tree aktualisieren
+							}
+
+						}
+
+					});
 		}
 	}
-	
+
 	/**
-	 * Legt das  das eingegebene Business Objekt an
+	 * Legt das das eingegebene Business Objekt an
 	 */
 	public void anlegenRaum() {
-		//Schauen ob der Benutzer alles richtig eingegeben hat, wenn false zurück kommt wird mit return abgebrochen und die Fehlermeldung angezeit.
-		if(!validiereBenutzerEingabe()) {
+		// Schauen ob der Benutzer alles richtig eingegeben hat, wenn false
+		// zurück kommt wird mit return abgebrochen und die Fehlermeldung
+		// angezeit.
+		if (!validiereBenutzerEingabe()) {
 			return;
 		}
 
 		String bezeichnung = bezeichnungTextBox.getText();
 		int kapazitaet = Integer.valueOf(kapazitaetTextBox.getText());
-		//Ruft Serverseitige Methode auf
-		stundenplanVerwaltung.anlegenRaum(bezeichnung, kapazitaet,  new AsyncCallback<Raum>() {
+		// Ruft Serverseitige Methode auf
+		stundenplanVerwaltung.anlegenRaum(bezeichnung, kapazitaet,
+				new AsyncCallback<Raum>() {
 
-			@Override
-			public void onFailure(Throwable caught) {
-				System.out.println("Raum fehler");
-				
-			}
+					@Override
+					public void onFailure(Throwable caught) {
+						System.out.println("Raum fehler");
 
-			@Override
-			public void onSuccess(Raum result) {
-				if (result != null) {
-					System.out.println("Raum angelegt");
-					//TODO: Liste oder Tree aktualisieren
-				}
-			}
-			
-		});
-		
+					}
+
+					@Override
+					public void onSuccess(Raum result) {
+						if (result != null) {
+							System.out.println("Raum angelegt");
+							// TODO: Liste oder Tree aktualisieren
+						}
+					}
+
+				});
+
 	}
-	
+
 	/**
 	 * Zeigt eine Fehlermeldung wenn der Benutzer etwas falsches eingegeben hat.
 	 * 
@@ -244,25 +251,25 @@ public class RaumForm extends VerticalPanel{
 		// Die indexs der ListBox auslesen um zu schauen ob überall etwas
 		// gewählt wurde.
 		String bezeichnung = bezeichnungTextBox.getText();
-		
+
 		String kapazitaet = kapazitaetTextBox.getText();
-			
-		//Per Regular Expression schauen ob der Name gültig ist
-		//Erklärung:
-		//^ = Start derzeile
-		//[A-Za-z] = Erlaubt nur Buchstaben von A-Z groß oder klein geschrieben
-		//* = Erlaubt beliebing viele Buchstaben von A-Z
-		//$ = Ende der Zeile
-		//Dann wird geschaut
+
+		// Per Regular Expression schauen ob der Name gültig ist
+		// Erklärung:
+		// ^ = Start derzeile
+		// [A-Za-z] = Erlaubt nur Buchstaben von A-Z groß oder klein geschrieben
+		// * = Erlaubt beliebing viele Buchstaben von A-Z
+		// $ = Ende der Zeile
+		// Dann wird geschaut
 		if (!bezeichnung.matches("^[A-Za-z ]+$")) {
 			Window.alert("Bezeichnung darf nur Buchstaben von a-z enthalten und darf nicht leer sein!");
 			isValid = false;
 		}
-		if(!kapazitaet.matches("^[0-9]+$")) {
+		if (!kapazitaet.matches("^[0-9]+$")) {
 			Window.alert("Kapazität muss eine Zahl größer als 0 sein!");
 			isValid = false;
-		} 
-			
+		}
+
 		return isValid;
 	}
 
