@@ -7,39 +7,30 @@ import java.sql.Statement;
 import java.util.Vector;
 
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.*;
-//Import Impl Klasse Dozent
-//Import bo Dozent
 
+/**
+ * @author Yasemin Karakoc, Jan Plank, Selim Karazehir, Julia Hammerer, Denis
+ *         Fürst, Daniel Krakow 
+ *         In Anlehnung an Hr. Prof. Dr. Thies
+ */
 public class RaumMapper {
 	/**
-	 * Die Klasse RaumMapper wird nur einrauml instantiiert. Man spricht hierbei
-	 * von einem sogenannten <b>Singleton</b>.
-	 * <p>
-	 * Diese Variable ist durch den Bezeichner <code>static</code> nur einrauml
-	 * für sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
-	 * speichert die einzige Instanz dieser Klasse.
+	 * damit sie in der statischen Methode raumMapper() benützt werden kann muss
+	 * es auch hier <code>static</code> sein
 	 * 
 	 * @see raumMapper()
 	 */
 	private static RaumMapper raumMapper = null;
 
 	/**
-	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit
-	 * <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
+	 * mit protected wird die Instanziierung mit <code>new</code> verhindert
 	 */
 	protected RaumMapper() {
 	}
 
 	/**
-	 * Diese statische Methode kann aufgrufen werden durch
-	 * <code>RaumMapper.raumMapper()</code>. Sie stellt die
-	 * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine
-	 * einzige Instanz von <code>RaumMapper</code> existiert.
-	 * <p>
-	 * 
-	 * <b>Fazit:</b> RaumMapper sollte nicht mittels <code>new</code>
-	 * instantiiert werden, sondern stets durch Aufruf dieser statischen
-	 * Methode.
+	 * die raumMapper() kann man mit der Klasse aufrufen. So kann man sicher
+	 * gehen, dass nur ein Objekt instanziiert wird.
 	 * 
 	 * @return DAS <code>RaumMapper</code>-Objekt.
 	 * @see raumMapper
@@ -52,29 +43,18 @@ public class RaumMapper {
 		return raumMapper;
 	}
 
-	public Raum anlegen(Raum m) {
+	/**
+	 * Methode um ein Semesterverband in die Datenbank anzulegen
+	 * 
+	 * @param m
+	 * @return
+	 * @throws Exception
+	 */
+	public Raum anlegen(Raum m) throws Exception {
 		Connection con = DBVerbindung.connection();
 
 		try {
 			Statement stmt = con.createStatement();
-
-			// /*
-			// * Zunächst schauen wir nach, welches der momentan höchste
-			// * Primärschlüsselwert ist.
-			// */
-			// ResultSet rs = stmt.executeQuery("SELECT MAX(raum) AS raumxraum "
-			// + "FROM raum ");
-			//
-			// // Wenn wir etwas zurückerhalten, kann dies nur einzeilig sein
-			// if (rs.next()) {
-			// /*
-			// * a erhält den bisher raumxraumozentlen, nun um 1
-			// inkrementierten
-			// * Primärschlüssel.
-			// */
-			// m.setID(rs.getInt("raumxraum") + 1);
-			//
-			// stmt = con.createStatement();
 
 			// Jetzt erst erfolgt die tatsächliche Einfügeoperation
 			stmt.executeUpdate("INSERT INTO raum (RaumNr, Bezeichnung, Kapazitaet) "
@@ -86,23 +66,21 @@ public class RaumMapper {
 			// }
 		} catch (SQLException e2) {
 			e2.printStackTrace();
+			throw new Exception("Datenbank fehler!");
 		}
 
-		/*
-		 * Rückgabe, des evtl. korrigierten Accounts.
-		 * 
-		 * HINWEIS: Da in Java nur Referenzen auf Objekte und keine physischen
-		 * Objekte übergeben werden, wäre die Anpassung des Raum-Objekts auch
-		 * ohne diese explizite Rückgabe au�erhalb dieser Methode sichtbar.
-		 * Die explizite Rückgabe von a ist eher ein Stilmittel, um zu
-		 * signalisieren, dass sich das Objekt evtl. im Laufe der Methode
-		 * verändert hat.
-		 */
 		return m;
 
 	}
 
-	public Raum modifizieren(Raum raum) {
+	/**
+	 * Methode, mit dem man ein Datensatz verändern kann
+	 * 
+	 * @param raum
+	 * @return
+	 * @throws Exception
+	 */
+	public Raum modifizieren(Raum raum) throws Exception {
 		Connection con = DBVerbindung.connection();
 
 		try {
@@ -114,13 +92,21 @@ public class RaumMapper {
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
+			throw new Exception("Datenbank fehler!");
 		}
 
 		// Um Analogie zu insert(Raum a) zu wahren, geben wir a zurück
 		return raum;
 	}
 
-	public Raum loeschen(Raum raum) {
+	/**
+	 * Methode um einen Datensatz aus der Datenbank zu löschen
+	 * 
+	 * @param raum
+	 * @return
+	 * @throws Exception
+	 */
+	public Raum loeschen(Raum raum) throws Exception {
 		Connection con = DBVerbindung.connection();
 
 		try {
@@ -131,11 +117,20 @@ public class RaumMapper {
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
+			throw new Exception("Datenbank fehler!");
 		}
 		return raum;
 	}
 
-	public Raum findeName(Raum r) {
+	/**
+	 * Methode, mit dem man mittels dem Raumobjekt den Namen des Raums finden
+	 * kann.
+	 * 
+	 * @param r
+	 * @return
+	 * @throws Exception
+	 */
+	public Raum findeName(Raum r) throws Exception {
 		// DB-Verbindung holen
 		Connection con = DBVerbindung.connection();
 
@@ -165,13 +160,21 @@ public class RaumMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			return null;
+			throw new Exception("Datenbank fehler!");
+			// return null;
 		}
 
 		return null;
 	}
 
-	public Raum findeName(String r) {
+	/**
+	 * Methode, mit dem man mittels dem Raumbezeichnung den Raum findet.
+	 * 
+	 * @param r
+	 * @return
+	 * @throws Exception
+	 */
+	public Raum findeName(String r) throws Exception {
 		// DB-Verbindung holen
 		Connection con = DBVerbindung.connection();
 
@@ -183,7 +186,9 @@ public class RaumMapper {
 			ResultSet rs = stmt
 					.executeQuery("SELECT RaumNr, Bezeichnung, Kapazitaet FROM raum "
 							+ "WHERE Bezeichnung="
-							+ "'"+r+"'"
+							+ "'"
+							+ r
+							+ "'"
 							+ " ORDER BY Bezeichnung");
 
 			/*
@@ -201,12 +206,21 @@ public class RaumMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			return null;
+			throw new Exception("Datenbank fehler!");
+			// return null;
 		}
 
 		return null;
 	}
-	public Raum findeId(int i) {
+
+	/**
+	 * Methode, mit dem man mittels der ID den Raum finden kann.
+	 * 
+	 * @param i
+	 * @return
+	 * @throws Exception
+	 */
+	public Raum findeId(int i) throws Exception {
 		// DB-Verbindung holen
 		Connection con = DBVerbindung.connection();
 
@@ -234,12 +248,19 @@ public class RaumMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			return null;
+			throw new Exception("Datenbank fehler!");
 		}
 		return null;
 	}
 
-	public Vector<Raum> findeAlle() {
+	/**
+	 * Alle Datensätze aus der Tabelle Semesterverband werden herausgelesen und
+	 * in ein Objekt gespeichert.
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public Vector<Raum> findeAlle() throws Exception {
 		Connection con = DBVerbindung.connection();
 
 		// Ergebnisvektor vorbereiten
@@ -259,36 +280,42 @@ public class RaumMapper {
 				// r.setOwnerID(rs.getInt("owner"));
 				r.setId(rs.getInt("RaumNr"));
 				r.setBezeichnung(rs.getString("Bezeichnung"));
-				r.setKapazitaet(rs.getInt("Kapazitaet")); 
+				r.setKapazitaet(rs.getInt("Kapazitaet"));
 
 				// Hinzuf�gen des neuen Objekts zum Ergebnisvektor
 				result.addElement(r);
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
+			throw new Exception("Datenbank fehler!");
 		}
 
 		// Ergebnisvektor zur�ckgeben
 		return result;
 	}
 
-	public Lehrveranstaltung findeVL(Raum raum) {
-		/*
-		 * Wir bedienen uns hier einfach des CustomerMapper. Diesem geben wir
-		 * einfach den in dem Account-Objekt enthaltenen Fremdschl�ssel f�r den
-		 * Kontoinhaber. Der CustomerMapper l�sst uns dann diese ID in ein
-		 * Objekt auf.
-		 */
+	/**
+	 * Mit dieser Methode kann man die Vorlesung mit dem Raum raum finden
+	 * 
+	 * @param raum
+	 * @return
+	 * @throws Exception
+	 */
+	public Lehrveranstaltung findeVL(Raum raum) throws Exception {
+
 		return LehrveranstaltungMapper.lvMapper().findeId(raum.getId());
 	}
 
-	public Zeitslot belegt(Raum raum) {
-		/*
-		 * Wir bedienen uns hier einfach des CustomerMapper. Diesem geben wir
-		 * einfach den in dem Account-Objekt enthaltenen Fremdschl�ssel f�r den
-		 * Kontoinhaber. Der CustomerMapper l�sst uns dann diese ID in ein
-		 * Objekt auf.
-		 */
+	/**
+	 * Mit dieser Methode kann man die belegung des Zeitslots mittels dem raum
+	 * finden kann
+	 * 
+	 * @param raum
+	 * @return
+	 * @throws Exception
+	 */
+	public Zeitslot belegt(Raum raum) throws Exception {
+
 		return ZeitslotMapper.zeitslotMapper().findeId(raum.getId());
 	}
 
