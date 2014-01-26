@@ -14,24 +14,25 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Semesterverband;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Zeitslot;
 
 /**
- * @author Yasemin Karakoc, Jan Plank
- * 
+ * @author Yasemin Karakoc, Jan Plank, Selim Karazehir, Julia Hammerer, Denis
+ *         Fürst, Daniel Krakow 
+ *         In Anlehnung an Hr. Prof. Dr. Thies
  */
-
 @RemoteServiceRelativePath("stundenplanVerwaltung")
 public interface StundenplanVerwaltungService extends RemoteService {
 
 	public Semesterverband anlegenSemesterverband(int semesterhalbjahr,
-			int anzahlStudierende, int jahrgang);
+			int anzahlStudierende, int jahrgang) throws Exception;
 
-	Semesterverband modifizierenSemesterverband(Semesterverband semeserverband);
-	
-	public Vector<Semesterverband> getAllSemesterverband();
+	Semesterverband modifizierenSemesterverband(Semesterverband semeserverband)
+			throws Exception;
 
-	public Semesterverband getSemesterverbandByNummer(int nr);
+	public Vector<Semesterverband> getAllSemesterverband() throws Exception;
 
-	public Semesterverband getSemesterverbandBySemesterHalbjahr(
-			int sv);
+	public Semesterverband getSemesterverbandByNummer(int nr) throws Exception;
+
+	public Semesterverband getSemesterverbandBySemesterHalbjahr(int sv)
+			throws Exception;
 
 	public Semesterverband loeschenSemesterverband(Semesterverband sv);
 
@@ -43,65 +44,70 @@ public interface StundenplanVerwaltungService extends RemoteService {
 
 	public Zeitslot getZeitslotByNummer(int nr) throws Exception;
 
-	public Raum anlegenRaum(String Bezeichnung, int Kapazitaet);// klein
-																// schreiben !
+	public Raum anlegenRaum(String Bezeichnung, int Kapazitaet)
+			throws Exception;// klein
+	// schreiben !
 
 	// public Raum modifizierenRaum (Raum r);
 
-	public Raum loeschenRaum(Raum r);
+	public Raum loeschenRaum(Raum r) throws Exception;
 
-	public Raum getRaumbyNummer(int nr);
+	public Raum getRaumbyNummer(int nr) throws Exception;
 
 	Lehrveranstaltung anlegenLehrveranstaltung(String Bezeichnung,
-			int Semester, int Umfang, int dozentId);
+			int Semester, int Umfang, int dozentId) throws Exception;
 
 	// public Lehrveranstaltung modifizierenLehrveranstaltung (Lehrveranstaltung
 	// lv);
 
-	public Lehrveranstaltung loeschenLehrveranstaltung(Lehrveranstaltung lv);
+	public Lehrveranstaltung loeschenLehrveranstaltung(Lehrveranstaltung lv)
+			throws Exception;
 
-	public Lehrveranstaltung getLehrveranstaltungByNummer(int nr);
+	public Lehrveranstaltung getLehrveranstaltungByNummer(int nr)
+			throws Exception;
 
-	public Lehrveranstaltung getLehrveranstaltungByBezeichnung(String bez);
+	public Lehrveranstaltung getLehrveranstaltungByBezeichnung(String bez)
+			throws Exception;
 
-	public Dozent anlegenDozent(String Vorname, String Nachname);
+	public Dozent anlegenDozent(String Vorname, String Nachname)
+			throws Exception;
 
 	// public Dozent modifizierenDozent (Dozent d);
 
-	public Dozent loeschenDozent(Dozent d);
+	public Dozent loeschenDozent(Dozent d) throws Exception;
 
-	public Dozent getDozentByNummer(int nr);
+	public Dozent getDozentByNummer(int nr) throws Exception;
 
 	// public Dozent getDozentByName (String name);
-
 
 	LVDurchfuehrung anlegenDurchfuehrung(int svId, int raumId, int lvId,
 			Zeitslot zeitslot) throws Exception;
 
-	LVDurchfuehrung modifizierenDurchfuehrung(int lvdId, int svId, int raumId, int lvId,
-			Zeitslot zeitslot) throws RaumBelegtException, Exception;
+	LVDurchfuehrung modifizierenDurchfuehrung(int lvdId, int svId, int raumId,
+			int lvId, Zeitslot zeitslot) throws RaumBelegtException, Exception;
 
-	LVDurchfuehrung loeschenDurchfuehrung(LVDurchfuehrung d);
-	
+	LVDurchfuehrung loeschenDurchfuehrung(LVDurchfuehrung d) throws Exception;
+
 	public Vector<LVDurchfuehrung> getAllDurchfuehrungen() throws Exception;
 
 	// public LVDurchfuehrung getDurchfuehrungByNummer (int nr);
 
 	// public Raum getRaumByBezeichnung (String bez);
 
-	Vector<Raum> getAllRaeume();
+	Vector<Raum> getAllRaeume() throws Exception;
 
-	Lehrveranstaltung modifizierenLehrveranstaltung(Lehrveranstaltung lv);
+	Lehrveranstaltung modifizierenLehrveranstaltung(Lehrveranstaltung lv)
+			throws Exception;
 
-	Dozent getDozentByName(Dozent name);
+	Dozent getDozentByName(Dozent name) throws Exception;
 
 	LVDurchfuehrung getDurchfuehrungByNummer(int lvdNr) throws Exception;
 
-	Vector<Dozent> getAllDozenten();
+	Vector<Dozent> getAllDozenten() throws Exception;
 
-	Dozent modifizierenDozent(Dozent d);
+	Dozent modifizierenDozent(Dozent d) throws Exception;
 
-	Raum getRaumByBezeichnung(Raum r);
+	Raum getRaumByBezeichnung(Raum r) throws Exception;
 
 	Zeitslot anlegenZeitslot(String wochentag) throws Exception;
 
@@ -109,19 +115,21 @@ public interface StundenplanVerwaltungService extends RemoteService {
 
 	String test(String string);
 
-	Raum modifizierenRaum(Raum r);
-	
-	Vector<Lehrveranstaltung> getAllLV();
+	Raum modifizierenRaum(Raum r) throws Exception;
+
+	Vector<Lehrveranstaltung> getAllLV() throws Exception;
 
 	Vector<Lehrveranstaltung> getLVBySV(int sv);
-	
-	
-	// Report 
-	public Vector<Lehrveranstaltung> reportLVbyDozent(int dozentID);
-	public Vector<Lehrveranstaltung> reportLVbyRaum(int raumID);
 
-	Raum getRaumByBezeichnung(String r);
+	// Report
+	public Vector<Lehrveranstaltung> reportLVbyDozent(int dozentID)
+			throws Exception;
 
-	Vector<Lehrveranstaltung> reportLVbySV(int sv);
+	public Vector<Lehrveranstaltung> reportLVbyRaum(int raumID)
+			throws Exception;
+
+	Raum getRaumByBezeichnung(String r) throws Exception;
+
+	Vector<Lehrveranstaltung> reportLVbySV(int sv) throws Exception;
 
 }

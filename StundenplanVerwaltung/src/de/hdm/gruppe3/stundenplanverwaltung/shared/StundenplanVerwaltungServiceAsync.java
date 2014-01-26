@@ -3,10 +3,6 @@
  */
 package de.hdm.gruppe3.stundenplanverwaltung.shared;
 
-/**
- * @author Yasemin Karakoc, Jan Plank
- *
- */
 import java.sql.Time;
 import java.util.Vector;
 
@@ -20,8 +16,9 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Semesterverband;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Zeitslot;
 
 /**
- * @author Yasemin Karakoc, Jan Plank
- * 
+ * @author Yasemin Karakoc, Jan Plank, Selim Karazehir, Julia Hammerer, Denis
+ *         Fürst, Daniel Krakow 
+ *         In Anlehnung an Hr. Prof. Dr. Thies
  */
 public interface StundenplanVerwaltungServiceAsync {
 
@@ -109,11 +106,12 @@ public interface StundenplanVerwaltungServiceAsync {
 
 	void getLVBySV(int sv, AsyncCallback<Vector<Lehrveranstaltung>> callback);
 
-	void reportLVbyDozent(int dozentID, AsyncCallback<Vector<Lehrveranstaltung>> callback);
+	void reportLVbyDozent(int dozentID,
+			AsyncCallback<Vector<Lehrveranstaltung>> callback);
 
 	void reportLVbyRaum(int raumID,
 			AsyncCallback<Vector<Lehrveranstaltung>> callback);
-	
+
 	void reportLVbySV(int sv, AsyncCallback<Vector<Lehrveranstaltung>> callback);
 
 	void getRaumByBezeichnung(String r, AsyncCallback<Raum> callback);
