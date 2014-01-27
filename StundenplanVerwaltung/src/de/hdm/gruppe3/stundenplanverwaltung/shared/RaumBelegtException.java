@@ -12,7 +12,7 @@ public class RaumBelegtException extends Exception implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	  private String fehlerMessage = "Dieser Raum ist zum angegebenen Zeitraum belegt!";
+	  private String fehlerMessage = "Dieser Raum ist zum angegebenen Zeitraum belegt! Schauen Sie in den Raum Report um einen freien Raum zu finden.";
 
 	  public RaumBelegtException() {
 	  }
