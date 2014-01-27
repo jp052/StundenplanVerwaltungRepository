@@ -62,8 +62,29 @@ public class DBVerbindung {
 		return con;
 	}
 	
-	public static void closeAll(ResultSet rs, Statement stmt, Connection con) {
-		
+	/**
+	 * Schließt das ResultSet, das Statement und die Connection
+	 * @param rs
+	 * @param stmt
+	 * @param con
+	 * @throws Exception
+	 */
+	public static void closeAll(ResultSet rs, Statement stmt, Connection con) throws Exception {
+		try {
+			if (rs != null) {
+				rs.close();
+			}
+			if (stmt != null) {
+				stmt.close();
+			} 
+			if (con != null) {
+				con.close();
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new Exception("Connection close Fehler!" + e.toString());
+		}
 	}
 	
 //	

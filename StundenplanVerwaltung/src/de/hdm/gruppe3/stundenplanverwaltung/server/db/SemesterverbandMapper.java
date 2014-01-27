@@ -51,9 +51,10 @@ public class SemesterverbandMapper {
 	 */
 	public Semesterverband anlegen(Semesterverband sv) throws Exception {
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
 
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			// Hier findet die SQL Statement statt
 			stmt.executeUpdate("INSERT INTO semesterverband (SVNr, AnzahlStudierende, SemesterHalbjahr, Jahrgang) "
@@ -66,6 +67,9 @@ public class SemesterverbandMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(null, stmt, con);
 		}
 
 		return sv;
@@ -81,9 +85,10 @@ public class SemesterverbandMapper {
 	 */
 	public Semesterverband modifizieren(Semesterverband sv) throws Exception {
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
 
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			stmt.executeUpdate("UPDATE semesterverband "
 					+ "SET AnzahlStudierende=" + sv.getAnzahlStudenten()
@@ -93,6 +98,9 @@ public class SemesterverbandMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(null, stmt, con);
 		}
 
 		return sv;
@@ -107,9 +115,10 @@ public class SemesterverbandMapper {
 	 */
 	public Semesterverband loeschen(Semesterverband sv) throws Exception {
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
 
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			stmt.executeUpdate("DELETE FROM semesterverband " + "WHERE SVNr="
 					+ sv.getId());
@@ -117,7 +126,11 @@ public class SemesterverbandMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(null, stmt, con);
 		}
+		
 		return sv;
 	}
 
@@ -131,14 +144,15 @@ public class SemesterverbandMapper {
 	public Semesterverband findeId(int i) throws Exception {
 		// DB-Verbindung holen
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
+		ResultSet rs = null;
 
 		try {
 			// Leeres SQL-Statement (JDBC) anlegen
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			// Statement ausfüllen und als Query an die DB schicken
-			ResultSet rs = stmt
-					.executeQuery("SELECT SVNr, AnzahlStudierende, SemesterHalbjahr, Jahrgang FROM semesterverband "
+			rs = stmt.executeQuery("SELECT SVNr, AnzahlStudierende, SemesterHalbjahr, Jahrgang FROM semesterverband "
 							+ "WHERE SVNr=" + i + " ORDER BY SVNr");
 
 			if (rs.next()) {
@@ -154,7 +168,11 @@ public class SemesterverbandMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(rs, stmt, con);
 		}
+		
 		return null;
 	}
 
@@ -169,13 +187,15 @@ public class SemesterverbandMapper {
 	public Semesterverband findeSVHalbjahr(int svHalbjahr) throws Exception {
 		// DB-Verbindung holen
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
+		ResultSet rs = null;
 
 		try {
 			// Leeres SQL-Statement (JDBC) anlegen
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			// Statement ausfüllen und als Query an die DB schicken
-			ResultSet rs = stmt.executeQuery("SELECT * FROM semesterverband "
+			rs = stmt.executeQuery("SELECT * FROM semesterverband "
 					+ "WHERE svnr=" + "'" + svHalbjahr + "'");
 
 			/*
@@ -195,6 +215,9 @@ public class SemesterverbandMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(rs, stmt, con);
 		}
 
 		return null;
@@ -209,16 +232,18 @@ public class SemesterverbandMapper {
 	 */
 	public Vector<Semesterverband> findeAlle() throws Exception {
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
+		ResultSet rs = null;
 
 		// Vector mit angeforderten Objekten
 		Vector<Semesterverband> result = new Vector<Semesterverband>();
 
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			String sql = "SELECT * FROM semesterverband  ORDER BY SemesterHalbjahr";
 
-			ResultSet rs = stmt.executeQuery(sql);
+			rs = stmt.executeQuery(sql);
 
 			while (rs.next()) {
 				Semesterverband sv = new Semesterverband();
@@ -232,6 +257,9 @@ public class SemesterverbandMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(rs, stmt, con);
 		}
 
 		return result;

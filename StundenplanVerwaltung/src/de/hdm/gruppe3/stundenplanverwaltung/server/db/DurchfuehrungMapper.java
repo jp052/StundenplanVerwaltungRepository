@@ -52,10 +52,11 @@ public class DurchfuehrungMapper {
 	public LVDurchfuehrung anlegen(int svId, int raumId, int lvId,
 			Zeitslot zeitslot) throws Exception {
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
 
 		LVDurchfuehrung lvd = new LVDurchfuehrung();
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			// Zeitslot zuerst anlgend und die Id auslesen
 			String sql = "INSERT INTO durchfuehrung (ZeitNr, SVNr, RaumNr, LVNr) "
@@ -73,6 +74,9 @@ public class DurchfuehrungMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!");
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(null, stmt, con);
 		}
 
 		// Lehrveranstaltungs Objekt mit Daten füllen!
@@ -95,11 +99,12 @@ public class DurchfuehrungMapper {
 			int lvNr, Zeitslot zeitslot) throws Exception {
 		// DB-Verbindung holen
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
 
 		LVDurchfuehrung lvd = new LVDurchfuehrung();
 
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			// Die Query die ausgef�hrt werden soll.
 			String sql = "UPDATE durchfuehrung SET " + "ZeitNr="
@@ -113,6 +118,9 @@ public class DurchfuehrungMapper {
 			// Den Fehler in der Kommandozeile Anzeigen.
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!");
+		}  finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(null, stmt, con);
 		}
 
 		// Rückgabe des Objektes
@@ -130,9 +138,10 @@ public class DurchfuehrungMapper {
 	public LVDurchfuehrung loeschen(LVDurchfuehrung lvd) throws Exception {
 		// DB-Verbindung holen
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
 
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			// Die SQL Query die ausgef�hrt werden soll.
 			String sql = "DELETE FROM durchfuehrung " + "WHERE LVDNr="
@@ -144,7 +153,11 @@ public class DurchfuehrungMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!");
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(null, stmt, con);
 		}
+		
 		return lvd;
 	}
 
@@ -158,18 +171,20 @@ public class DurchfuehrungMapper {
 	public LVDurchfuehrung findeId(int lvdNr) throws Exception {
 		// DB-Verbindung holen
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
+		ResultSet rs = null;
 
 		LVDurchfuehrung lvd = new LVDurchfuehrung();
 
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			// Die SQL Query die ausgef�hrt werden soll.
 			String sql = "SELECT * FROM durchfuehrung WHERE LVDNr=" + lvdNr
 					+ " ORDER BY LVDNr";
 
 			// Die SQL Query ausf�hren.
-			ResultSet rs = stmt.executeQuery(sql);
+			rs = stmt.executeQuery(sql);
 
 			// Nur ausf�hren wenn das Result nicht null ist
 			if (rs.next()) {
@@ -221,6 +236,9 @@ public class DurchfuehrungMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!");
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(rs, stmt, con);
 		}
 
 		return lvd;
@@ -234,15 +252,17 @@ public class DurchfuehrungMapper {
 	 */
 	public Vector<LVDurchfuehrung> findeAlle() throws Exception {
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
+		ResultSet rs = null;
 
 		// Ergebnisvektor vorbereiten
 		Vector<LVDurchfuehrung> result = new Vector<LVDurchfuehrung>();
 
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			String sql = "SELECT * FROM durchfuehrung ORDER BY LVDNr";
-			ResultSet rs = stmt.executeQuery(sql);
+			rs = stmt.executeQuery(sql);
 
 			while (rs.next()) {
 				// Benötigte Objekte
@@ -280,6 +300,9 @@ public class DurchfuehrungMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(rs, stmt, con);
 		}
 
 		// Ergebnisvektor zur¸ckgeben

@@ -53,6 +53,8 @@ public class ZeitslotMapper {
 	 */
 	public Zeitslot anlegen(Zeitslot zeitslot) throws Exception {
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
+		ResultSet rs = null;
 
 		// Fall Zeitslot mit selber Anfangszeit, Endzeit und Wochentag existiert
 		// muss in der Durchführung nur noch auf dem
@@ -65,7 +67,7 @@ public class ZeitslotMapper {
 		// angelegt werden
 		if (zeitslot.getId() == 0) {
 			try {
-				Statement stmt = con.createStatement();
+				stmt = con.createStatement();
 				String sql = "INSERT INTO zeitslot (ZeitNr, Wochentag, Anfangszeit, Endzeit) "
 						+ "VALUES ( "
 						+ "NULL, \""
@@ -78,7 +80,7 @@ public class ZeitslotMapper {
 				stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 				stmt.getGeneratedKeys();
 
-				ResultSet rs = stmt.getGeneratedKeys();
+				rs = stmt.getGeneratedKeys();
 				if (rs.next()) {
 					// Holt den generierte Primärschlüssel der die Id es
 					// Zeitslots sind.
@@ -88,6 +90,9 @@ public class ZeitslotMapper {
 			} catch (SQLException e2) {
 				e2.printStackTrace();
 				throw new Exception("Datenbank fehler!" + e2.toString());
+			} finally {
+				//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+				DBVerbindung.closeAll(rs, stmt, con);
 			}
 
 		}
@@ -103,9 +108,10 @@ public class ZeitslotMapper {
 	 */
 	public Zeitslot modifizieren(Zeitslot zeitslot) throws Exception {
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
 
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			stmt.executeUpdate("UPDATE zeitslot " + "SET Wochentag=\""
 					+ zeitslot.getWochentag() + "\" " + "SET Anfangszeit=\""
@@ -115,6 +121,9 @@ public class ZeitslotMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(null, stmt, con);
 		}
 
 		// Um Analogie zu insert(Zeitslot a) zu wahren, geben wir a zurück
@@ -130,9 +139,10 @@ public class ZeitslotMapper {
 	 */
 	public Zeitslot loeschen(Zeitslot zeitslot) throws Exception {
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
 
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			stmt.executeUpdate("DELETE FROM zeitslot " + "WHERE ZeitNr="
 					+ zeitslot.getId());
@@ -140,7 +150,11 @@ public class ZeitslotMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(null, stmt, con);
 		}
+		
 		return zeitslot;
 	}
 
@@ -154,15 +168,18 @@ public class ZeitslotMapper {
 	public Zeitslot findeId(int zeitId) throws Exception {
 
 		Connection con = DBVerbindung.connection();
+		 Statement stmt = null;
+		 ResultSet rs = null;
+		
 		Zeitslot zeitslot = new Zeitslot();
 
 		try {
 
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			String sql = "SELECT *FROM zeitslot WHERE ZeitNr=" + zeitId;
 
-			ResultSet rs = stmt.executeQuery(sql);
+			rs = stmt.executeQuery(sql);
 
 			if (rs.next()) {
 
@@ -175,7 +192,11 @@ public class ZeitslotMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(rs, stmt, con);
 		}
+		
 		return zeitslot;
 	}
 
@@ -188,13 +209,15 @@ public class ZeitslotMapper {
 	 */
 	public Vector<Zeitslot> findeAlle() throws Exception {
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
+		ResultSet rs = null;
 
 		Vector<Zeitslot> result = new Vector<Zeitslot>();
 
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
-			ResultSet rs = stmt
+			rs = stmt
 					.executeQuery("SELECT * FROM zeitslot "
 							+ " ORDER BY ZeitNr");
 
@@ -208,6 +231,9 @@ public class ZeitslotMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(rs, stmt, con);
 		}
 
 		return result;
@@ -228,6 +254,8 @@ public class ZeitslotMapper {
 	public boolean checkVerfuegbarkeit(Zeitslot zeitslot, int raumId)
 			throws Exception {
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
+		ResultSet rs = null;
 
 		// Verfügbarkeit standardmäßig auf true setzen.
 		boolean isVerfuegbar = true;
@@ -240,7 +268,7 @@ public class ZeitslotMapper {
 		}
 
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			// Join über 3 Tabellen, Zeitslot, Durchfuehrung und Raum
 			String sql = "Select * From zeitslot "
@@ -248,7 +276,7 @@ public class ZeitslotMapper {
 					+ "Where raum.raumNr=" + raumId + " and Wochentag=\""
 					+ zeitslot.getWochentag() + "\"";
 
-			ResultSet rs = stmt.executeQuery(sql);
+			rs = stmt.executeQuery(sql);
 
 			while (rs.next()) {
 				int belegteAnfangszeit = rs.getInt("zeitslot.Anfangszeit");
@@ -283,6 +311,9 @@ public class ZeitslotMapper {
 			isVerfuegbar = false;
 			throw new RaumBelegtException();
 
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(rs, stmt, con);
 		}
 
 		return isVerfuegbar;
@@ -299,15 +330,17 @@ public class ZeitslotMapper {
 	 */
 	public Zeitslot insertIdIntoZeitslot(Zeitslot zeitslotNeu) throws Exception {
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
+		ResultSet rs = null;
 
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 			String sql = "Select * From zeitslot Where Wochentag=\""
 					+ zeitslotNeu.getWochentag() + "\"" + " and Anfangszeit="
 					+ zeitslotNeu.getAnfangszeit() + " and Endzeit="
 					+ zeitslotNeu.getEndzeit();
 
-			ResultSet rs = stmt.executeQuery(sql);
+			rs = stmt.executeQuery(sql);
 
 			if (rs.next()) {
 				// Wenn es ein ergebnis gab die Id füllen.
@@ -316,6 +349,9 @@ public class ZeitslotMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(rs, stmt, con);
 		}
 
 		return zeitslotNeu;

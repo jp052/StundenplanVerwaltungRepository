@@ -67,17 +67,8 @@ public class DozentMapper {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
 		} finally {
-			try {
-				if (stmt != null) {
-					stmt.close();
-				} 
-				if (con != null) {
-					con.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-				throw new Exception("Connection close Fehler!" + e.toString());
-			}
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(null, stmt, con);
 		}
 
 		return d;
@@ -93,9 +84,10 @@ public class DozentMapper {
 	 */
 	public Dozent modifizieren(Dozent dozent) throws Exception {
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
 
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 			// UPDATE `stundenplanverwaltung`.`dozent` SET `Vorname` = 'test2'
 			// WHERE `dozent`.`PersonalNr` =2;
 			stmt.executeUpdate("UPDATE dozent " + "SET Nachname=\""
@@ -105,6 +97,9 @@ public class DozentMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(null, stmt, con);
 		}
 
 		// Um Analogie zu insert(Dozent a) zu wahren, geben wir a zurück
@@ -120,9 +115,10 @@ public class DozentMapper {
 	 */
 	public Dozent loeschen(Dozent dozent) throws Exception {
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
 
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			stmt.executeUpdate("DELETE FROM dozent " + "WHERE PersonalNr="
 					+ dozent.getId());
@@ -130,6 +126,9 @@ public class DozentMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(null, stmt, con);
 		}
 
 		return dozent;
@@ -145,13 +144,15 @@ public class DozentMapper {
 	public Dozent findeName(Dozent dozent) throws Exception {
 		// DB-Verbindung holen
 		Connection con = DBVerbindung.connection();
+		ResultSet rs = null;
+		Statement stmt = null;
 
 		try {
 			// Leeres SQL-Statement (JDBC) anlegen
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			// Statement ausfüllen und als Query an die DB schicken
-			ResultSet rs = stmt.executeQuery("SELECT PersonalNr, Name, Vorname"
+			rs = stmt.executeQuery("SELECT PersonalNr, Name, Vorname"
 					+ "WHERE Name=" + dozent.getNachname() + " ORDER BY Name");
 
 			/*
@@ -170,6 +171,9 @@ public class DozentMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(rs, stmt, con);
 		}
 
 		return null;
@@ -185,13 +189,15 @@ public class DozentMapper {
 	public Dozent findeId(int dozentId) throws Exception {
 		// DB-Verbindung holen
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
+		ResultSet rs = null;
 
 		try {
 			// Leeres SQL-Statement (JDBC) anlegen
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			// Statement ausfüllen und als Query an die DB schicken
-			ResultSet rs = stmt.executeQuery("SELECT * FROM dozent "
+			rs = stmt.executeQuery("SELECT * FROM dozent "
 					+ "WHERE PersonalNr=" + dozentId);
 
 			/*
@@ -214,6 +220,9 @@ public class DozentMapper {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
 
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(rs, stmt, con);
 		}
 		return null;
 	}
@@ -251,21 +260,8 @@ public class DozentMapper {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
 		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (stmt != null) {
-					stmt.close();
-				} 
-				if (con != null) {
-					con.close();
-				}
-				
-			} catch (SQLException e) {
-				e.printStackTrace();
-				throw new Exception("Connection close Fehler!" + e.toString());
-			}
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(rs, stmt, con);
 		}
 
 		// Ergebnisvektor zurückgeben

@@ -52,9 +52,10 @@ public class RaumMapper {
 	 */
 	public Raum anlegen(Raum m) throws Exception {
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
 
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			// Jetzt erst erfolgt die tatsächliche Einfügeoperation
 			stmt.executeUpdate("INSERT INTO raum (RaumNr, Bezeichnung, Kapazitaet) "
@@ -67,6 +68,9 @@ public class RaumMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(null, stmt, con);
 		}
 
 		return m;
@@ -82,9 +86,10 @@ public class RaumMapper {
 	 */
 	public Raum modifizieren(Raum raum) throws Exception {
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
 
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			stmt.executeUpdate("UPDATE raum " + "SET Bezeichnung=\""
 					+ raum.getBezeichnung() + "\" ,Kapazitaet="
@@ -93,6 +98,9 @@ public class RaumMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(null, stmt, con);
 		}
 
 		// Um Analogie zu insert(Raum a) zu wahren, geben wir a zurück
@@ -108,9 +116,10 @@ public class RaumMapper {
 	 */
 	public Raum loeschen(Raum raum) throws Exception {
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
 
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			stmt.executeUpdate("DELETE FROM raum " + "WHERE RaumNr="
 					+ raum.getId());
@@ -118,7 +127,11 @@ public class RaumMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(null, stmt, con);
 		}
+		
 		return raum;
 	}
 
@@ -133,13 +146,15 @@ public class RaumMapper {
 	public Raum findeName(Raum r) throws Exception {
 		// DB-Verbindung holen
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
+		ResultSet rs = null;
 
 		try {
 			// Leeres SQL-Statement (JDBC) anlegen
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			// Statement ausfüllen und als Query an die DB schicken
-			ResultSet rs = stmt
+			rs = stmt
 					.executeQuery("SELECT RaumNr, Bezeichnung, Kapazitaet FROM raum "
 							+ "WHERE Bezeichnung="
 							+ r.getBezeichnung()
@@ -162,6 +177,9 @@ public class RaumMapper {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
 			// return null;
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(rs, stmt, con);
 		}
 
 		return null;
@@ -177,13 +195,15 @@ public class RaumMapper {
 	public Raum findeName(String r) throws Exception {
 		// DB-Verbindung holen
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
+		ResultSet rs = null;
 
 		try {
 			// Leeres SQL-Statement (JDBC) anlegen
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			// Statement ausfüllen und als Query an die DB schicken
-			ResultSet rs = stmt
+			rs = stmt
 					.executeQuery("SELECT RaumNr, Bezeichnung, Kapazitaet FROM raum "
 							+ "WHERE Bezeichnung="
 							+ "'"
@@ -208,6 +228,9 @@ public class RaumMapper {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
 			// return null;
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(rs, stmt, con);
 		}
 
 		return null;
@@ -223,14 +246,15 @@ public class RaumMapper {
 	public Raum findeId(int i) throws Exception {
 		// DB-Verbindung holen
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
+		ResultSet rs = null;
 
 		try {
 			// Leeres SQL-Statement (JDBC) anlegen
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			// Statement ausfüllen und als Query an die DB schicken
-			ResultSet rs = stmt
-					.executeQuery("SELECT RaumNr, Bezeichnung, Kapazitaet FROM raum "
+			rs = stmt.executeQuery("SELECT RaumNr, Bezeichnung, Kapazitaet FROM raum "
 							+ "WHERE RaumNr=" + i + " ORDER BY Bezeichnung");
 
 			/*
@@ -249,7 +273,11 @@ public class RaumMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(rs, stmt, con);
 		}
+		
 		return null;
 	}
 
@@ -262,14 +290,16 @@ public class RaumMapper {
 	 */
 	public Vector<Raum> findeAlle() throws Exception {
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
+		ResultSet rs = null;
 
 		// Ergebnisvektor vorbereiten
 		Vector<Raum> result = new Vector<Raum>();
 
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
-			ResultSet rs = stmt
+			rs = stmt
 					.executeQuery("SELECT RaumNr, Bezeichnung, Kapazitaet FROM raum ORDER BY RaumNr");
 
 			// F�r jeden Eintrag im Suchergebnis wird nun ein Account-Objekt
@@ -288,6 +318,9 @@ public class RaumMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
+		} finally {
+			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			DBVerbindung.closeAll(rs, stmt, con);
 		}
 
 		// Ergebnisvektor zur�ckgeben
