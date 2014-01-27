@@ -66,7 +66,7 @@ public class RaumMapper {
 			// }
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 
 		return m;
@@ -92,7 +92,7 @@ public class RaumMapper {
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 
 		// Um Analogie zu insert(Raum a) zu wahren, geben wir a zurück
@@ -117,7 +117,7 @@ public class RaumMapper {
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 		return raum;
 	}
@@ -140,7 +140,7 @@ public class RaumMapper {
 
 			// Statement ausfüllen und als Query an die DB schicken
 			ResultSet rs = stmt
-					.executeQuery("SELECT RaumNr, Bezeichnung, KapazitaetFROM raum "
+					.executeQuery("SELECT RaumNr, Bezeichnung, Kapazitaet FROM raum "
 							+ "WHERE Bezeichnung="
 							+ r.getBezeichnung()
 							+ " ORDER BY Bezeichnung");
@@ -160,7 +160,7 @@ public class RaumMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 			// return null;
 		}
 
@@ -206,7 +206,7 @@ public class RaumMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 			// return null;
 		}
 
@@ -248,7 +248,7 @@ public class RaumMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 		return null;
 	}
@@ -287,7 +287,7 @@ public class RaumMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 
 		// Ergebnisvektor zur�ckgeben

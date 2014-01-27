@@ -354,7 +354,7 @@ public class LehrveranstaltungForm extends VerticalPanel {
 		// $ = Ende der Zeile
 		// {1} = Darf nur 1 mal vorkommen
 		// Dann wird geschaut
-		if (!bezeichnung.matches("^[A-Za-z ]+$")) {
+		if (!bezeichnung.matches("^[A-Za-z0-9- ]+$")) {
 			Window.alert("Bezeichnung darf nur Buchstaben von a-z und keine Umlaute enthalten und darf nicht leer sein!");
 			isValid = false;
 		}

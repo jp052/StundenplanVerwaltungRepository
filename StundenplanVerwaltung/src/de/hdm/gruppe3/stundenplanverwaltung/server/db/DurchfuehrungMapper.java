@@ -58,7 +58,7 @@ public class DurchfuehrungMapper {
 			Statement stmt = con.createStatement();
 
 			// Zeitslot zuerst anlgend und die Id auslesen
-			String sql = "INSERT INTO Durchfuehrung (ZeitNr, SVNr, RaumNr, LVNr) "
+			String sql = "INSERT INTO durchfuehrung (ZeitNr, SVNr, RaumNr, LVNr) "
 					+ "VALUES ("
 					+ zeitslot.getId()
 					+ ","
@@ -102,7 +102,7 @@ public class DurchfuehrungMapper {
 			Statement stmt = con.createStatement();
 
 			// Die Query die ausgef�hrt werden soll.
-			String sql = "UPDATE Durchfuehrung SET " + "ZeitNr="
+			String sql = "UPDATE durchfuehrung SET " + "ZeitNr="
 					+ zeitslot.getId() + ", SVNr=" + svNr + ", RaumNr="
 					+ raumNr + ", LVNr=" + lvNr + " WHERE LVDNr=" + lvdNr;
 
@@ -135,7 +135,7 @@ public class DurchfuehrungMapper {
 			Statement stmt = con.createStatement();
 
 			// Die SQL Query die ausgef�hrt werden soll.
-			String sql = "DELETE FROM Durchfuehrung " + "WHERE LVDNr="
+			String sql = "DELETE FROM durchfuehrung " + "WHERE LVDNr="
 					+ lvd.getId();
 
 			// Die SQL Query ausf�hren.
@@ -165,7 +165,7 @@ public class DurchfuehrungMapper {
 			Statement stmt = con.createStatement();
 
 			// Die SQL Query die ausgef�hrt werden soll.
-			String sql = "SELECT * FROM Durchfuehrung WHERE LVDNr=" + lvdNr
+			String sql = "SELECT * FROM durchfuehrung WHERE LVDNr=" + lvdNr
 					+ " ORDER BY LVDNr";
 
 			// Die SQL Query ausf�hren.
@@ -241,7 +241,7 @@ public class DurchfuehrungMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			String sql = "SELECT * FROM Durchfuehrung ORDER BY LVDNr";
+			String sql = "SELECT * FROM durchfuehrung ORDER BY LVDNr";
 			ResultSet rs = stmt.executeQuery(sql);
 
 			while (rs.next()) {
@@ -279,7 +279,7 @@ public class DurchfuehrungMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank Problem");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 
 		// Ergebnisvektor zur¸ckgeben

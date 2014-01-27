@@ -87,7 +87,7 @@ public class ZeitslotMapper {
 
 			} catch (SQLException e2) {
 				e2.printStackTrace();
-				throw new Exception("Datenbank fehler!");
+				throw new Exception("Datenbank fehler!" + e2.toString());
 			}
 
 		}
@@ -114,7 +114,7 @@ public class ZeitslotMapper {
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 
 		// Um Analogie zu insert(Zeitslot a) zu wahren, geben wir a zurück
@@ -139,7 +139,7 @@ public class ZeitslotMapper {
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 		return zeitslot;
 	}
@@ -160,7 +160,7 @@ public class ZeitslotMapper {
 
 			Statement stmt = con.createStatement();
 
-			String sql = "SELECT *FROM Zeitslot WHERE ZeitNr=" + zeitId;
+			String sql = "SELECT *FROM zeitslot WHERE ZeitNr=" + zeitId;
 
 			ResultSet rs = stmt.executeQuery(sql);
 
@@ -174,7 +174,7 @@ public class ZeitslotMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 		return zeitslot;
 	}
@@ -195,7 +195,7 @@ public class ZeitslotMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet rs = stmt
-					.executeQuery("SELECT ZeitNr, Wochentag, Endzeit, Anfangszeit name FROM Zeitslot "
+					.executeQuery("SELECT * FROM zeitslot "
 							+ " ORDER BY ZeitNr");
 
 			while (rs.next()) {
@@ -207,7 +207,7 @@ public class ZeitslotMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 
 		return result;
@@ -223,10 +223,10 @@ public class ZeitslotMapper {
 	 * @param zeitslot
 	 *            , raumId
 	 * @return
-	 * @throws RaumBelegtException
+	 * @throws Exception 
 	 */
 	public boolean checkVerfuegbarkeit(Zeitslot zeitslot, int raumId)
-			throws RaumBelegtException {
+			throws Exception {
 		Connection con = DBVerbindung.connection();
 
 		// Verfügbarkeit standardmäßig auf true setzen.
@@ -243,16 +243,16 @@ public class ZeitslotMapper {
 			Statement stmt = con.createStatement();
 
 			// Join über 3 Tabellen, Zeitslot, Durchfuehrung und Raum
-			String sql = "Select * From Zeitslot "
-					+ "Inner Join (Durchfuehrung Inner Join Raum on Durchfuehrung.RaumNr=Raum.RaumNr) on Zeitslot.ZeitNr=Durchfuehrung.ZeitNr "
-					+ "Where Raum.RaumNr=" + raumId + " and Wochentag=\""
+			String sql = "Select * From zeitslot "
+					+ "Inner Join (durchfuehrung Inner Join raum on durchfuehrung.RaumNr=raum.RaumNr) on zeitslot.ZeitNr=durchfuehrung.ZeitNr "
+					+ "Where raum.raumNr=" + raumId + " and Wochentag=\""
 					+ zeitslot.getWochentag() + "\"";
 
 			ResultSet rs = stmt.executeQuery(sql);
 
 			while (rs.next()) {
-				int belegteAnfangszeit = rs.getInt("Zeitslot.Anfangszeit");
-				int belegteEndzeit = rs.getInt("Zeitslot.Endzeit");
+				int belegteAnfangszeit = rs.getInt("zeitslot.Anfangszeit");
+				int belegteEndzeit = rs.getInt("zeitslot.Endzeit");
 				int belegtDauer = belegteEndzeit - belegteAnfangszeit;
 				int arrayPos = belegteAnfangszeit - 8;
 
@@ -261,7 +261,7 @@ public class ZeitslotMapper {
 					arrayPos++;
 				}
 
-				// Wenn das ResultSet ein erebnis lifert, isVerfuegbar auf false
+				// Wenn das ResultSet ein erebnis liefert, isVerfuegbar auf false
 				// setzen.
 
 			}
@@ -302,7 +302,7 @@ public class ZeitslotMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-			String sql = "Select * From Zeitslot Where Wochentag=\""
+			String sql = "Select * From zeitslot Where Wochentag=\""
 					+ zeitslotNeu.getWochentag() + "\"" + " and Anfangszeit="
 					+ zeitslotNeu.getAnfangszeit() + " and Endzeit="
 					+ zeitslotNeu.getEndzeit();
@@ -315,7 +315,7 @@ public class ZeitslotMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 
 		return zeitslotNeu;

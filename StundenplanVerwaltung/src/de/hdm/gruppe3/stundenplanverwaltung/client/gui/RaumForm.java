@@ -163,14 +163,13 @@ public class RaumForm extends VerticalPanel {
 
 						@Override
 						public void onFailure(Throwable caught) {
-							// TODO Auto-generated method stub
+							Window.alert("Fehler beim ändern!");
 
 						}
 
 						@Override
 						public void onSuccess(Raum result) {
-							System.out.println("Raum ge�ndert");
-							// treeModel.updateDozent(shownDozent);
+							Window.alert("Änderung erfolgreich!");
 
 						}
 					});
@@ -188,17 +187,14 @@ public class RaumForm extends VerticalPanel {
 
 						@Override
 						public void onFailure(Throwable caught) {
-							// TODO Auto-generated method stub
+							Window.alert("Fehler beim löschen!");
 
 						}
 
 						@Override
 						public void onSuccess(Raum result) {
-							if (result != null) {
-								System.out.println("Raum gel�scht");
-								setSelected(null);
-								// TODO: Liste oder Tree aktualisieren
-							}
+							Window.alert("Löschen erfolgreich!");
+							setSelected(null);
 
 						}
 
@@ -225,16 +221,13 @@ public class RaumForm extends VerticalPanel {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						System.out.println("Raum fehler");
+						Window.alert("Fehler beim anlegen!");
 
 					}
 
 					@Override
 					public void onSuccess(Raum result) {
-						if (result != null) {
-							System.out.println("Raum angelegt");
-							// TODO: Liste oder Tree aktualisieren
-						}
+						Window.alert("Anlegen erfolgreich!");
 					}
 
 				});
@@ -261,7 +254,7 @@ public class RaumForm extends VerticalPanel {
 		// * = Erlaubt beliebing viele Buchstaben von A-Z
 		// $ = Ende der Zeile
 		// Dann wird geschaut
-		if (!bezeichnung.matches("^[A-Za-z ]+$")) {
+		if (!bezeichnung.matches(ConstantsStdpln.REGEX_TEXTZAHL)) {
 			Window.alert("Bezeichnung darf nur Buchstaben von a-z enthalten und darf nicht leer sein!");
 			isValid = false;
 		}

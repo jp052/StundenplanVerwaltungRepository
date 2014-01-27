@@ -131,7 +131,7 @@ public class LVDurchfuehrungForm extends VerticalPanel {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						System.out.println("Fehler!");
+						Window.alert("Fehler! - " + caught);
 					}
 
 					@Override
@@ -172,7 +172,7 @@ public class LVDurchfuehrungForm extends VerticalPanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				System.out.println("Fehler!");
+				Window.alert("Fehler! - " + caught);
 			}
 
 			@Override
@@ -209,7 +209,7 @@ public class LVDurchfuehrungForm extends VerticalPanel {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						System.out.println("Fehler!");
+						Window.alert("Fehler! - " + caught);
 
 					}
 

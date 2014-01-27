@@ -64,7 +64,7 @@ public class DozentMapper {
 			// }
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 
 		return d;
@@ -91,7 +91,7 @@ public class DozentMapper {
 					+ dozent.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 
 		// Um Analogie zu insert(Dozent a) zu wahren, geben wir a zurück
@@ -116,7 +116,7 @@ public class DozentMapper {
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 
 		return dozent;
@@ -156,8 +156,7 @@ public class DozentMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
-			// return null;
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 
 		return null;
@@ -200,7 +199,7 @@ public class DozentMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 
 		}
 		return null;
@@ -236,7 +235,7 @@ public class DozentMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 
 		// Ergebnisvektor zurückgeben

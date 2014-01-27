@@ -56,7 +56,7 @@ public class SemesterverbandMapper {
 			Statement stmt = con.createStatement();
 
 			// Hier findet die SQL Statement statt
-			stmt.executeUpdate("INSERT INTO Semesterverband (SVNr, AnzahlStudierende, SemesterHalbjahr, Jahrgang) "
+			stmt.executeUpdate("INSERT INTO semesterverband (SVNr, AnzahlStudierende, SemesterHalbjahr, Jahrgang) "
 					+ "VALUES ( "
 					+ "NULL,'"
 					+ sv.getAnzahlStudenten()
@@ -65,7 +65,7 @@ public class SemesterverbandMapper {
 			// }
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 
 		return sv;
@@ -85,14 +85,14 @@ public class SemesterverbandMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE Semesterverband "
+			stmt.executeUpdate("UPDATE semesterverband "
 					+ "SET AnzahlStudierende=" + sv.getAnzahlStudenten()
 					+ " , SemesterHalbjahr=" + sv.getSemester() + ", Jahrgang="
 					+ sv.getJahrgang() + " WHERE SVNr=" + sv.getId());
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 
 		return sv;
@@ -111,12 +111,12 @@ public class SemesterverbandMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM Semesterverband " + "WHERE SVNr="
+			stmt.executeUpdate("DELETE FROM semesterverband " + "WHERE SVNr="
 					+ sv.getId());
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 		return sv;
 	}
@@ -138,7 +138,7 @@ public class SemesterverbandMapper {
 
 			// Statement ausfüllen und als Query an die DB schicken
 			ResultSet rs = stmt
-					.executeQuery("SELECT SVNr, AnzahlStudierende, SemesterHalbjahr, Jahrgang FROM Semesterverband "
+					.executeQuery("SELECT SVNr, AnzahlStudierende, SemesterHalbjahr, Jahrgang FROM semesterverband "
 							+ "WHERE SVNr=" + i + " ORDER BY SVNr");
 
 			if (rs.next()) {
@@ -153,7 +153,7 @@ public class SemesterverbandMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 		return null;
 	}
@@ -194,7 +194,7 @@ public class SemesterverbandMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 
 		return null;
@@ -216,7 +216,7 @@ public class SemesterverbandMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			String sql = "SELECT * FROM Semesterverband  ORDER BY SemesterHalbjahr";
+			String sql = "SELECT * FROM semesterverband  ORDER BY SemesterHalbjahr";
 
 			ResultSet rs = stmt.executeQuery(sql);
 
@@ -231,7 +231,7 @@ public class SemesterverbandMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 
 		return result;

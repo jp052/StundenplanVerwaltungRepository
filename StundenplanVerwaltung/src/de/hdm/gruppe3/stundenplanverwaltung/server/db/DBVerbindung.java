@@ -26,7 +26,7 @@ public class DBVerbindung {
 //	private static String url = "jdbc:mysql://127.0.0.1:3306/stundenplanverwaltung?user=root&password=";
 	
 //	cloud sql
-	private static String url = "jdbc:google:rdbms://itprojectgruppe3:group3two/stundenplanverwaltung?user=root&";
+	private static String url = "jdbc:google:rdbms://itprojectgruppe3:group3three/stundenplanverwaltung?user=root&";
 	
 	
 	
@@ -47,6 +47,7 @@ public class DBVerbindung {
 			catch (SQLException e1) {
 				con = null;
 				e1.printStackTrace();
+//				throw new Exception("Datenbank fehler!" + e1.toString());
 			}
 		}
 		
@@ -54,12 +55,13 @@ public class DBVerbindung {
 		return con;
 	}
 	
-	
+//	
 //	/**
 //	 * Baut die Verbindung zur Datenbank Lokal auf
 //	 * @return Die Verbindung
+//	 * @throws Exception 
 //	 */
-//	public static Connection connection()  {
+//	public static Connection connection() throws Exception  {
 //		//Verbindung erstllen wenn es noch keine gibt
 //		if ( con == null ) {
 //			try {
@@ -74,8 +76,26 @@ public class DBVerbindung {
 //				con = DriverManager.getConnection(url);
 //			} 
 //			catch (SQLException e1) {
+//				con = connectToGoogle();
+//			} 
+//		}
+//		
+//		//Die Verbindung
+//		return con;
+//	}
+//	
+//	private  static Connection connectToGoogle() throws Exception {
+//		//Verbindung erstllen wenn es noch keine gibt
+//		if ( con == null ) {
+//			try {
+//				//Google connection
+//				DriverManager.registerDriver(new AppEngineDriver());
+//				
+//				con = DriverManager.getConnection(googleUrl);
+//			} 
+//			catch (SQLException e1) {
 //				con = null;
-//				e1.printStackTrace();
+//				throw new Exception("Datenbank fehler!" + e1.toString());
 //			}
 //		}
 //		

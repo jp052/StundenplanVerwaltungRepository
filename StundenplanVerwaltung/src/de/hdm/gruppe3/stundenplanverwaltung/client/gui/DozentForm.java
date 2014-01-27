@@ -230,7 +230,7 @@ public class DozentForm extends VerticalPanel {
 		// + = Erlaubt beliebing viele Buchstaben von A-Z, aber mindestens einer
 		// muss vorhanden sein
 		// $ = Ende der Zeile
-		if (!vorname.matches("^[A-Za-z]+$") || !nachname.matches("^[A-Za-z]+$")) {
+		if (!vorname.matches("^[A-Za-z- ]+$") || !nachname.matches("^[A-Za-z- ]+$")) {
 			Window.alert("Vorname und Nachname dürfen nur Buchstaben von a-z und keine Umlaute enthalten und dürfen nicht leer sein!");
 			isValid = false;
 		}

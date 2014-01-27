@@ -56,7 +56,7 @@ public class LehrveranstaltungMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			String sql = "INSERT INTO Lehrveranstaltung (LVNr, Bezeichnung, Umfang, Semester, PersonalNr) "
+			String sql = "INSERT INTO lehrveranstaltung (LVNr, Bezeichnung, Umfang, Semester, PersonalNr) "
 					+ "VALUES ( "
 					+ "NULL,"
 					+ "\""
@@ -72,7 +72,7 @@ public class LehrveranstaltungMapper {
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 
 		return lv;
@@ -94,7 +94,7 @@ public class LehrveranstaltungMapper {
 			Statement stmt = con.createStatement();
 			// UPDATE Lehrveranstaltung SET Bezeichnung="Software-t" ,
 
-			String sql = "UPDATE Lehrveranstaltung " + "SET Bezeichnung=\""
+			String sql = "UPDATE lehrveranstaltung " + "SET Bezeichnung=\""
 					+ lv.getBezeichnung() + "\", Umfang=" + lv.getUmfang()
 					+ ", Semester=" + lv.getSemester() + ", PersonalNr="
 					+ lv.getDozent().getId() + " WHERE LVNr=" + lv.getId();
@@ -103,7 +103,7 @@ public class LehrveranstaltungMapper {
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 
 		// Um Analogie zu insert(Lehrveranstaltung a) zu wahren, geben wir a
@@ -124,12 +124,12 @@ public class LehrveranstaltungMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM Lehrveranstaltung " + "WHERE LVNr="
+			stmt.executeUpdate("DELETE FROM lehrveranstaltung " + "WHERE LVNr="
 					+ lv.getId());
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 		return lv;
 	}
@@ -152,10 +152,10 @@ public class LehrveranstaltungMapper {
 
 			// Statement ausfüllen und als Query an die DB schicken
 			ResultSet rs = stmt
-					.executeQuery("SELECT LVNr, Bezeichnung, Umfang, Semester FROM Lehrveranstaltung "
+					.executeQuery("SELECT LVNr, Bezeichnung, Umfang, Semester FROM lehrveranstaltung "
 							+ "WHERE Bezeichnung="
 							+ bez
-							+ " ORDER BY bezeichnung");
+							+ " ORDER BY Bezeichnung");
 
 			/*
 			 * Da lv Primärschlüssel ist, kann lvx. nur ein Tupel zurückgegeben
@@ -172,7 +172,7 @@ public class LehrveranstaltungMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 
 		return null;
@@ -193,7 +193,7 @@ public class LehrveranstaltungMapper {
 			Statement stmt = con.createStatement();
 
 			// Die Query die ausgeführt werden soll
-			String sql = "SELECT * FROM Lehrveranstaltung INNER JOIN Dozent On Lehrveranstaltung.PersonalNr=Dozent.PersonalNr"
+			String sql = "SELECT * FROM lehrveranstaltung INNER JOIN dozent On lehrveranstaltung.PersonalNr=dozent.PersonalNr"
 					+ " WHERE LVNr=" + lvId;
 
 			// Query ausführen
@@ -209,16 +209,16 @@ public class LehrveranstaltungMapper {
 
 				// Dozent aus ResultSet erstellen
 				Dozent d = new Dozent();
-				d.setId(rs.getInt("Dozent.PersonalNr"));
-				d.setVorname(rs.getString("Dozent.Vorname"));
-				d.setNachname(rs.getString("Dozent.Nachname"));
+				d.setId(rs.getInt("dozent.PersonalNr"));
+				d.setVorname(rs.getString("dozent.Vorname"));
+				d.setNachname(rs.getString("dozent.Nachname"));
 				lv.setDozent(d);
 
 				return lv;
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 		return null;
 	}
@@ -240,7 +240,7 @@ public class LehrveranstaltungMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet rs = stmt
-					.executeQuery("SELECT * FROM Lehrveranstaltung INNER JOIN Dozent ON Lehrveranstaltung.personalNr = Dozent.personalNr ");
+					.executeQuery("SELECT * FROM lehrveranstaltung INNER JOIN dozent ON lehrveranstaltung.PersonalNr = dozent.PersonalNr ");
 
 			// Für jeden Eintrag im Suchergebnis wird nun ein Account-Objekt
 			// erstellt.
@@ -249,16 +249,16 @@ public class LehrveranstaltungMapper {
 				Dozent dozent = new Dozent();
 
 				// Dozent füllen
-				dozent.setId(rs.getInt("Dozent.PersonalNr"));
-				dozent.setVorname(rs.getString("Dozent.Vorname"));
-				dozent.setNachname(rs.getString("Dozent.Nachname"));
+				dozent.setId(rs.getInt("dozent.PersonalNr"));
+				dozent.setVorname(rs.getString("dozent.Vorname"));
+				dozent.setNachname(rs.getString("dozent.Nachname"));
 
 				// Lv füllen
-				lv.setId(rs.getInt("Lehrveranstaltung.LVNr"));
-				lv.setBezeichnung(rs.getString("Lehrveranstaltung.Bezeichnung"));
-				lv.setUmfang(rs.getInt("Lehrveranstaltung.Umfang"));
-				lv.setSemester(rs.getInt("Lehrveranstaltung.Semester"));
-				lv.setDozentName(rs.getString("dozent.nachname"));
+				lv.setId(rs.getInt("lehrveranstaltung.LVNr"));
+				lv.setBezeichnung(rs.getString("lehrveranstaltung.Bezeichnung"));
+				lv.setUmfang(rs.getInt("lehrveranstaltung.Umfang"));
+				lv.setSemester(rs.getInt("lehrveranstaltung.Semester"));
+				lv.setDozentName(rs.getString("dozent.Nachname"));
 				lv.setDozent(dozent);
 
 				// Hinzuf¸gen des neuen Objekts zum Ergebnisvektor
@@ -266,7 +266,7 @@ public class LehrveranstaltungMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 
 		// Ergebnisvektor zur¸ckgeben
@@ -320,23 +320,23 @@ public class LehrveranstaltungMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			String sql = "SELECT * FROM Dozent JOIN Lehrveranstaltung  ON lehrveranstaltung.personalNr = dozent.personalNr WHERE dozent.personalNr = "
+			String sql = "SELECT * FROM dozent JOIN lehrveranstaltung  ON lehrveranstaltung.PersonalNr = dozent.PersonalNr WHERE dozent.PersonalNr = "
 					+ dozentID;
 
 			ResultSet rs = stmt.executeQuery(sql);
 
 			while (rs.next()) {
 				Lehrveranstaltung lv = new Lehrveranstaltung();
-				lv.setId(rs.getInt("Lehrveranstaltung.LVNr"));
-				lv.setBezeichnung(rs.getString("Lehrveranstaltung.Bezeichnung"));
-				lv.setUmfang(rs.getInt("Lehrveranstaltung.Umfang"));
-				lv.setSemester(rs.getInt("Lehrveranstaltung.Semester"));
+				lv.setId(rs.getInt("lehrveranstaltung.LVNr"));
+				lv.setBezeichnung(rs.getString("lehrveranstaltung.Bezeichnung"));
+				lv.setUmfang(rs.getInt("lehrveranstaltung.Umfang"));
+				lv.setSemester(rs.getInt("lehrveranstaltung.Semester"));
 
 				result.addElement(lv);
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 
 		return result;
@@ -362,7 +362,7 @@ public class LehrveranstaltungMapper {
 			// "SELECT * FROM Raum LEFT JOIN Lehrveranstaltung ON raum.bezeichnung = "
 			// + bez;
 
-			String sql = "SELECT zeitslot.Wochentag, zeitslot.Anfangszeit, raum.Bezeichnung, zeitslot.Endzeit, lehrveranstaltung.bezeichnung "
+			String sql = "SELECT zeitslot.Wochentag, zeitslot.Anfangszeit, raum.Bezeichnung, zeitslot.Endzeit, lehrveranstaltung.Bezeichnung "
 					+ " FROM durchfuehrung "
 					+ " JOIN raum ON raum.RaumNr = durchfuehrung.RaumNr "
 					+ " JOIN zeitslot ON zeitslot.ZeitNr = durchfuehrung.ZeitNr "
@@ -374,7 +374,7 @@ public class LehrveranstaltungMapper {
 			while (rs.next()) {
 				Lehrveranstaltung lv = new Lehrveranstaltung();
 				lv.setRaumWochentag(rs.getString("zeitslot.Wochentag"));
-				lv.setBezeichnung(rs.getString("Lehrveranstaltung.Bezeichnung"));
+				lv.setBezeichnung(rs.getString("lehrveranstaltung.Bezeichnung"));
 				lv.setRaumZeit(rs.getInt("zeitslot.Anfangszeit"));
 				lv.setRaumZeitEnde(rs.getInt("zeitslot.Endzeit"));
 
@@ -382,7 +382,7 @@ public class LehrveranstaltungMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 
 		return result;
@@ -408,18 +408,18 @@ public class LehrveranstaltungMapper {
 			// "SELECT * FROM Raum LEFT JOIN Lehrveranstaltung ON raum.bezeichnung = "
 			// + bez;
 
-			String sql = "SELECT zeitslot.Wochentag, zeitslot.Anfangszeit, semesterverband.semesterHalbjahr, zeitslot.Endzeit, lehrveranstaltung.bezeichnung FROM durchfuehrung "
-					+ " JOIN semesterverband ON semesterverband.svnr = durchfuehrung.SVNr "
+			String sql = "SELECT zeitslot.Wochentag, zeitslot.Anfangszeit, semesterverband.semesterHalbjahr, zeitslot.Endzeit, lehrveranstaltung.Bezeichnung FROM durchfuehrung "
+					+ " JOIN semesterverband ON semesterverband.SVNr = durchfuehrung.SVNr "
 					+ " JOIN zeitslot ON zeitslot.ZeitNr = durchfuehrung.ZeitNr  "
 					+ " JOIN lehrveranstaltung ON lehrveranstaltung.LVNr = durchfuehrung.LVNr  "
-					+ " WHERE (semesterverband.semesterHalbjahr = " + sv + ")";
+					+ " WHERE (semesterverband.SemesterHalbjahr = " + sv + ")";
 			System.out.println(sql);
 			ResultSet rs = stmt.executeQuery(sql);
 
 			while (rs.next()) {
 				Lehrveranstaltung lv = new Lehrveranstaltung();
 				lv.setRaumWochentag(rs.getString("zeitslot.Wochentag"));
-				lv.setBezeichnung(rs.getString("Lehrveranstaltung.Bezeichnung"));
+				lv.setBezeichnung(rs.getString("lehrveranstaltung.Bezeichnung"));
 				lv.setRaumZeit(rs.getInt("zeitslot.Anfangszeit"));
 				lv.setRaumZeitEnde(rs.getInt("zeitslot.Endzeit"));
 
@@ -427,7 +427,7 @@ public class LehrveranstaltungMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new Exception("Datenbank fehler!");
+			throw new Exception("Datenbank fehler!" + e2.toString());
 		}
 
 		return result;
