@@ -247,12 +247,13 @@ public class ZeitslotMapper {
 	 * wird false zurückgegeben.
 	 * 
 	 * @param zeitslot
-	 *            , raumId
+	 * @param raumId
+	 * @param lvdId: DurchführungsId wird zur überüfung gebraucht es sich um eine geänderte Durchführung handelt. Fall nicht vorhanden 0 angeben.
 	 * @return true wenn der Zeitraum in dem Raum frei ist, false wenn der Raum
 	 *         nicht frei ist
 	 * @throws Exception
 	 */
-	public boolean checkVerfuegbarkeit(Zeitslot zeitslot, int raumId)
+	public boolean checkVerfuegbarkeit(Zeitslot zeitslot, int raumId, int lvdId)
 			throws Exception {
 		Connection con = DBVerbindung.connection();
 		Statement stmt = null;
@@ -280,27 +281,36 @@ public class ZeitslotMapper {
 					+ zeitslot.getWochentag() + "\"";
 
 			rs = stmt.executeQuery(sql);
+			
 
-			// Die belegten Slots füllen
+			// Die belegten Slots füllen, aber nur wenn es nicht beim ändern einer Durchführung geschieht
+			//Bei dem Datensatz der gerade geändert wird muss keine Prüfung statt finden, da er sich nicht
+			//selbst im weg ist.
 			while (rs.next()) {
-				int belegteAnfangszeit = rs.getInt("zeitslot.Anfangszeit");
-				int belegteEndzeit = rs.getInt("zeitslot.Endzeit");
+				int lvdIdAlt = rs.getInt("durchfuehrung.LvdNr");
+				int lvdIdNeu = lvdId;
+				
+				//Falls die Durchführungs Ids gleich sind muss wird keine Belegung eingetragen
+				if(lvdIdAlt != lvdIdNeu) {
+					int belegteAnfangszeit = rs.getInt("zeitslot.Anfangszeit");
+					int belegteEndzeit = rs.getInt("zeitslot.Endzeit");
 
-				// Die Dauer muss bekannt sein um zu wissen wie viele Zeitslots
-				// belegt werden müssen
-				int belegtDauer = belegteEndzeit - belegteAnfangszeit;
-				// arrayPos ist die Position an der angefangen werden muss die
-				// Belegung einzutragen z.B
-				// wenn Uhrzeit von 10-12 ist muss an der 3. Stelle im array,
-				// also bei index 2 angefangen werden zu prüfen.
-				int arrayPos = belegteAnfangszeit
-						- ConstantsStdpln.ERSTE_STUNDE;
+					// Die Dauer muss bekannt sein um zu wissen wie viele Zeitslots
+					// belegt werden müssen
+					int belegtDauer = belegteEndzeit - belegteAnfangszeit;
+					// arrayPos ist die Position an der angefangen werden muss die
+					// Belegung einzutragen z.B
+					// wenn Uhrzeit von 10-12 ist muss an der 3. Stelle im array,
+					// also bei index 2 angefangen werden zu prüfen.
+					int arrayPos = belegteAnfangszeit
+							- ConstantsStdpln.ERSTE_STUNDE;
 
-				for (int dauerCounter = 1; dauerCounter <= belegtDauer; dauerCounter++) {
-					zeitslots.add(arrayPos, true);
-					arrayPos++;
+					for (int dauerCounter = 1; dauerCounter <= belegtDauer; dauerCounter++) {
+						zeitslots.add(arrayPos, true);
+						arrayPos++;
+					}
 				}
-
+				
 
 			}
 
@@ -372,5 +382,7 @@ public class ZeitslotMapper {
 
 		return zeitslotNeu;
 	}
+	
+
 
 }

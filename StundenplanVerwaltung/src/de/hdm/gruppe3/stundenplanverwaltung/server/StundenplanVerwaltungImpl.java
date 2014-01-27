@@ -230,7 +230,7 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 	@Override
 	public LVDurchfuehrung anlegenDurchfuehrung (int svId, int raumId, int lvId, Zeitslot zeitslot) throws Exception {
 		//Erst prüfen ob der Raum zu dem Zeitunkt verfügbar ist
-		boolean isVerfuegbar = zMapper.checkVerfuegbarkeit(zeitslot, raumId);
+		boolean isVerfuegbar = zMapper.checkVerfuegbarkeit(zeitslot, raumId, 0);
 		
 		//Wenn isVerfuegbar nicht true ist, dann abbrechen und null zurückgeben
 		if(!isVerfuegbar) {
@@ -256,7 +256,7 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 	@Override
 	public LVDurchfuehrung modifizierenDurchfuehrung(int lvdId, int svId, int raumId, int lvId, Zeitslot zeitslot) throws Exception {
 		//Erst prüfen ob der Raum zu dem Zeitunkt verfügbar ist
-		boolean isVerfuegbar = zMapper.checkVerfuegbarkeit(zeitslot, raumId);
+		boolean isVerfuegbar = zMapper.checkVerfuegbarkeit(zeitslot, raumId, lvdId);
 		
 		//Wenn isVerfuegbar nicht true ist wird eine Ausnahme Fehler geworfen
 		if(!isVerfuegbar) {
