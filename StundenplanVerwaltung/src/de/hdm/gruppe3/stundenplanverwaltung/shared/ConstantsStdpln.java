@@ -13,6 +13,8 @@ public class ConstantsStdpln {
 	
 	//Uhrzeiten die für den Zeitslot ausgewählt werden können
 	public static int[]  UHRZEITEN =  {8,9,10,11,12,13,14,15,16,17,18};
+	public static int ERSTE_STUNDE = 8;
+	public static int LETZTE_STUNDE = 18;
 	public static String[]  WOCHENTAGE =  {"Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"};
 	
 	public static String REGEX_TEXTZAHL = "^[A-Za-z0-9- ]+$";

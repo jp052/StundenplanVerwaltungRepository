@@ -608,8 +608,8 @@ public class LVDurchfuehrungForm extends VerticalPanel {
 				|| indexEndZeit < 1 || indexWochentag < 1) {
 			Window.alert("Alle Eingeabefelder müssen augefüllt werden!");
 			isValid = false;
-		} else if (indexAnfangsZeit > indexEndZeit) {
-			Window.alert("Die Anfangszeit darf nicht vor der Enzeit liegen!");
+		} else if (indexAnfangsZeit >= indexEndZeit) {
+			Window.alert("Die Anfangszeit darf nicht vor der Enzeit liegen oder gleich sein!");
 			isValid = false;
 		}
 

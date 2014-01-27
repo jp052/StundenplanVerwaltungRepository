@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import de.hdm.gruppe3.stundenplanverwaltung.shared.ConstantsStdpln;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.RaumBelegtException;
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.*;
 
@@ -240,16 +241,16 @@ public class ZeitslotMapper {
 	}
 
 	/**
-	 * Prüft ob ein bestimmter Zeitslot angelegt werden darf. Es wird eine
-	 * Abfrage an die Datenbank geschickt, leifert diese kein Ergenis zurück
-	 * existiert zu der angegbenen Zeit in dem angegebenen Raum noch keine
-	 * Durchführung, also kann sie angelgt werden. Gibt es jedoch ein Ergenisf
-	 * aus der Abfrage ist der Raum zu der Zeit bereits belegt.
+	 * Prüft ob ein bestimmter Zeitslot angelegt werden darf. Es wird Ein
+	 * Zeitslot Array erstellt der für jede Belegte Stunde true als inhalt
+	 * erhält Dieser Array wird dann mit der Anzulegenden Zeit überprüft und es
+	 * wird false zurückgegeben.
 	 * 
 	 * @param zeitslot
 	 *            , raumId
-	 * @return
-	 * @throws Exception 
+	 * @return true wenn der Zeitraum in dem Raum frei ist, false wenn der Raum
+	 *         nicht frei ist
+	 * @throws Exception
 	 */
 	public boolean checkVerfuegbarkeit(Zeitslot zeitslot, int raumId)
 			throws Exception {
@@ -260,11 +261,13 @@ public class ZeitslotMapper {
 		// Verfügbarkeit standardmäßig auf true setzen.
 		boolean isVerfuegbar = true;
 
-		// Der
-		ArrayList<Boolean> belegungsArray = new ArrayList<Boolean>();
+		// Der leere zeitslots Array mit 11 Zeitslots.
+		ArrayList<Boolean> zeitslots = new ArrayList<Boolean>();
 
-		for (int counter = 8; counter < 18; counter++) {
-			belegungsArray.add(false);
+		// Zeitslots füllen und alles auf false für frei setzen.
+		// Hier 11 Zeitslots da zwischen 8 und 18 uhr 11 Zeitslots liegen.
+		for (int counter = ConstantsStdpln.ERSTE_STUNDE; counter < ConstantsStdpln.LETZTE_STUNDE; counter++) {
+			zeitslots.add(false);
 		}
 
 		try {
@@ -278,30 +281,42 @@ public class ZeitslotMapper {
 
 			rs = stmt.executeQuery(sql);
 
+			// Die belegten Slots füllen
 			while (rs.next()) {
 				int belegteAnfangszeit = rs.getInt("zeitslot.Anfangszeit");
 				int belegteEndzeit = rs.getInt("zeitslot.Endzeit");
+
+				// Die Dauer muss bekannt sein um zu wissen wie viele Zeitslots
+				// belegt werden müssen
 				int belegtDauer = belegteEndzeit - belegteAnfangszeit;
-				int arrayPos = belegteAnfangszeit - 8;
+				// arrayPos ist die Position an der angefangen werden muss die
+				// Belegung einzutragen z.B
+				// wenn Uhrzeit von 10-12 ist muss an der 3. Stelle im array,
+				// also bei index 2 angefangen werden zu prüfen.
+				int arrayPos = belegteAnfangszeit
+						- ConstantsStdpln.ERSTE_STUNDE;
 
 				for (int dauerCounter = 1; dauerCounter <= belegtDauer; dauerCounter++) {
-					belegungsArray.add(arrayPos, true);
+					zeitslots.add(arrayPos, true);
 					arrayPos++;
 				}
 
-				// Wenn das ResultSet ein erebnis liefert, isVerfuegbar auf false
-				// setzen.
 
 			}
 
 			int neueAnfangszeit = zeitslot.getAnfangszeit();
 			int neueEndzeit = zeitslot.getEndzeit();
 			int neuedauer = neueEndzeit - neueAnfangszeit;
-			int arrayPos = neueAnfangszeit - 8;
+
+			// Das ist die Position an der angefangen werden muss zu Prüfen z.B
+			// wenn Uhrzeit von 10-12 ist muss an der
+			// 3. Stelle im array, also bei index 2 angefangen werden zu prüfen.
+			int arrayPos = neueAnfangszeit - ConstantsStdpln.ERSTE_STUNDE;
+
 			for (int dauerCounter = 1; dauerCounter <= neuedauer; dauerCounter++) {
-				boolean isBelegt = belegungsArray.get(arrayPos);
+				boolean isBelegt = zeitslots.get(arrayPos);
 				if (isBelegt) {
-					isVerfuegbar = false;
+					isVerfuegbar = false; // Der Raum ist belegt und setz isVerfuegbr auf false
 				}
 				arrayPos++;
 			}
@@ -312,7 +327,8 @@ public class ZeitslotMapper {
 			throw new RaumBelegtException();
 
 		} finally {
-			//Alles schließen, finally wird immer ausgeführt, egal ob es einen Fehler gibt oder nicht.
+			// Alles schließen, finally wird immer ausgeführt, egal ob es einen
+			// Fehler gibt oder nicht.
 			DBVerbindung.closeAll(rs, stmt, con);
 		}
 
