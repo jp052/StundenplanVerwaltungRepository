@@ -19,34 +19,10 @@ public class ClientsideSettings {
 
 	  private static final Logger logger = Logger.getLogger("StundenplanVerwaltung Web Client");
 
-	  private static ReportGeneratorAsync reportGenerator = null;
+//	  private static ReportGeneratorAsync reportGenerator = null;
 	  
 	  public static Logger getLogger() {
 		    return logger;
 		  }
 	  
-//	  public static ReportGeneratorAsync getReportGenerator() {
-//		    // Gab es bislang noch keine ReportGenerator-Instanz, dann...
-//		    if (reportGenerator == null) {
-//		      // Zunächst instantiieren wir ReportGenerator
-//		      reportGenerator = GWT.create(ReportGenerator.class);
-//
-//		      final AsyncCallback<Void> initReportGeneratorCallback = new AsyncCallback<Void>() {
-//		        public void onFailure(Throwable caught) {
-//		          ClientsideSettings.getLogger().severe(
-//		              "Der ReportGenerator konnte nicht initialisiert werden!");
-//		        }
-//
-//		        public void onSuccess(Void result) {
-//		          ClientsideSettings.getLogger().info(
-//		              "Der ReportGenerator wurde initialisiert.");
-//		        }
-//		      };
-//
-//		      reportGenerator.init(initReportGeneratorCallback);
-//		    }
-//
-//		    // So, nun brauchen wir den ReportGenerator nur noch zurückzugeben.
-//		    return reportGenerator;
-//		  }
 }
