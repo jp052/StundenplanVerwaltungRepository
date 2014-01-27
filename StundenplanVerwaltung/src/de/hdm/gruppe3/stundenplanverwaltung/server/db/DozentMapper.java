@@ -50,9 +50,10 @@ public class DozentMapper {
 	 */
 	public Dozent anlegen(Dozent d) throws Exception {
 		Connection con = DBVerbindung.connection();
+		Statement stmt = null;
 
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			// Jetzt erst erfolgt die tatsächliche Einfügeoperation
 			stmt.executeUpdate("INSERT INTO dozent (PersonalNr, Vorname, Nachname) "
@@ -65,6 +66,18 @@ public class DozentMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				} 
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new Exception("Connection close Fehler!" + e.toString());
+			}
 		}
 
 		return d;
@@ -214,14 +227,15 @@ public class DozentMapper {
 	 */
 	public Vector<Dozent> findeAlle() throws Exception {
 		Connection con = DBVerbindung.connection();
-
+		Statement stmt = null;
+		ResultSet rs = null;
 		// Ergebnisvektor vorbereiten
 		Vector<Dozent> result = new Vector<Dozent>();
 
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
-			ResultSet rs = stmt.executeQuery("SELECT * FROM dozent "
+			rs = stmt.executeQuery("SELECT * FROM dozent "
 					+ " ORDER BY PersonalNr");
 
 			while (rs.next()) {
@@ -236,6 +250,22 @@ public class DozentMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new Exception("Datenbank fehler!" + e2.toString());
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (stmt != null) {
+					stmt.close();
+				} 
+				if (con != null) {
+					con.close();
+				}
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new Exception("Connection close Fehler!" + e.toString());
+			}
 		}
 
 		// Ergebnisvektor zurückgeben

@@ -1,6 +1,10 @@
 package de.hdm.gruppe3.stundenplanverwaltung.server.db;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import com.google.appengine.api.rdbms.AppEngineDriver;
 
@@ -34,10 +38,11 @@ public class DBVerbindung {
 	/**
 	 * Baut die Verbindung zur Datenbank auf die Google Cloud SQL
 	 * @return Die Verbindung
+	 * @throws Exception 
 	 */
-	public static Connection connection()  {
+	public static Connection connection() throws Exception  {
 		//Verbindung erstllen wenn es noch keine gibt
-		if ( con == null ) {
+//		if (con.isClosed() || con == null) {
 			try {
 				//Google connection
 				DriverManager.registerDriver(new AppEngineDriver());
@@ -47,12 +52,18 @@ public class DBVerbindung {
 			catch (SQLException e1) {
 				con = null;
 				e1.printStackTrace();
-//				throw new Exception("Datenbank fehler!" + e1.toString());
-			}
-		}
+				throw new Exception("DBVerbindung Fehler!" + e1.toString());
+			} 
+			
+			
+//		}
 		
 		//Die Verbindung
 		return con;
+	}
+	
+	public static void closeAll(ResultSet rs, Statement stmt, Connection con) {
+		
 	}
 	
 //	
