@@ -496,6 +496,7 @@ public class LVDurchfuehrungForm extends VerticalPanel {
 	 */
 	public void loeschenSelectedLVDurchfuehrung() {
 		if (this.selectedLVDurchfuehrung != null) {
+			final VerticalPanel aktuellePanel = this;
 			// Ruft Serverseitige Methode auf
 			stundenplanVerwaltung.loeschenDurchfuehrung(
 					selectedLVDurchfuehrung,
@@ -512,7 +513,10 @@ public class LVDurchfuehrungForm extends VerticalPanel {
 						@Override
 						public void onSuccess(LVDurchfuehrung result) {
 							Window.alert("Löschen erfolgreich!");
-							setSelected(null);
+							//Nach dem Löschen wieder die Tabelle mit allen Einträgen anzeigen.
+							LVDurchfuehrungTabelle lvdTabelle = new LVDurchfuehrungTabelle();
+							aktuellePanel.clear();
+							aktuellePanel.add(lvdTabelle.zeigeTabelle());
 						}
 					});
 		}
