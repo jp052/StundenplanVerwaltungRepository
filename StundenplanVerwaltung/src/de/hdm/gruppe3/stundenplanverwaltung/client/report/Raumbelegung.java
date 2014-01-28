@@ -52,11 +52,11 @@ public class Raumbelegung {
 
 			@Override
 			public void onClick(ClickEvent event) {
-
-				mainPanel.clear();
-				zeigeRaumbelegung(raumListBox.getValue(raumListBox
-						.getSelectedIndex()));
-
+				if(validiereBenutzerEingabe()) {
+					mainPanel.clear();
+					zeigeRaumbelegung(raumListBox.getValue(raumListBox
+							.getSelectedIndex()));
+				}				
 			}
 		});
 		setRaumListBox();
@@ -292,6 +292,26 @@ public class Raumbelegung {
 
 			}
 		});
+	}
+	
+	/**
+	 * Zeigt eine Fehlermeldung wenn der Benutzer etwas falsches eingegeben hat.
+	 * 
+	 * @return true wenn alles ok ist
+	 */
+	private boolean validiereBenutzerEingabe() {
+		boolean isValid = true;
+		// Die indexs der ListBox auslesen um zu schauen ob überall etwas
+		// gewählt wurde.
+		int indexSV = raumListBox.getSelectedIndex();
+
+
+		if (indexSV < 1) {
+			Window.alert("Ein Raum muss gewählt sein!");
+			isValid = false;
+		}
+
+		return isValid;
 	}
 
 }

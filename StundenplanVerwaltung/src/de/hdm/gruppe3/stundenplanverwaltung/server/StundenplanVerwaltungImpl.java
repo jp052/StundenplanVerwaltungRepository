@@ -295,9 +295,9 @@ public class StundenplanVerwaltungImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public Semesterverband loeschenSemesterverband(Semesterverband sv) {
-
-		return null;
+	public Semesterverband loeschenSemesterverband(Semesterverband sv) throws Exception {
+		
+		return svMapper.loeschen(sv);
 	}
 
 	@Override

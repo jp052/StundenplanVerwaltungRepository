@@ -2,13 +2,6 @@ package de.hdm.gruppe3.stundenplanverwaltung.client;
 
 import java.util.logging.Logger;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-
-import de.hdm.gruppe3.stundenplanverwaltung.client.ClientsideSettings;
-import de.hdm.gruppe3.stundenplanverwaltung.shared.ReportGenerator;
-import de.hdm.gruppe3.stundenplanverwaltung.shared.ReportGeneratorAsync;
-
 /**
  * Beinhaltet verschiedene Einstellungen die auf der Client Seite ben�tigt werden.
  * @author Jan Plank

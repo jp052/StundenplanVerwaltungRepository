@@ -50,11 +50,13 @@ public class SVReport {
 
 			@Override
 			public void onClick(ClickEvent event) {
-
-				mainPanel.clear();
-				zeigeSVReport(Integer.parseInt(svListBox.getValue(svListBox
-						.getSelectedIndex())));
-
+				//Wenn nichts gewählt wurde, nicht tun und Meldung ausgeben.
+				if(validiereBenutzerEingabe()) {
+					mainPanel.clear();
+					zeigeSVReport(Integer.parseInt(svListBox.getValue(svListBox
+							.getSelectedIndex())));
+				}
+								
 			}
 		});
 
@@ -280,6 +282,26 @@ public class SVReport {
 
 					}
 				});
+	}
+	
+	/**
+	 * Zeigt eine Fehlermeldung wenn der Benutzer etwas falsches eingegeben hat.
+	 * 
+	 * @return true wenn alles ok ist
+	 */
+	private boolean validiereBenutzerEingabe() {
+		boolean isValid = true;
+		// Die indexs der ListBox auslesen um zu schauen ob überall etwas
+		// gewählt wurde.
+		int indexSV = svListBox.getSelectedIndex();
+
+
+		if (indexSV < 1) {
+			Window.alert("Ein Semesterverband muss gewählt sein!");
+			isValid = false;
+		}
+
+		return isValid;
 	}
 
 }

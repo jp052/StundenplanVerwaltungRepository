@@ -33,7 +33,7 @@ public interface StundenplanVerwaltungService extends RemoteService {
 	public Semesterverband getSemesterverbandBySemesterHalbjahr(int sv)
 			throws Exception;
 
-	public Semesterverband loeschenSemesterverband(Semesterverband sv);
+	public Semesterverband loeschenSemesterverband(Semesterverband sv) throws Exception;
 
 	// public Zeitslot anlegenZeitslot (String wochentag, int anfangszeit);
 

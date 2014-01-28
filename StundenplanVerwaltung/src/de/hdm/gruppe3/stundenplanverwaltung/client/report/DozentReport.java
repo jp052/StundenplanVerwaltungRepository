@@ -58,11 +58,11 @@ public class DozentReport {
 
 			@Override
 			public void onClick(ClickEvent event) {
-
-				mainPanel.clear();
-				zeigen(Integer.parseInt(dozentenListBox
-						.getValue(dozentenListBox.getSelectedIndex())));
-
+				if(validiereBenutzerEingabe()) {
+					mainPanel.clear();
+					zeigen(Integer.parseInt(dozentenListBox
+							.getValue(dozentenListBox.getSelectedIndex())));
+				}				
 			}
 		});
 
@@ -194,6 +194,26 @@ public class DozentReport {
 
 					}
 				});
+	}
+	
+	/**
+	 * Zeigt eine Fehlermeldung wenn der Benutzer etwas falsches eingegeben hat.
+	 * 
+	 * @return true wenn alles ok ist
+	 */
+	private boolean validiereBenutzerEingabe() {
+		boolean isValid = true;
+		// Die indexs der ListBox auslesen um zu schauen ob überall etwas
+		// gewählt wurde.
+		int indexSV = dozentenListBox.getSelectedIndex();
+
+
+		if (indexSV < 1) {
+			Window.alert("Ein Dozent muss gewählt sein!");
+			isValid = false;
+		}
+
+		return isValid;
 	}
 
 }
