@@ -111,7 +111,7 @@ public class LehrveranstaltungTabelle {
 							flexTable.setWidget(zeileCounter, 3, lUmfang);
 							flexTable.setWidget(zeileCounter, 4, lDozent);
 
-							flexTable.setWidget(zeileCounter, 6, bModifizieren);
+							flexTable.setWidget(zeileCounter, 5, bModifizieren);
 
 							// setzt den click handler auf den
 							// Modifizieren Button und ruft dann das

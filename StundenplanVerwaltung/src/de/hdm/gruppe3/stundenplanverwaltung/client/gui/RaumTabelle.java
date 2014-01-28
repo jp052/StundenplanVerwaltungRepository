@@ -81,7 +81,7 @@ public class RaumTabelle {
 				// Inner Class ClickHandler
 				// verwendet werden kann.
 				for (final Raum r : result) {
-					Button a = new Button(ConstantsStdpln.AENDERN);
+					Button modifizierenButton = new Button(ConstantsStdpln.AENDERN);
 
 					String raumNr, bezeichnung, kapa;
 
@@ -101,14 +101,14 @@ public class RaumTabelle {
 					flexTable.setWidget(zeileCounter, 2, lKapa);
 
 
-					flexTable.setWidget(zeileCounter, 6, a);
+					flexTable.setWidget(zeileCounter, 3, modifizierenButton);
 
 					// setzt den click handler auf den
 					// Modifizieren Button und ruft dann das
 					// Form
 					// auf und setzt das in der for schleife
 					// aktuell durchlaufene Element in das Form.
-					a.addClickHandler(new ClickHandler() {
+					modifizierenButton.addClickHandler(new ClickHandler() {
 
 						@Override
 						public void onClick(ClickEvent event) {

@@ -58,7 +58,7 @@ public class SemesterverbandTabelle {
 		
 		flexTable.setText(0, 0, "ID");
 		flexTable.setText(0, 1, "Anzahl Studenten");
-		flexTable.setText(0, 2, "Semesterhalbjahr");
+		flexTable.setText(0, 2, "Semester");
 		flexTable.setText(0, 3, "Jahrgang");
 
 		// Liest alle Einträg aus der Datebank füllt sie in die Tabelle. Bei
@@ -85,18 +85,18 @@ public class SemesterverbandTabelle {
 
 							Button bModifizieren = new Button(
 									ConstantsStdpln.AENDERN);
-							int anzahlStudenten, semesterHalbjahr, jahrgang, id;
+							int anzahlStudenten, jahrgang, id;
+							String semester = null;
 							id = semesterverband.getId();
 							anzahlStudenten = semesterverband
 									.getAnzahlStudenten();
-							semesterHalbjahr = semesterverband.getSemester();
+							semester = semesterverband.toString();
 							jahrgang = semesterverband.getJahrgang();
 
 							// Label mit Inhalt füllen
 							Label lAnzahlStudenten = new Label(String
 									.valueOf(anzahlStudenten));
-							Label lSemesterHalbjahr = new Label(String
-									.valueOf(semesterHalbjahr));
+							Label lSemesterHalbjahr = new Label(semester);
 							Label lJahrgang = new Label(String
 									.valueOf(jahrgang));
 							Label lId = new Label(String.valueOf(id));
