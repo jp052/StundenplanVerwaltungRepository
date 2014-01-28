@@ -220,14 +220,12 @@ public class StundenplanVerwaltungFrontend{
 		menu.addItem("Durchführung", durchfuer);
 		menu.addItem("Report", repoMenu);
 		
-		vertpan.add(new HTML(
-
-				"<img src=\"/Users/df/Documents/workspace/schedule.png\" alt=\"schedule\"><h1>Stundenplan Verwaltungs Tool</h1>"));
+		vertpan.add(new HTML("<h1>Stundenplan Verwaltungs Tool Gruppe 3</h1>"));
 
 //		hor1.add(left);
 //		left.add(new HTML("<h2>TreePanel</h2>"));
 		hor1.add(right);
-		right.add(new HTML("<h2>DetailPanel</h2>"));
+//		right.add(new HTML("<h2>DetailPanel</h2>"));
 		hor1.setSpacing(5);
 		vertpan.add(menu);
 		RootPanel.get("starter").add(mainPanel);

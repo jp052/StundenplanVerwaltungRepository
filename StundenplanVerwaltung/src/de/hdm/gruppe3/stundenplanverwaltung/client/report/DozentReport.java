@@ -5,6 +5,7 @@ import java.util.Vector;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -14,6 +15,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+
 
 
 import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungService;
@@ -48,7 +50,7 @@ public class DozentReport {
 	 * @return mainPanel
 	 */
 	public Widget reportDozent() {
-		FlexTable flexDozent = new FlexTable();
+		FlexTable navigationDozentReport = new FlexTable();
 		Button d = new Button("Report");
 
 		mainPanel.clear();
@@ -65,9 +67,9 @@ public class DozentReport {
 		});
 
 		setDozentenListBox();
-		flexDozent.setWidget(0, 0, dozentenListBox);
-		flexDozent.setWidget(0, 1, d);
-		mainPanel.add(flexDozent);
+		navigationDozentReport.setWidget(0, 0, dozentenListBox);
+		navigationDozentReport.setWidget(0, 1, d);
+		mainPanel.add(navigationDozentReport);
 		return mainPanel;
 	}
 
@@ -84,8 +86,9 @@ public class DozentReport {
 	 */
 	public void zeigen(int d) {
 
-		final FlexTable dt = new FlexTable();
-		dt.setText(0, 0, "Dozent:");
+		final FlexTable dozentNameTabelle = new FlexTable();
+		
+		dozentNameTabelle.setText(0, 0, "Dozent:");
 		RootPanel.get("starter").clear();
 		stundenplanVerwaltung.getDozentByNummer(d, new AsyncCallback<Dozent>() {
 
@@ -96,18 +99,21 @@ public class DozentReport {
 
 			@Override
 			public void onSuccess(Dozent result) {
-				dt.setText(0, 1, result.getNachname() + ", ");
-				dt.setText(0, 2, result.getVorname());
+				dozentNameTabelle.setText(0, 1, result.getNachname() + ", ");
+				dozentNameTabelle.setText(0, 2, result.getVorname());
 
 			}
 
 		});
 
-		final FlexTable t = new FlexTable();
-		//
-		t.setText(0, 0, "Lehrveranstaltung");
-		t.setText(0, 1, "Semester");
-		t.setText(0, 2, "Anzahl der Studierende");
+		final FlexTable dozentReportTabelle = new FlexTable();
+		
+		//HTML class hinzufügen, damit die Tabelle das Design annimmt.
+		DOM.setElementAttribute(dozentReportTabelle.getElement(), "class", "table table-striped table table-bordered");
+		
+		dozentReportTabelle.setText(0, 0, "Lehrveranstaltung");
+		dozentReportTabelle.setText(0, 1, "Semester");
+		dozentReportTabelle.setText(0, 2, "Anzahl der Studierende");
 
 		stundenplanVerwaltung.reportLVbyDozent(d,
 				new AsyncCallback<Vector<Lehrveranstaltung>>() {
@@ -135,9 +141,9 @@ public class DozentReport {
 							Label lSem = new Label(semester);
 							Label lUmfang = new Label(umfang);
 
-							t.setWidget(i, 0, lBez);
-							t.setWidget(i, 1, lSem);
-							t.setWidget(i, 2, lUmfang);
+							dozentReportTabelle.setWidget(i, 0, lBez);
+							dozentReportTabelle.setWidget(i, 1, lSem);
+							dozentReportTabelle.setWidget(i, 2, lUmfang);
 							i++;
 						}
 
@@ -155,8 +161,8 @@ public class DozentReport {
 			}
 		});
 
-		mainPanel.add(dt);
-		mainPanel.add(t);
+		mainPanel.add(dozentNameTabelle);
+		mainPanel.add(dozentReportTabelle);
 		mainPanel.add(refresh);
 		// return mainPanel;
 		RootPanel.get("starter").add(mainPanel);

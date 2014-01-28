@@ -5,6 +5,7 @@ import java.util.Vector;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -42,7 +43,9 @@ public class Raumbelegung {
 	 * @return mainPanel
 	 */
 	public Widget reportRaumbelegung() {
-		FlexTable flexRaum = new FlexTable();
+		FlexTable navigationRaumbelegungReport = new FlexTable();
+		DOM.setElementAttribute(navigationRaumbelegungReport.getElement(), "class", "table table-striped table table-bordered");
+		navigationRaumbelegungReport.setText(0, 0, "Dozent:");
 		Button d = new Button("Report");
 
 		d.addClickHandler(new ClickHandler() {
@@ -57,10 +60,10 @@ public class Raumbelegung {
 			}
 		});
 		setRaumListBox();
-		flexRaum.setWidget(0, 0, raumListBox);
-		flexRaum.setWidget(0, 1, d);
+		navigationRaumbelegungReport.setWidget(0, 0, raumListBox);
+		navigationRaumbelegungReport.setWidget(0, 1, d);
 		mainPanel.clear();
-		mainPanel.add(flexRaum);
+		mainPanel.add(navigationRaumbelegungReport);
 		return mainPanel;
 	}
 
@@ -77,11 +80,11 @@ public class Raumbelegung {
 	 */
 	public void zeigeRaumbelegung(final String id) {
 
-		final FlexTable rt = new FlexTable();
+		final FlexTable raumbezeichnungTabelle = new FlexTable();
 		final int raumID;
 		raumID = Integer.parseInt(id);
 		mainPanel.clear();
-		rt.setText(0, 0, "Raum: ");
+		raumbezeichnungTabelle.setText(0, 0, "Raum: ");
 
 		stundenplanVerwaltung.getRaumbyNummer(raumID,
 				new AsyncCallback<Raum>() {
@@ -93,8 +96,8 @@ public class Raumbelegung {
 
 					@Override
 					public void onSuccess(Raum result) {
-						rt.setText(0, 1, result.getBezeichnung());
-						mainPanel.add(rt);
+						raumbezeichnungTabelle.setText(0, 1, result.getBezeichnung());
+						mainPanel.add(raumbezeichnungTabelle);
 						zeigeTabelle(raumID);
 					}
 
@@ -117,26 +120,31 @@ public class Raumbelegung {
 	 * 
 	 */
 	public void zeigeTabelle(int raumID) {
-		final FlexTable t = new FlexTable();
+		final FlexTable raumbelegungsReportTabelle = new FlexTable();
+		
+		//HTML class hinzufügen, damit die Tabelle das Design annimmt.
+		DOM.setElementAttribute(raumbelegungsReportTabelle.getElement(), "class", "table table-striped table table-bordered");
+		
+		
 		RootPanel.get("starter").clear();
 		//
-		t.setText(0, 0, "Zeit");
-		t.setText(0, 1, "Montag");
-		t.setText(0, 2, "Dienstag");
-		t.setText(0, 3, "Mittwoch");
-		t.setText(0, 4, "Donnerstag");
-		t.setText(0, 5, "Freitag");
+		raumbelegungsReportTabelle.setText(0, 0, "Zeit");
+		raumbelegungsReportTabelle.setText(0, 1, "Montag");
+		raumbelegungsReportTabelle.setText(0, 2, "Dienstag");
+		raumbelegungsReportTabelle.setText(0, 3, "Mittwoch");
+		raumbelegungsReportTabelle.setText(0, 4, "Donnerstag");
+		raumbelegungsReportTabelle.setText(0, 5, "Freitag");
 
-		t.setText(1, 0, "8-9");
-		t.setText(2, 0, "9-10");
-		t.setText(3, 0, "10-11");
-		t.setText(4, 0, "11-12");
-		t.setText(5, 0, "12-13");
-		t.setText(6, 0, "13-14");
-		t.setText(7, 0, "14-15");
-		t.setText(8, 0, "15-16");
-		t.setText(9, 0, "16-17");
-		t.setText(10, 0, "17-18");
+		raumbelegungsReportTabelle.setText(1, 0, "8-9");
+		raumbelegungsReportTabelle.setText(2, 0, "9-10");
+		raumbelegungsReportTabelle.setText(3, 0, "10-11");
+		raumbelegungsReportTabelle.setText(4, 0, "11-12");
+		raumbelegungsReportTabelle.setText(5, 0, "12-13");
+		raumbelegungsReportTabelle.setText(6, 0, "13-14");
+		raumbelegungsReportTabelle.setText(7, 0, "14-15");
+		raumbelegungsReportTabelle.setText(8, 0, "15-16");
+		raumbelegungsReportTabelle.setText(9, 0, "16-17");
+		raumbelegungsReportTabelle.setText(10, 0, "17-18");
 
 		stundenplanVerwaltung.reportLVbyRaum(raumID,
 				new AsyncCallback<Vector<Lehrveranstaltung>>() {
@@ -214,7 +222,7 @@ public class Raumbelegung {
 														// gleich dif ist
 														for (int anzahlZeile = 1; anzahlZeile <= dif; anzahlZeile++) {
 
-															t.setText(
+															raumbelegungsReportTabelle.setText(
 																	zeitAnf
 																			+ zeileCounter,
 																	spalteTag,
@@ -222,7 +230,7 @@ public class Raumbelegung {
 															zeileCounter++;
 
 															if ((zeitAnf + anzahlZeile) == zeitEnde) {
-																t.setText(
+																raumbelegungsReportTabelle.setText(
 																		zeitEnde - 1,
 																		spalteTag,
 																		lv.getBezeichnung());
@@ -254,7 +262,7 @@ public class Raumbelegung {
 			}
 		});
 		// mainPanel.add(rt);
-		mainPanel.add(t);
+		mainPanel.add(raumbelegungsReportTabelle);
 		mainPanel.add(refresh);
 		RootPanel.get().add(mainPanel);
 	}

@@ -5,6 +5,7 @@ import java.util.Vector;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -42,7 +43,10 @@ public class DozentTabelle {
 		// Eine flexible Tabelle die sich je nach anzahl der vorhandenen
 		// Datensätze anpasst.
 		final FlexTable flexTable = new FlexTable();
-		//
+		
+		//HTML class hinzufügen, damit die Tabelle das Design annimmt.
+		DOM.setElementAttribute(flexTable.getElement(), "class", "table table-striped table table-bordered");
+		
 		flexTable.setText(0, 0, "ID");
 		flexTable.setText(0, 1, "Name");
 		flexTable.setText(0, 2, "Vorname");
@@ -85,7 +89,7 @@ public class DozentTabelle {
 							flexTable.setWidget(zeileCounter, 1, lN);
 							flexTable.setWidget(zeileCounter, 2, lV);
 
-							flexTable.setWidget(zeileCounter, 6, a);
+							flexTable.setWidget(zeileCounter, 3, a);
 
 							a.addClickHandler(new ClickHandler() {
 

@@ -8,6 +8,7 @@ import java.util.Vector;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -42,7 +43,7 @@ public class SVReport {
 	 * @return mainPanel
 	 */
 	public Widget reportSemesterverband() {
-		FlexTable flexSV = new FlexTable();
+		FlexTable navigationSVReport = new FlexTable();
 		Button d = new Button("Report");
 
 		d.addClickHandler(new ClickHandler() {
@@ -58,10 +59,10 @@ public class SVReport {
 		});
 
 		setSVListBox();
-		flexSV.setWidget(0, 0, svListBox);
-		flexSV.setWidget(0, 1, d);
+		navigationSVReport.setWidget(0, 0, svListBox);
+		navigationSVReport.setWidget(0, 1, d);
 		mainPanel.clear();
-		mainPanel.add(flexSV);
+		mainPanel.add(navigationSVReport);
 		return mainPanel;
 	}
 
@@ -73,9 +74,9 @@ public class SVReport {
 
 	public void zeigeSVReport(final int sv) {
 
-		final FlexTable rt = new FlexTable();
+		final FlexTable svBezeichnungTabelle = new FlexTable();
 		mainPanel.clear();
-		rt.setText(0, 0, "Semesterverband: ");
+		svBezeichnungTabelle.setText(0, 0, "Semesterverband: ");
 
 		stundenplanVerwaltung.getSemesterverbandBySemesterHalbjahr(sv,
 				new AsyncCallback<Semesterverband>() {
@@ -89,9 +90,9 @@ public class SVReport {
 					public void onSuccess(Semesterverband result) {
 
 						// Window.alert("Klappt");
-						rt.setText(0, 1, String.valueOf(svListBox
+						svBezeichnungTabelle.setText(0, 1, String.valueOf(svListBox
 								.getItemText(svListBox.getSelectedIndex())));
-						mainPanel.add(rt);
+						mainPanel.add(svBezeichnungTabelle);
 						zeigeTabelle(sv);
 					}
 				});
@@ -105,27 +106,30 @@ public class SVReport {
 	 * @return mainPanel
 	 */
 	public void zeigeTabelle(int sv) {
-		final FlexTable t = new FlexTable();
+		final FlexTable svReportTabelle = new FlexTable();
+		//HTML class hinzufügen, damit die Tabelle das Design annimmt.
+		DOM.setElementAttribute(svReportTabelle.getElement(), "class", "table table-striped table table-bordered");
+		
 		RootPanel.get("starter").clear();
 
 		//
-		t.setText(0, 0, "Zeit");
-		t.setText(0, 1, "Montag");
-		t.setText(0, 2, "Dienstag");
-		t.setText(0, 3, "Mittwoch");
-		t.setText(0, 4, "Donnerstag");
-		t.setText(0, 5, "Freitag");
+		svReportTabelle.setText(0, 0, "Zeit");
+		svReportTabelle.setText(0, 1, "Montag");
+		svReportTabelle.setText(0, 2, "Dienstag");
+		svReportTabelle.setText(0, 3, "Mittwoch");
+		svReportTabelle.setText(0, 4, "Donnerstag");
+		svReportTabelle.setText(0, 5, "Freitag");
 
-		t.setText(1, 0, "8-9");
-		t.setText(2, 0, "9-10");
-		t.setText(3, 0, "10-11");
-		t.setText(4, 0, "11-12");
-		t.setText(5, 0, "12-13");
-		t.setText(6, 0, "13-14");
-		t.setText(7, 0, "14-15");
-		t.setText(8, 0, "15-16");
-		t.setText(9, 0, "16-17");
-		t.setText(10, 0, "17-18");
+		svReportTabelle.setText(1, 0, "8-9");
+		svReportTabelle.setText(2, 0, "9-10");
+		svReportTabelle.setText(3, 0, "10-11");
+		svReportTabelle.setText(4, 0, "11-12");
+		svReportTabelle.setText(5, 0, "12-13");
+		svReportTabelle.setText(6, 0, "13-14");
+		svReportTabelle.setText(7, 0, "14-15");
+		svReportTabelle.setText(8, 0, "15-16");
+		svReportTabelle.setText(9, 0, "16-17");
+		svReportTabelle.setText(10, 0, "17-18");
 
 		stundenplanVerwaltung.reportLVbySV(sv,
 				new AsyncCallback<Vector<Lehrveranstaltung>>() {
@@ -204,7 +208,7 @@ public class SVReport {
 														// gleich dif ist
 														for (int anzahlZeile = 1; anzahlZeile <= dif; anzahlZeile++) {
 
-															t.setText(
+															svReportTabelle.setText(
 																	zeitAnf
 																			+ zeileCounter,
 																	spalteTag,
@@ -212,7 +216,7 @@ public class SVReport {
 															zeileCounter++;
 
 															if ((zeitAnf + anzahlZeile) == zeitEnde) {
-																t.setText(
+																svReportTabelle.setText(
 																		zeitEnde - 1,
 																		spalteTag,
 																		lv.getBezeichnung());
@@ -245,7 +249,7 @@ public class SVReport {
 			}
 		});
 		// mainPanel.add(rt);
-		mainPanel.add(t);
+		mainPanel.add(svReportTabelle);
 		mainPanel.add(refresh);
 		RootPanel.get().add(mainPanel);
 	}
