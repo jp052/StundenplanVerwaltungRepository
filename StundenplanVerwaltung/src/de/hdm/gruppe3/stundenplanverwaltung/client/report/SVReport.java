@@ -69,16 +69,16 @@ public class SVReport {
 	/**
 	 * Mit dieser Methode können wir den Report rauslesen.
 	 * 
-	 * @param sv
+	 * @param svId
 	 */
 
-	public void zeigeSVReport(final int sv) {
+	public void zeigeSVReport(final int svId) {
 
 		final FlexTable svBezeichnungTabelle = new FlexTable();
 		mainPanel.clear();
 		svBezeichnungTabelle.setText(0, 0, "Semesterverband: ");
 
-		stundenplanVerwaltung.getSemesterverbandBySemesterHalbjahr(sv,
+		stundenplanVerwaltung.getSemesterverbandByNummer(svId,
 				new AsyncCallback<Semesterverband>() {
 
 					@Override
@@ -93,7 +93,7 @@ public class SVReport {
 						svBezeichnungTabelle.setText(0, 1, String.valueOf(svListBox
 								.getItemText(svListBox.getSelectedIndex())));
 						mainPanel.add(svBezeichnungTabelle);
-						zeigeTabelle(sv);
+						zeigeTabelle(result.getId());
 					}
 				});
 

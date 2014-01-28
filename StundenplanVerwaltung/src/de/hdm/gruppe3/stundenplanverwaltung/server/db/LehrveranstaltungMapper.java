@@ -448,11 +448,11 @@ public class LehrveranstaltungMapper {
 			// "SELECT * FROM Raum LEFT JOIN Lehrveranstaltung ON raum.bezeichnung = "
 			// + bez;
 
-			String sql = "SELECT zeitslot.Wochentag, zeitslot.Anfangszeit, semesterverband.semesterHalbjahr, zeitslot.Endzeit, lehrveranstaltung.Bezeichnung FROM durchfuehrung "
+			String sql = "SELECT * FROM durchfuehrung "
 					+ " JOIN semesterverband ON semesterverband.SVNr = durchfuehrung.SVNr "
 					+ " JOIN zeitslot ON zeitslot.ZeitNr = durchfuehrung.ZeitNr  "
 					+ " JOIN lehrveranstaltung ON lehrveranstaltung.LVNr = durchfuehrung.LVNr  "
-					+ " WHERE (semesterverband.SemesterHalbjahr = " + sv + ")";
+					+ " WHERE (semesterverband.SVNr = " + sv + ")";
 			System.out.println(sql);
 			rs = stmt.executeQuery(sql);
 
