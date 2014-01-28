@@ -1,3 +1,13 @@
+/* 
+ * SemesterverbandMapper.java 
+ * 
+ * Version: 
+ *     1.0
+ * 
+ * Revisions: 
+ *     1.0
+ */
+
 package de.hdm.gruppe3.stundenplanverwaltung.server.db;
 
 import java.sql.Connection;

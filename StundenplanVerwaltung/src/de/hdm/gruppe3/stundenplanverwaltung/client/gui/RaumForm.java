@@ -1,3 +1,13 @@
+/* 
+ * RaumForm.java 
+ * 
+ * Version: 
+ *     1.0
+ * 
+ * Revisions: 
+ *     1.0
+ */
+
 package de.hdm.gruppe3.stundenplanverwaltung.client.gui;
 
 import com.google.gwt.core.shared.GWT;
@@ -145,6 +155,8 @@ public class RaumForm extends VerticalPanel {
 	 * Ändert das ausgewählte Business Objekt im Editiermodus
 	 */
 	public void modifizierenSelectedRaum() {
+		final VerticalPanel aktuellePanel = this;
+
 		if (this.selectedRaum != null) {
 			// Schauen ob der Benutzer alles richtig eingegeben hat, wenn false
 			// zurück kommt wird mit return abgebrochen und die Fehlermeldung
@@ -170,6 +182,10 @@ public class RaumForm extends VerticalPanel {
 						@Override
 						public void onSuccess(Raum result) {
 							Window.alert("Änderung erfolgreich!");
+							//Nach dem Ändern wieder die Tabelle mit allen Einträgen anzeigen.
+							RaumTabelle rTabelle = new RaumTabelle();
+							aktuellePanel.clear();
+							aktuellePanel.add(rTabelle.zeigeTabelle());
 
 						}
 					});
@@ -180,6 +196,7 @@ public class RaumForm extends VerticalPanel {
 	 * Löscht das ausgewählte Business Objekt im Editiermodus
 	 */
 	public void loeschenSelectedRaum() {
+		final VerticalPanel aktuellePanel = this;
 		if (this.selectedRaum != null) {
 			// Ruft Serverseitige Methode auf
 			stundenplanVerwaltung.loeschenRaum(selectedRaum,
@@ -195,6 +212,10 @@ public class RaumForm extends VerticalPanel {
 						public void onSuccess(Raum result) {
 							Window.alert("Löschen erfolgreich!");
 							setSelected(null);
+							//Nach dem Löschen wieder die Tabelle mit allen Einträgen anzeigen.
+							RaumTabelle rTabelle = new RaumTabelle();
+							aktuellePanel.clear();
+							aktuellePanel.add(rTabelle.zeigeTabelle());
 
 						}
 

@@ -1,3 +1,13 @@
+/* 
+ * SemesterverbandForm.java 
+ * 
+ * Version: 
+ *     1.0
+ * 
+ * Revisions: 
+ *     1.0
+ */
+
 package de.hdm.gruppe3.stundenplanverwaltung.client.gui;
 
 import com.google.gwt.core.shared.GWT;
@@ -109,6 +119,7 @@ public class SemesterverbandForm extends VerticalPanel {
 		anzahlStudentenTextBox.setText("");
 		semesterHalbjahrTextBox.setText("");
 		idValueLabel.setText("");
+		jahrgangTextBox.setText("");
 	}
 
 	/**
@@ -151,6 +162,7 @@ public class SemesterverbandForm extends VerticalPanel {
 	 * Ändert das ausgewählte Business Objekt im Editiermodus .
 	 */
 	public void modifizierenSelectedSemesterverband() {
+		final VerticalPanel aktuellePanel = this;
 		if (this.selectedSemesterverband != null) {
 			// Schauen ob der Benutzer alles richtig eingegeben hat, wenn false
 			// zurück kommt wird mit return abgebrochen und die Fehlermeldung
@@ -180,6 +192,10 @@ public class SemesterverbandForm extends VerticalPanel {
 						@Override
 						public void onSuccess(Semesterverband result) {
 							Window.alert("Änderung erfolgreich!");
+							//Nach dem Ändern wieder die Tabelle mit allen Einträgen anzeigen.
+							SemesterverbandTabelle semTabelle = new SemesterverbandTabelle();
+							aktuellePanel.clear();
+							aktuellePanel.add(semTabelle.zeigeTabelle());
 						}
 					});
 		}
@@ -190,6 +206,7 @@ public class SemesterverbandForm extends VerticalPanel {
 	 */
 	public void loeschenSelectedSemesterverband() {
 		if (this.selectedSemesterverband != null) {
+			final VerticalPanel aktuellePanel = this;
 			// Ruft Serverseitige Methode auf
 			stundenplanVerwaltung.loeschenSemesterverband(
 					selectedSemesterverband,
@@ -204,6 +221,10 @@ public class SemesterverbandForm extends VerticalPanel {
 						public void onSuccess(Semesterverband result) {
 							Window.alert("Löschen erfolgreich!");
 							setSelected(null);
+							//Nach dem Löschen wieder die Tabelle mit allen Einträgen anzeigen.
+							SemesterverbandTabelle semTabelle = new SemesterverbandTabelle();
+							aktuellePanel.clear();
+							aktuellePanel.add(semTabelle.zeigeTabelle());
 
 						}
 
@@ -268,7 +289,7 @@ public class SemesterverbandForm extends VerticalPanel {
 		// $ = Ende der Zeile
 		// Dann wird geschaut
 		if (!studierende.matches("^[1-9][0-9]*$")) {
-			Window.alert("Anzal Studierende muss größer 1 sein!");
+			Window.alert("Anzahl der Studierenden muss größer 0 sein!");
 			isValid = false;
 		}
 

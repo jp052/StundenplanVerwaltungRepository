@@ -1,3 +1,13 @@
+/* 
+ * DozentenForm.java 
+ * 
+ * Version: 
+ *     1.0
+ * 
+ * Revisions: 
+ *     1.0
+ */
+
 package de.hdm.gruppe3.stundenplanverwaltung.client.gui;
 
 import com.google.gwt.core.shared.GWT;
@@ -143,7 +153,17 @@ public class DozentForm extends VerticalPanel {
 	 * Ändert das ausgewählte Objekt im Editiermodus
 	 */
 	public void modifizierenSelectedDozent() {
+		final VerticalPanel aktuellePanel = this;
+
 		if (this.selectedDozent != null) {
+			
+			// Schauen ob der Benutzer alles richtig eingegeben hat, wenn false
+			// zurück kommt wird mit return abgebrochen und die Fehlermeldung
+			// angezeit.
+			if (!validiereBenutzerEingabe()) {
+				return;
+			}
+			
 			selectedDozent.setVorname(vornameTextBox.getText());
 			selectedDozent.setNachname(nachnameTextBox.getText());
 			stundenplanVerwaltung.modifizierenDozent(selectedDozent,
@@ -158,6 +178,10 @@ public class DozentForm extends VerticalPanel {
 						@Override
 						public void onSuccess(Dozent result) {
 							Window.alert("Änderung erfolgreich!");
+							//Nach dem Ändern wieder die Tabelle mit allen Einträgen anzeigen.							
+							DozentTabelle dTabelle = new DozentTabelle();
+							aktuellePanel.clear();
+							aktuellePanel.add(dTabelle.zeigeTabelle());
 						}
 					});
 		}
@@ -196,6 +220,7 @@ public class DozentForm extends VerticalPanel {
 	 * Löscht das ausgewählte Objekt im Editiermodus
 	 */
 	public void loeschenDozent() {
+		final VerticalPanel aktuellePanel = this;
 		stundenplanVerwaltung.loeschenDozent(selectedDozent,
 				new AsyncCallback<Dozent>() {
 					@Override
@@ -207,6 +232,10 @@ public class DozentForm extends VerticalPanel {
 					public void onSuccess(Dozent result) {
 						Window.alert("Löschen erfolgreich!");
 						setSelected(null);
+						//Nach dem Löschen wieder die Tabelle mit allen Einträgen anzeigen.
+						DozentTabelle dTabelle = new DozentTabelle();
+						aktuellePanel.clear();
+						aktuellePanel.add(dTabelle.zeigeTabelle());
 					}
 				});
 	}

@@ -1,3 +1,13 @@
+/* 
+ * Raumbelegung.java 
+ * 
+ * Version: 
+ *     1.0
+ * 
+ * Revisions: 
+ *     1.0
+ */
+
 package de.hdm.gruppe3.stundenplanverwaltung.client.report;
 
 import java.util.Vector;
@@ -44,7 +54,6 @@ public class Raumbelegung {
 	 */
 	public Widget reportRaumbelegung() {
 		FlexTable navigationRaumbelegungReport = new FlexTable();
-		DOM.setElementAttribute(navigationRaumbelegungReport.getElement(), "class", "table table-striped table table-bordered");
 		navigationRaumbelegungReport.setText(0, 0, "Dozent:");
 		Button d = new Button("Report");
 

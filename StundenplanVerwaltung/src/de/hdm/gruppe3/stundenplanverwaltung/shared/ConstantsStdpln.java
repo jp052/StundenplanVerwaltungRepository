@@ -1,3 +1,13 @@
+/* 
+ * ConstantsStdpln.java 
+ * 
+ * Version: 
+ *     1.0
+ * 
+ * Revisions: 
+ *     1.0
+ */
+
 package de.hdm.gruppe3.stundenplanverwaltung.shared;
 
 
@@ -6,7 +16,9 @@ package de.hdm.gruppe3.stundenplanverwaltung.shared;
  * @author Yasemin Karakoc, Jan Plank
  *
  */
+
 public class ConstantsStdpln {
+	
 	public static String NEU = "Neu";
 	public static String AENDERN = "Ändern";
 	public static String LOESCHEN = "Löschen";

@@ -1,3 +1,13 @@
+/* 
+ * DBVerbindung.java 
+ * 
+ * Version: 
+ *     1.0
+ * 
+ * Revisions: 
+ *     1.0
+ */
+
 package de.hdm.gruppe3.stundenplanverwaltung.server.db;
 
 import java.sql.Connection;
@@ -19,15 +29,7 @@ public class DBVerbindung {
 	
 	private static Connection con = null;
 	
-//Alte Versionen
-//	private static String url = "jdbc:google:rdbms://itprojectgruppe3:group3/stundenplanverwaltung?user=root";
-//	private static String url = "jdbc:google:rdbms://itprojectgruppe3:group3/stundenplanverwaltung?user=itgruppe3";
-//	private static String url = "jdbc:google:rdbms://itprojectgruppe3:group3two/stundenplanverwaltung?user=root&";
-//	private static String url = "jdbc:google:rdbms://itprojectgruppe3:group3/stundenplanverwaltung?user=root&password";
-//	private static String url = "jdbc:google:rdbms://itprojectgruppe3:group3/stundenplanverwaltung?user=root&password=";
-	
-	//lokal
-//	private static String url = "jdbc:mysql://127.0.0.1:3306/stundenplanverwaltung?user=root&password=";
+
 	
 //	cloud sql
 	private static String url = "jdbc:google:rdbms://itprojectgruppe3:group3three/stundenplanverwaltung?user=root&";

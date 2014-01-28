@@ -1,3 +1,13 @@
+/* 
+ * DozentReport.java 
+ * 
+ * Version: 
+ *     1.0
+ * 
+ * Revisions: 
+ *     1.0
+ */
+
 package de.hdm.gruppe3.stundenplanverwaltung.client.report;
 
 import java.util.Vector;
@@ -113,7 +123,7 @@ public class DozentReport {
 		
 		dozentReportTabelle.setText(0, 0, "Lehrveranstaltung");
 		dozentReportTabelle.setText(0, 1, "Semester");
-		dozentReportTabelle.setText(0, 2, "Anzahl der Studierende");
+		dozentReportTabelle.setText(0, 2, "Anzahl der Studierenden");
 
 		stundenplanVerwaltung.reportLVbyDozent(d,
 				new AsyncCallback<Vector<Lehrveranstaltung>>() {

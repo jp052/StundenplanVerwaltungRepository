@@ -1,3 +1,13 @@
+/* 
+ * DozentenTabelle.java 
+ * 
+ * Version: 
+ *     1.0
+ * 
+ * Revisions: 
+ *     1.0
+ */
+
 package de.hdm.gruppe3.stundenplanverwaltung.client.gui;
 
 import java.util.Vector;
@@ -22,10 +32,13 @@ import de.hdm.gruppe3.stundenplanverwaltung.shared.StundenplanVerwaltungServiceA
 import de.hdm.gruppe3.stundenplanverwaltung.shared.bo.Dozent;
 
 /**
+ * 
  * Enthält die Tabelle um alle in der Datenbank verfügbaren Elemente anzuzeigen.
  * 
  * @author Yasemin Karakoc, Jan Plank, Selim Karazehir, Julia Hammerer, Denis
  *         Fuerst, Daniel Krakow In Anlehnung an Hr. Prof. Dr. Thies
+ *         
+ *         
  */
 public class DozentTabelle {
 

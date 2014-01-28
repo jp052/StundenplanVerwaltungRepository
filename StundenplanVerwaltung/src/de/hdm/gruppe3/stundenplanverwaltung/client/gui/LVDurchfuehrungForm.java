@@ -1,3 +1,13 @@
+/* 
+ * LVDurchfuehrungForm.java 
+ * 
+ * Version: 
+ *     1.0
+ * 
+ * Revisions: 
+ *     1.0
+ */
+
 package de.hdm.gruppe3.stundenplanverwaltung.client.gui;
 
 import java.util.Vector;
@@ -427,6 +437,9 @@ public class LVDurchfuehrungForm extends VerticalPanel {
 	 * Ändert das ausgewählte Business Objekt im Editiermodus
 	 */
 	public void modifizierenSelectedLVDurchfuehrung() {
+		
+		final VerticalPanel aktuellePanel = this;
+
 		// Die ausgew�hlten Id des gew�hlten Elementes ausw�hlen und am ende and
 		// die entsprechende Async Methode schicken.
 
@@ -487,6 +500,10 @@ public class LVDurchfuehrungForm extends VerticalPanel {
 					@Override
 					public void onSuccess(LVDurchfuehrung result) {
 						Window.alert("Änderung erfolgreich!");
+						//Nach dem Ändern wieder die Tabelle mit allen Einträgen anzeigen.
+						LVDurchfuehrungTabelle lvdTabelle = new LVDurchfuehrungTabelle();
+						aktuellePanel.clear();
+						aktuellePanel.add(lvdTabelle.zeigeTabelle());
 					}
 				});
 	}

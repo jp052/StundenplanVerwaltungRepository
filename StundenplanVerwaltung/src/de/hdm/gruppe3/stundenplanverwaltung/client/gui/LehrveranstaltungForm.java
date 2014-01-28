@@ -1,3 +1,13 @@
+/* 
+ * LehrveranstaltungsForm.java 
+ * 
+ * Version: 
+ *     1.0
+ * 
+ * Revisions: 
+ *     1.0
+ */
+
 package de.hdm.gruppe3.stundenplanverwaltung.client.gui;
 
 import java.util.Vector;
@@ -60,7 +70,7 @@ public class LehrveranstaltungForm extends VerticalPanel {
 		customerGrid.setWidget(1, 0, semesterLabel);
 		customerGrid.setWidget(1, 1, semesterTextBox);
 
-		Label jahrgangLabel = new Label("Umfang");
+		Label jahrgangLabel = new Label("Anzahl der Studierenden");
 		customerGrid.setWidget(2, 0, jahrgangLabel);
 		customerGrid.setWidget(2, 1, umfangTextBox);
 
@@ -206,6 +216,7 @@ public class LehrveranstaltungForm extends VerticalPanel {
 		bezeichnungTextBox.setText("");
 		semesterTextBox.setText("");
 		idValueLabel.setText("");
+		umfangTextBox.setText("");
 	}
 
 	/**
@@ -228,6 +239,8 @@ public class LehrveranstaltungForm extends VerticalPanel {
 	 * Ändert das ausgewählte Business Objekt im Editiermodus
 	 */
 	public void modifizierenSelectedLehrveranstaltung() {
+		final VerticalPanel aktuellePanel = this;
+
 		if (this.selectedLehrveranstaltung != null) {
 			// Schauen ob der Benutzer alles richtig eingegeben hat, wenn false
 			// zurück kommt wird mit return abgebrochen und die Fehlermeldung
@@ -266,6 +279,10 @@ public class LehrveranstaltungForm extends VerticalPanel {
 						@Override
 						public void onSuccess(Lehrveranstaltung result) {
 							Window.alert("Änderung erfolgreich!");
+							//Nach dem Ändern wieder die Tabelle mit allen Einträgen anzeigen.
+							LehrveranstaltungTabelle lvTabelle = new LehrveranstaltungTabelle();
+							aktuellePanel.clear();
+							aktuellePanel.add(lvTabelle.zeigeTabelle());
 						}
 					});
 		}
@@ -275,6 +292,7 @@ public class LehrveranstaltungForm extends VerticalPanel {
 	 * Löscht das ausgewählte Business Objekt im Editiermodus
 	 */
 	public void loeschenSelectedLehrveranstaltung() {
+		final VerticalPanel aktuellePanel = this;
 		if (this.selectedLehrveranstaltung != null) {
 			// Ruft Serverseitige Methode auf
 			stundenplanVerwaltung.loeschenLehrveranstaltung(
@@ -291,6 +309,10 @@ public class LehrveranstaltungForm extends VerticalPanel {
 						public void onSuccess(Lehrveranstaltung result) {
 							Window.alert("Löschen erfolgreich!");
 							setSelected(null);
+							//Nach dem Löschen wieder die Tabelle mit allen Einträgen anzeigen.
+							LehrveranstaltungTabelle lvTabelle = new LehrveranstaltungTabelle();
+							aktuellePanel.clear();
+							aktuellePanel.add(lvTabelle.zeigeTabelle());
 						}
 					});
 		}
@@ -363,7 +385,7 @@ public class LehrveranstaltungForm extends VerticalPanel {
 			isValid = false;
 		}
 		if (!umfang.matches("^[1-9][0-9]*$")) {
-			Window.alert("Umfang muss 1 oder mehr sein!");
+			Window.alert("Anzahl der Studierenden muss 1 oder mehr sein!");
 			isValid = false;
 		}
 		if (indexDozent < 1) {

@@ -1,3 +1,13 @@
+/* 
+ * BusinessObject.java 
+ * 
+ * Version: 
+ *     1.0
+ * 
+ * Revisions: 
+ *     1.0
+ */
+
 package de.hdm.gruppe3.stundenplanverwaltung.shared.bo;
 
 import java.io.Serializable;
@@ -7,8 +17,8 @@ import java.io.Serializable;
  *
  */
 public abstract class BusinessObject implements Serializable {
- //julia
-	//jan
+ 
+	
   private static final long serialVersionUID = 1L;
 
   private int id = 0;
@@ -30,20 +40,20 @@ public abstract class BusinessObject implements Serializable {
 
   public boolean equals(Object object) {
 	/*schaut ob objek existiert und ein BusinessObject ist, wenn ja wird
-	übergebenes Objekt in ein BusinessObjekt umgewandelt (cast)*/
+	ï¿½bergebenes Objekt in ein BusinessObjekt umgewandelt (cast)*/
     if (object != null && object instanceof BusinessObject) {
       BusinessObject businessObj = (BusinessObject) object;
       try {
-    	//Wennn Id gleich ist, dann wird true zurückggeben.
+    	//Wennn Id gleich ist, dann wird true zurï¿½ckggeben.
         if (businessObj.getId() == this.id)
           return true;
       }
       catch (IllegalArgumentException e) {
-    	//Bei Fehler false zurückgeben
+    	//Bei Fehler false zurï¿½ckgeben
         return false;
       }
     }
-    //Ist die Id nicht gleich wird false zurückggeben
+    //Ist die Id nicht gleich wird false zurï¿½ckggeben
     return false;
   }
   

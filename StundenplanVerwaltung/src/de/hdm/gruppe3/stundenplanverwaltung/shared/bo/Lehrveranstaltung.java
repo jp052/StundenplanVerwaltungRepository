@@ -1,3 +1,13 @@
+/* 
+ * Lehrveranstaltung.java 
+ * 
+ * Version: 
+ *     1.0
+ * 
+ * Revisions: 
+ *     1.0
+ */
+
 package de.hdm.gruppe3.stundenplanverwaltung.shared.bo;
 
 import java.util.Vector;

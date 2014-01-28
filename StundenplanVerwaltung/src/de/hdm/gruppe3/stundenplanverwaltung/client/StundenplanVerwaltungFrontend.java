@@ -1,3 +1,13 @@
+/* 
+ * StundenplanVerwaltungFrontend.java 
+ * 
+ * Version: 
+ *     1.0
+ * 
+ * Revisions: 
+ *     1.0
+ */
+
 package de.hdm.gruppe3.stundenplanverwaltung.client;
 
 import com.google.gwt.core.client.GWT;
